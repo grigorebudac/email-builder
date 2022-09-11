@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx run-many --parallel --target=serve --projects=app,api,builder",
+    "start": "nx run-many --parallel --target=serve --projects=app,api",
     "build": "nx build",
     "test": "nx test"
   },
