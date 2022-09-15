@@ -5,13 +5,18 @@
   "scripts": {
     "start": "nx run-many --parallel --target=serve --projects=app,api",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "db:migrate": "cd ./apps/api && npx prisma db push && cd ../..",
+    "db:generate": "cd ./apps/api && npx prisma generate && cd ../.."
   },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^4.3.1",
+    "class-validator": "^0.13.2",
     "core-js": "^3.6.5",
     "next": "12.2.5",
     "react": "18.2.0",
@@ -48,6 +53,7 @@
     "@typescript-eslint/parser": "~5.33.1",
     "babel-jest": "28.1.1",
     "babel-plugin-styled-components": "1.10.7",
+    "class-transformer": "^0.5.1",
     "cypress": "^10.7.0",
     "eslint": "~8.15.0",
     "eslint-config-next": "12.2.5",
