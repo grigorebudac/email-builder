@@ -1,18 +1,11 @@
-import { AppProps } from 'next/app';
-import Head from 'next/head';
-import './styles.css';
+import { KlikProvider } from '@lego/klik-ui';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   return (
-    <>
-      <Head>
-        <title>Welcome to app!</title>
-      </Head>
-      <main className="app">
-        <Component {...pageProps} />
-      </main>
-    </>
+    <KlikProvider includeFont={true}>
+      <Component {...pageProps} />
+    </KlikProvider>
   );
 }
 
-export default CustomApp;
+export default MyApp;
