@@ -1,7 +1,6 @@
 import React from 'react';
 import { EmailEditor, EmailEditorProvider } from 'easy-email-editor';
 import { StandardLayout } from 'easy-email-extensions';
-import { useWindowSize } from 'react-use';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
@@ -11,11 +10,10 @@ import {
   BuilderContextProvider,
   BuilderContext,
 } from '../../contexts/BuilderContext';
+import { useMediaQuery } from '@chakra-ui/media-query';
 
 const Builder = () => {
-  const { width } = useWindowSize();
-
-  const smallScene = width < 1400;
+  const [isSmallScene] = useMediaQuery('(max-width: 1280px)');
 
   return (
     <BuilderContextProvider>
@@ -31,7 +29,7 @@ const Builder = () => {
               return (
                 <>
                   {/* @ts-ignore */}
-                  <StandardLayout compact={!smallScene} showSourceCode={true}>
+                  <StandardLayout compact={!isSmallScene} showSourceCode={true}>
                     <EmailEditor />
                   </StandardLayout>
                 </>
