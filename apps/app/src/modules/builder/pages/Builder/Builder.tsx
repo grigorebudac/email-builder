@@ -7,7 +7,6 @@ import { useWindowSize } from 'react-use';
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
 
-// theme, If you need to change the theme, you can make a duplicate in https://arco.design/themes/design/1799/setting/base/Color
 import '@arco-themes/react-easy-email-theme/css/arco.css';
 
 const initialValues = {
@@ -16,7 +15,7 @@ const initialValues = {
   content: BlockManager.getBlockByType(BasicType.PAGE)!.create({}),
 };
 
-export default function BuilderContaier() {
+const Builder = () => {
   const { width } = useWindowSize();
 
   const smallScene = width < 1400;
@@ -40,4 +39,6 @@ export default function BuilderContaier() {
       }}
     </EmailEditorProvider>
   );
-}
+};
+
+export default Builder;
