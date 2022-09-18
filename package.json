@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@arco-themes/react-easy-email-theme": "^0.0.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@lego/klik-ui": "^0.52.1",

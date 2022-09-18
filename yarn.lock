@@ -58,6 +58,11 @@
     scroll-into-view-if-needed "2.2.20"
     shallowequal "^1.1.0"
 
+"@arco-themes/react-easy-email-theme@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@arco-themes/react-easy-email-theme/-/react-easy-email-theme-0.0.3.tgz#b9cf6ad3c4aec9e1cc6f534132782f892a0403c2"
+  integrity sha512-JZXavU2v7YK38KyoK3hUQ2bxpdD5JwPzjxFNftH6Dhiuv/CppK55/uWzDpQJIohcHM9BTRcYmgUA49OE2MHWqA==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.7", "@babel/code-frame@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
