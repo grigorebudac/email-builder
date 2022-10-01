@@ -2,10 +2,15 @@ import React from 'react';
 import { Grid, LEGOLogo, Navbar, Text } from '@lego/klik-ui';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { Box } from '@chakra-ui/layout';
 
 interface SidebarItem {
   title: string;
   route: string;
+}
+
+interface ApplicationLayoutProps {
+  title: string;
 }
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -19,7 +24,9 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   },
 ];
 
-const ApplicationLayout = (props: React.PropsWithChildren) => {
+const ApplicationLayout = (
+  props: React.PropsWithChildren<ApplicationLayoutProps>
+) => {
   const router = useRouter();
 
   return (
@@ -52,7 +59,11 @@ const ApplicationLayout = (props: React.PropsWithChildren) => {
       </Grid.Item>
 
       <Grid.Item as="article" gridArea="content" ml={4} p={4}>
-        {props.children}
+        <Text as="h1" textStyle="h1">
+          {props.title}
+        </Text>
+
+        <Box mt="3rem">{props.children}</Box>
       </Grid.Item>
     </Grid>
   );
