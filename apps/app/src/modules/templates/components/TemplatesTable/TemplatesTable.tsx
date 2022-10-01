@@ -5,14 +5,11 @@ import { Button, ButtonGroup, Text } from '@lego/klik-ui';
 import SimpleTable from '@/components/Tables/SimpleTable';
 import { unixToReadableFormat } from '@/utils/date.utils';
 
-const MOCK_DATA = [...new Array(50)].map((__, index) => ({
-  name: `Hello ${index}`,
-  description: 'Dummy description',
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
-}));
+interface TemplatesTableProps {
+  data: object[];
+}
 
-const TemplatesTable = () => {
+const TemplatesTable = (props: TemplatesTableProps) => {
   const columns: Column[] = useMemo(() => {
     return [
       {
@@ -56,7 +53,7 @@ const TemplatesTable = () => {
     ];
   }, []);
 
-  return <SimpleTable columns={columns} data={MOCK_DATA} />;
+  return <SimpleTable columns={columns} data={props.data} />;
 };
 
 export default TemplatesTable;
