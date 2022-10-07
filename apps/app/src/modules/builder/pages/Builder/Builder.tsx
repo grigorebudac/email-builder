@@ -1,6 +1,12 @@
-import React from 'react';
-import { EmailEditor, EmailEditorProvider } from 'easy-email-editor';
+import React, { useCallback } from 'react';
+import {
+  EmailEditor,
+  EmailEditorProvider,
+  EmailEditorProviderProps,
+  IEmailTemplate,
+} from 'easy-email-editor';
 import { StandardLayout } from 'easy-email-extensions';
+import { Liquid } from 'liquidjs';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
@@ -11,6 +17,7 @@ import {
   BuilderContext,
 } from '../../contexts/BuilderContext';
 import { useMediaQuery } from '@chakra-ui/media-query';
+import BuilderLayout from '../../components/BuilderLayout';
 
 const Builder = () => {
   const [isSmallScene] = useMediaQuery('(max-width: 1280px)');
@@ -18,21 +25,32 @@ const Builder = () => {
   return (
     <BuilderContextProvider>
       <BuilderContext.Consumer>
-        {({ initialValues }) => (
+        {({
+          initialValues,
+          mergeTags,
+          onChangeMergeTag,
+          onBeforePreview,
+          onSubmit,
+        }) => (
           <EmailEditorProvider
             data={initialValues}
             height={'calc(100vh - 72px)'}
             autoComplete
             dashed={false}
+            mergeTags={mergeTags}
+            mergeTagGenerate={(tag) => `{{${tag}}}`}
+            onChangeMergeTag={onChangeMergeTag}
+            onBeforePreview={onBeforePreview}
+            onSubmit={onSubmit}
           >
-            {({ values }) => {
+            {({ values }, { submit }) => {
               return (
-                <>
+                <BuilderLayout onSave={submit}>
                   {/* @ts-ignore */}
                   <StandardLayout compact={!isSmallScene} showSourceCode={true}>
                     <EmailEditor />
                   </StandardLayout>
-                </>
+                </BuilderLayout>
               );
             }}
           </EmailEditorProvider>
