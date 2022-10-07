@@ -1,28 +1,35 @@
 import { RootApi } from '@/redux/apis/root.api';
+import { Template } from '@/types/template.types';
 import { IEmailTemplate } from 'easy-email-editor';
 
-export const BuilderEndpoints = RootApi.injectEndpoints({
+export const TemplateEndpoints = RootApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
-    createTemplate: builder.mutation<unknown, unknown>({
+    createTemplate: builder.mutation<
+      Template.Template,
+      Template.CreateTemplate
+    >({
       query: (body) => ({
         url: `/templates`,
         method: 'POST',
-        body,
+        body: {
+          title: body.title,
+          subtitle: body.subtitle,
+        },
       }),
     }),
-    getTemplates: builder.query<unknown, void>({
+    getTemplates: builder.query<Template.Template[], void>({
       query: () => {
         return '/templates';
       },
     }),
-    getTemplateById: builder.query<unknown, string>({
+    getTemplateById: builder.query<Template.Template, string>({
       query: (templateId: string) => {
         return `/templates/${templateId}`;
       },
     }),
     updateTemplate: builder.mutation<
-      unknown,
+      Template.Template,
       { id: string; content: IEmailTemplate['content'] }
     >({
       query: ({ id, content }) => ({
@@ -39,6 +46,6 @@ export const BuilderEndpoints = RootApi.injectEndpoints({
 export const {
   useCreateTemplateMutation,
   useGetTemplatesQuery,
-  useGetTemplateByIdQuery,
+  useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
-} = BuilderEndpoints;
+} = TemplateEndpoints;

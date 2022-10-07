@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useState,
   useMemo,
+  useEffect,
 } from 'react';
 import { BasicType, BlockManager } from 'easy-email-core';
 
@@ -11,9 +12,10 @@ import { Builder } from '../types/builder.types';
 import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
 import { Liquid } from 'liquidjs';
 import {
-  useGetTemplateByIdQuery,
+  useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
-} from '../redux/endpoints/builder.endpoints';
+} from '@/redux/endpoints/template.endpoints';
+import { useRouter } from 'next/router';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -24,11 +26,27 @@ interface BuilderContextValues {
 }
 
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
-  const { data, isLoading } = useGetTemplateByIdQuery(
-    '63403be4beb6f474f4f48037'
-  );
+  const router = useRouter();
+  const [getTemplateById, { data, isLoading }] = useLazyGetTemplateByIdQuery();
+
   const [mergeTags, setMergeTags] = useState<Record<string, string>[]>([]);
   const [updateTemplateMutation] = useUpdateTemplateMutation();
+
+  const templateId = router.query?.templateId as string;
+
+  useEffect(() => {
+    if (router.isReady) {
+      handlePageInit();
+    }
+  }, [router.query, router.isReady]);
+
+  async function handlePageInit() {
+    try {
+      await getTemplateById(templateId).unwrap();
+    } catch {
+      router.push('/');
+    }
+  }
 
   const handleBeforePreview: EmailEditorProviderProps['onBeforePreview'] =
     useCallback((html: string, mergeTags) => {
@@ -44,7 +62,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   async function handleSubmit(values: IEmailTemplate) {
     try {
       await updateTemplateMutation({
-        id: '63403be4beb6f474f4f48037',
+        id: templateId,
         content: values.content,
       }).unwrap();
     } catch (error) {

@@ -9,21 +9,30 @@ import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 export class TemplateService {
   constructor(private prisma: PrismaService, private config: ConfigService) {}
 
-  async createTemplate(dto: CreateTemplateDTO) {
+  async createTemplate(userId: string, dto: CreateTemplateDTO) {
     const template = await this.prisma.template.create({
       data: {
         title: dto.title,
+        subtitle: dto.subtitle,
         content: {},
+        userId,
       },
     });
 
     return template;
   }
 
-  async updateTemplate(id: string, dto: UpdateTemplateDTO) {
-    const template = await this.prisma.template.update({
+  async updateTemplate(id: string, userId: string, dto: UpdateTemplateDTO) {
+    const template = await this.prisma.template.updateMany({
       where: {
-        id: id,
+        AND: [
+          {
+            id,
+          },
+          {
+            userId,
+          },
+        ],
       },
       data: {
         content: dto.content,
@@ -33,15 +42,27 @@ export class TemplateService {
     return template;
   }
 
-  async getTemplates() {
-    const templates = await this.prisma.template.findMany();
+  async getTemplates(userId: string) {
+    const templates = await this.prisma.template.findMany({
+      where: {
+        userId,
+      },
+    });
+
     return templates;
   }
 
-  async getTemplateById(id: string) {
-    const template = await this.prisma.template.findUniqueOrThrow({
+  async getTemplateById(id: string, userId: string) {
+    const template = await this.prisma.template.findFirst({
       where: {
-        id,
+        AND: [
+          {
+            id,
+          },
+          {
+            userId,
+          },
+        ],
       },
     });
 

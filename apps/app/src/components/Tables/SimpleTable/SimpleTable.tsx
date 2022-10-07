@@ -2,12 +2,12 @@ import { Flex, Pagination, Table } from '@lego/klik-ui';
 import React from 'react';
 import { Column, useTable, usePagination } from 'react-table';
 
-interface SimpleTableProps {
-  columns: Column<object>[];
-  data: object[];
+interface SimpleTableProps<T = object> {
+  columns: Column<T>[];
+  data: T[];
 }
 
-const SimpleTable = (props: SimpleTableProps) => {
+const SimpleTable = <T,>(props: SimpleTableProps<T>) => {
   const {
     headerGroups,
     getTableProps,

@@ -1,27 +1,38 @@
 import React, { ReactElement } from 'react';
 import { Button, Flex, useDisclosure } from '@lego/klik-ui';
+import { useRouter } from 'next/router';
 
+import {
+  useCreateTemplateMutation,
+  useGetTemplatesQuery,
+} from '@/redux/endpoints/template.endpoints';
 import { NextPageWithLayout } from '@/types/next.types';
 import ApplicationLayout from '@/components/Layouts/ApplicationLayout';
+import { Template } from '@/types/template.types';
 import TemplatesTable from '../../components/TemplatesTable';
 import CreateTemplateModal from '../../components/CreateTemplateModal';
-import { Template } from '@/types/template.types';
-import { sleep } from '@/utils/common.utils';
-
-const MOCK_DATA = [...new Array(50)].map((__, index) => ({
-  name: `Hello ${index}`,
-  description: 'Dummy description',
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
-}));
 
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [createTemplateMutation] = useCreateTemplateMutation();
+  const { data: templates, isLoading } = useGetTemplatesQuery();
+  const router = useRouter();
 
   async function handleCreateTemplate(data: Template.CreateTemplate) {
-    await sleep(2000);
-    alert('Created');
-    onClose();
+    try {
+      const result = await createTemplateMutation(data).unwrap();
+      handleEdit(result.id);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  function handleEdit(templateId: string) {
+    router.push(`/editor/${templateId}`);
+  }
+
+  function handleDelete(templateId: string) {
+    alert('not implemented');
   }
 
   return (
@@ -32,7 +43,13 @@ const Templates: NextPageWithLayout = () => {
         </Button>
       </Flex>
 
-      <TemplatesTable data={MOCK_DATA} />
+      {!isLoading && (
+        <TemplatesTable
+          data={templates ?? []}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
 
       <CreateTemplateModal
         isOpen={isOpen}
