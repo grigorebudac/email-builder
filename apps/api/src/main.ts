@@ -13,6 +13,8 @@ async function bootstrap() {
 
   const globalPrefix = 'api';
 
+  app.enableCors();
+
   app.setGlobalPrefix(globalPrefix);
 
   app.useGlobalPipes(
