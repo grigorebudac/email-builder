@@ -68,4 +68,21 @@ export class TemplateService {
 
     return template;
   }
+
+  async deleteTemplateById(id: string, userId: string) {
+    const template = await this.prisma.template.deleteMany({
+      where: {
+        AND: [
+          {
+            id,
+          },
+          {
+            userId,
+          },
+        ],
+      },
+    });
+
+    return template;
+  }
 }

@@ -17,6 +17,34 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
           subtitle: body.subtitle,
         },
       }),
+      async onQueryStarted(body, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          TemplateEndpoints.util.updateQueryData(
+            'getTemplates',
+            undefined,
+            (draft) => {
+              const date = Date.now().toString();
+
+              const newTemplate: Template.Template = {
+                id: date,
+                title: body.title,
+                subtitle: body.subtitle,
+                content: {} as Template.Template['content'],
+                createdAt: date,
+                updatedAt: date,
+              };
+
+              draft.push(newTemplate);
+            }
+          )
+        );
+
+        try {
+          await queryFulfilled;
+        } finally {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: [TEMPLATE_TAG],
     }),
     getTemplates: builder.query<Template.Template[], void>({
@@ -56,6 +84,33 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
       }),
       invalidatesTags: [TEMPLATE_TAG],
     }),
+    deleteTemplateById: builder.mutation<unknown, string>({
+      query: (templateId: string) => {
+        return {
+          url: `/templates/${templateId}`,
+          method: 'DELETE',
+        };
+      },
+      async onQueryStarted(templateId, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          TemplateEndpoints.util.updateQueryData(
+            'getTemplates',
+            undefined,
+            (draft) => {
+              const index = draft.findIndex(
+                (template) => template.id === templateId
+              );
+
+              if (index > -1) {
+                draft.splice(index, 1);
+              }
+            }
+          )
+        );
+
+        queryFulfilled.catch(patchResult.undo);
+      },
+    }),
   }),
 });
 
@@ -64,4 +119,5 @@ export const {
   useGetTemplatesQuery,
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
+  useDeleteTemplateByIdMutation,
 } = TemplateEndpoints;

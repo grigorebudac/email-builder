@@ -3,6 +3,7 @@ import { JwtGuard } from '@/auth/guard';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -41,5 +42,10 @@ export class TemplateController {
   @Get('/:id')
   getTemplateById(@Param('id') id: string, @GetUser() user: User) {
     return this.templateService.getTemplateById(id, user.id);
+  }
+
+  @Delete('/:id')
+  deleteTemplateById(@Param('id') id: string, @GetUser() user: User) {
+    return this.templateService.deleteTemplateById(id, user.id);
   }
 }

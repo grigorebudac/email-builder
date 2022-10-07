@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import {
   useCreateTemplateMutation,
+  useDeleteTemplateByIdMutation,
   useGetTemplatesQuery,
 } from '@/redux/endpoints/template.endpoints';
 import { NextPageWithLayout } from '@/types/next.types';
@@ -15,6 +16,7 @@ import CreateTemplateModal from '../../components/CreateTemplateModal';
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [createTemplateMutation] = useCreateTemplateMutation();
+  const [deleteTemplateMutation] = useDeleteTemplateByIdMutation();
   const { data: templates, isLoading } = useGetTemplatesQuery();
   const router = useRouter();
 
@@ -31,8 +33,8 @@ const Templates: NextPageWithLayout = () => {
     router.push(`/editor/${templateId}`);
   }
 
-  function handleDelete(templateId: string) {
-    alert('not implemented');
+  async function handleDelete(templateId: string) {
+    await deleteTemplateMutation(templateId);
   }
 
   return (
