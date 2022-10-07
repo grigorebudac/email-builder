@@ -1,4 +1,4 @@
-import { RootApi } from '@/redux/apis/root.api';
+import { RootApi, TEMPLATE_TAG } from '@/redux/apis/root.api';
 import { Template } from '@/types/template.types';
 import { IEmailTemplate } from 'easy-email-editor';
 
@@ -17,15 +17,30 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
           subtitle: body.subtitle,
         },
       }),
+      invalidatesTags: [TEMPLATE_TAG],
     }),
     getTemplates: builder.query<Template.Template[], void>({
       query: () => {
         return '/templates';
       },
+      providesTags: (res) => {
+        return (res ?? []).map((template) => ({
+          type: TEMPLATE_TAG,
+          id: template.id,
+        }));
+      },
     }),
     getTemplateById: builder.query<Template.Template, string>({
       query: (templateId: string) => {
         return `/templates/${templateId}`;
+      },
+      providesTags: (template) => {
+        return [
+          {
+            type: TEMPLATE_TAG,
+            id: template?.id,
+          },
+        ];
       },
     }),
     updateTemplate: builder.mutation<
@@ -39,6 +54,7 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
           content,
         },
       }),
+      invalidatesTags: [TEMPLATE_TAG],
     }),
   }),
 });
