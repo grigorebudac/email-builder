@@ -2,12 +2,20 @@ import React from 'react';
 import { Box, Button, IconButton, Navbar } from '@lego/klik-ui';
 import { ReactComponent as ArrowBackIcon } from '@/assets/svg/arrow-back-outline.svg';
 import Link from 'next/link';
+import { IEmailTemplate } from 'easy-email-editor';
+import useAsyncAction from '@/hooks/useAsyncAction';
 
 interface BuilderLayoutProps {
-  onSave: () => void;
+  onSave: () => Promise<IEmailTemplate>;
 }
 
 const BuilderLayout = (props: React.PropsWithChildren<BuilderLayoutProps>) => {
+  const { isLoading, onTriggerAction } = useAsyncAction();
+
+  function handleSave() {
+    onTriggerAction(props.onSave);
+  }
+
   return (
     <Box>
       <Navbar isSecondary={true}>
@@ -23,7 +31,13 @@ const BuilderLayout = (props: React.PropsWithChildren<BuilderLayoutProps>) => {
         </Navbar.Segment>
 
         <Navbar.Segment ml="auto">
-          <Button onClick={props.onSave}>Save</Button>
+          <Button
+            isLoading={isLoading}
+            disabled={isLoading}
+            onClick={handleSave}
+          >
+            Save
+          </Button>
         </Navbar.Segment>
       </Navbar>
 

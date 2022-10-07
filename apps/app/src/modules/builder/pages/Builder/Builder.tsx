@@ -1,12 +1,7 @@
-import React, { useCallback } from 'react';
-import {
-  EmailEditor,
-  EmailEditorProvider,
-  EmailEditorProviderProps,
-  IEmailTemplate,
-} from 'easy-email-editor';
+import React from 'react';
+import { EmailEditor, EmailEditorProvider } from 'easy-email-editor';
 import { StandardLayout } from 'easy-email-extensions';
-import { Liquid } from 'liquidjs';
+import { useMediaQuery } from '@chakra-ui/media-query';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
@@ -16,7 +11,6 @@ import {
   BuilderContextProvider,
   BuilderContext,
 } from '../../contexts/BuilderContext';
-import { useMediaQuery } from '@chakra-ui/media-query';
 import BuilderLayout from '../../components/BuilderLayout';
 
 const Builder = () => {

@@ -7,15 +7,15 @@ import React, {
   useEffect,
 } from 'react';
 import { BasicType, BlockManager } from 'easy-email-core';
+import { useRouter } from 'next/router';
+import { Liquid } from 'liquidjs';
+import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
 
 import { Builder } from '../types/builder.types';
-import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
-import { Liquid } from 'liquidjs';
 import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
 } from '@/redux/endpoints/template.endpoints';
-import { useRouter } from 'next/router';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
