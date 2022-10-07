@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateTemplateDTO } from './dto';
+import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 
 @Injectable()
 export class TemplateService {
@@ -12,6 +13,20 @@ export class TemplateService {
     const template = await this.prisma.template.create({
       data: {
         title: dto.title,
+        content: {},
+      },
+    });
+
+    return template;
+  }
+
+  async updateTemplate(id: string, dto: UpdateTemplateDTO) {
+    const template = await this.prisma.template.update({
+      where: {
+        id: id,
+      },
+      data: {
+        content: dto.content,
       },
     });
 

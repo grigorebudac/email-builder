@@ -1,9 +1,19 @@
-import React, { useContext, createContext, useCallback, useState } from 'react';
+import React, {
+  useContext,
+  createContext,
+  useCallback,
+  useState,
+  useMemo,
+} from 'react';
 import { BasicType, BlockManager } from 'easy-email-core';
 
 import { Builder } from '../types/builder.types';
 import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
 import { Liquid } from 'liquidjs';
+import {
+  useGetTemplateByIdQuery,
+  useUpdateTemplateMutation,
+} from '../redux/endpoints/builder.endpoints';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -13,63 +23,12 @@ interface BuilderContextValues {
   onSubmit: (values: IEmailTemplate) => void;
 }
 
-const initialValues = {
-  subject: '',
-  subTitle: '',
-  content: BlockManager.getBlockByType(BasicType.PAGE).create({
-    data: {
-      value: {
-        breakpoint: '480px',
-        headAttributes: '',
-        'font-size': '14px',
-        'font-weight': '400',
-        'line-height': '1.7',
-        headStyles: [],
-        fonts: [],
-        responsive: true,
-        'font-family':
-          "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans','Helvetica Neue', sans-serif",
-        'text-color': '#000000',
-      },
-    },
-    attributes: {
-      'background-color': '#efeeea',
-      width: '600px',
-    },
-    children: [
-      {
-        type: 'wrapper',
-        data: {
-          value: {},
-        },
-        attributes: {
-          padding: '20px 0px 20px 0px',
-          border: 'none',
-          direction: 'ltr',
-          'text-align': 'center',
-        },
-        children: [
-          {
-            type: 'advanced_text',
-            data: {
-              value: {
-                content: 'Hello World',
-              },
-            },
-            attributes: {
-              padding: '10px 25px 10px 25px',
-              align: 'left',
-            },
-            children: [],
-          },
-        ],
-      },
-    ],
-  }),
-};
-
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
+  const { data, isLoading } = useGetTemplateByIdQuery(
+    '63403be4beb6f474f4f48037'
+  );
   const [mergeTags, setMergeTags] = useState<Record<string, string>[]>([]);
+  const [updateTemplateMutation] = useUpdateTemplateMutation();
 
   const handleBeforePreview: EmailEditorProviderProps['onBeforePreview'] =
     useCallback((html: string, mergeTags) => {
@@ -82,8 +41,35 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     console.log('---> merge tag', { ptah, val });
   }
 
-  function handleSubmit(values: IEmailTemplate) {
-    console.log('---> submit', { values });
+  async function handleSubmit(values: IEmailTemplate) {
+    try {
+      await updateTemplateMutation({
+        id: '63403be4beb6f474f4f48037',
+        content: values.content,
+      }).unwrap();
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  const initialValues: IEmailTemplate = useMemo(() => {
+    if (data == null) {
+      return {
+        subject: '',
+        subTitle: '',
+        content: BlockManager.getBlockByType(BasicType.PAGE).create({}),
+      };
+    }
+
+    return {
+      subject: '',
+      subTitle: '',
+      content: BlockManager.getBlockByType(BasicType.PAGE).create(data.content),
+    };
+  }, [data]);
+
+  if (isLoading) {
+    return <h1>Loading</h1>;
   }
 
   return (
