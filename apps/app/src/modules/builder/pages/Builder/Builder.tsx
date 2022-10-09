@@ -22,24 +22,28 @@ const Builder = () => {
         {({
           initialValues,
           mergeTags,
-          onChangeMergeTag,
+          defaultMergeTags,
           onBeforePreview,
           onSubmit,
+          onSendTestEmail,
         }) => (
           <EmailEditorProvider
             data={initialValues}
             height={'calc(100vh - 72px)'}
             autoComplete
             dashed={false}
-            mergeTags={mergeTags}
+            mergeTags={defaultMergeTags}
             mergeTagGenerate={(tag) => `{{${tag}}}`}
-            onChangeMergeTag={onChangeMergeTag}
             onBeforePreview={onBeforePreview}
             onSubmit={onSubmit}
           >
             {({ values }, { submit }) => {
               return (
-                <BuilderLayout onSave={submit}>
+                <BuilderLayout
+                  mergeTags={mergeTags}
+                  onSave={submit}
+                  onSendTestEmail={onSendTestEmail}
+                >
                   {/* @ts-ignore */}
                   <StandardLayout compact={!isSmallScene} showSourceCode={true}>
                     <EmailEditor />
