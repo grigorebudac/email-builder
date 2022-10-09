@@ -4,4 +4,8 @@ export class CreateTemplateDTO {
   @IsString()
   @IsNotEmpty()
   title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  subtitle: string;
 }
