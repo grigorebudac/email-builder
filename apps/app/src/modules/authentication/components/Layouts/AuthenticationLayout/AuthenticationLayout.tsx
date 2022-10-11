@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container, Tabs } from '@lego/klik-ui';
 
 type AuthenticationLayoutProps = {
