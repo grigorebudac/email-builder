@@ -8,7 +8,6 @@ type UserState = {
 
 const initialState: UserState = {
   user: null,
-  token: null
 };
 
 const slice = createSlice({

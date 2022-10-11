@@ -1,130 +1,63 @@
 import React, { useState } from 'react';
 import {
-  FormControl,
-  Input,
-  Container,
-  Tabs,
-  Stack,
-  Button,
-} from '@lego/klik-ui';
-import { Lock } from '@lego/klik-ui/icons';
-import {
   useLoginMutation,
   useRegisterMutation,
 } from '../../redux/endpoints/authentication.endpoints';
 import { useRouter } from 'next/router';
+import { useLazyGetCurrentUserQuery } from '@/redux/endpoints/user.endpoints';
+import { useDispatch } from 'react-redux';
+import { UserSlice } from '@/redux/slices';
+import { LOCAL_STORAGE } from '@/config/constants';
+import { Auth } from '../../types/auth.types';
+import { AuthenticationLayout } from '../../components/Layouts/AuthenticationLayout';
+import { LoginForm } from '../../components/Forms/LoginForm';
+import { RegisterForm } from '../../components/Forms/RegisterForm';
 
 const Login = () => {
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
   const [logInCall] = useLoginMutation();
   const [registerCall] = useRegisterMutation();
+  const [getCurrentUser] = useLazyGetCurrentUserQuery();
   const router = useRouter();
 
   const testCredentials = { email: 'test@gmail.com', password: 'pass1' };
 
-  async function handleSignIn(credentials: any) {
+  async function handleSignIn(credentials: Auth.LoginRequestPayload) {
     try {
-      await logInCall(testCredentials)
-        .unwrap()
-        .then((res) => {
-          console.log({ res });
-        })
-        .catch((error) => console.error({ error }));
+      const tokenResponse = await logInCall(testCredentials).unwrap();
+
+      if (tokenResponse.access_token == null) return;
+
+      localStorage.setItem(LOCAL_STORAGE.TOKEN, tokenResponse.access_token);
+      const currentUser = await getCurrentUser().unwrap();
+      dispatch(UserSlice.setUser(currentUser));
+      router.push('/');
     } catch (error) {
       error instanceof Error ? setError(error.message) : setError('');
     }
   }
 
-  async function handleRegister(credentials: any) {
+  async function handleRegister(credentials: Auth.RegisterRequestPayload) {
     try {
-      await registerCall(testCredentials)
-        .unwrap()
-        .then((res) => {
-          console.log({ res });
-        })
-        .catch((error) => console.error({ error }));
+      const tokenResponse = await registerCall(testCredentials).unwrap();
+
+      if (tokenResponse.access_token == null) return;
+
+      localStorage.setItem(LOCAL_STORAGE.TOKEN, tokenResponse.access_token);
+      const currentUser = await getCurrentUser().unwrap();
+      dispatch(UserSlice.setUser(currentUser));
+      router.push('/');
     } catch (error) {
       error instanceof Error ? setError(error.message) : setError('');
     }
   }
 
   return (
-    <Container height={'100vh'} display={'grid'} placeItems={'center'}>
-      <Tabs isFitted={true} width={'100%'}>
-        <Tabs.TabList>
-          <Tabs.Tab>Log in</Tabs.Tab>
-          <Tabs.Tab>Register</Tabs.Tab>
-        </Tabs.TabList>
-        <Tabs.TabPanels>
-          <Tabs.TabPanel>
-            <Stack>
-              <FormControl isRequired={true}>
-                <FormControl.Label>Email</FormControl.Label>
-                <Input.Group>
-                  <Input required={true} />
-                </Input.Group>
-              </FormControl>
-
-              <FormControl isRequired={true}>
-                <FormControl.Label>Password</FormControl.Label>
-                <Input.Group>
-                  <Input.LeftElement pointerEvents="none">
-                    <Lock color="slate.400" fontSize="1.375rem" />
-                  </Input.LeftElement>
-                  <Input required={true} type={'password'} />
-                </Input.Group>
-              </FormControl>
-            </Stack>
-            <Button
-              type={'button'}
-              float={'right'}
-              mt={5}
-              onClick={handleSignIn}
-            >
-              Submit
-            </Button>
-          </Tabs.TabPanel>
-          <Tabs.TabPanel>
-            <Stack>
-              <FormControl isRequired={true}>
-                <FormControl.Label>Email</FormControl.Label>
-                <Input.Group>
-                  <Input required={true} />
-                </Input.Group>
-              </FormControl>
-
-              <FormControl isRequired={true}>
-                <FormControl.Label>Password</FormControl.Label>
-                <Input.Group>
-                  <Input.LeftElement pointerEvents="none">
-                    <Lock color="slate.400" fontSize="1.375rem" />
-                  </Input.LeftElement>
-                  <Input required={true} type={'password'} />
-                </Input.Group>
-              </FormControl>
-
-              <FormControl isRequired={true}>
-                <FormControl.Label>Password (again)</FormControl.Label>
-                <Input.Group>
-                  <Input.LeftElement pointerEvents="none">
-                    <Lock color="slate.400" fontSize="1.375rem" />
-                  </Input.LeftElement>
-                  <Input required={true} type={'password'} />
-                </Input.Group>
-              </FormControl>
-            </Stack>
-            <Button
-              type={'button'}
-              float={'right'}
-              mt={5}
-              onClick={handleRegister}
-            >
-              Create account
-            </Button>
-          </Tabs.TabPanel>
-        </Tabs.TabPanels>
-      </Tabs>
-    </Container>
+    <AuthenticationLayout
+      loginSection={<LoginForm onSubmit={handleSignIn} />}
+      registerSection={<RegisterForm onSubmit={handleRegister} />}
+    />
   );
 };
 
