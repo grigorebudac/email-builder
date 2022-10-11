@@ -15,7 +15,6 @@ model User {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique()
 	password String
-  templates Template[]
   createdAt DateTime @default(now())
  	updatedAt DateTime @updatedAt
 }
@@ -23,7 +22,8 @@ model User {
 model Template {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  user      User?    @relation(fields: [userId], references: [id])
+  subtitle  String
+  content   Json
   userId    String?
   createdAt DateTime @default(now())
  	updatedAt DateTime @updatedAt
