@@ -3,26 +3,24 @@ import { useRouter } from 'next/router';
 import { LOCAL_STORAGE } from '@/config/constants';
 import { isJWTValid } from '@/modules/authentication/utils/auth.utils';
 
-type WithProtectedRouteProps = unknown;
+type WithPublicRouteProps = unknown;
 
-function withProtectedRoute<P>(
-  WrappedComponent: React.ComponentType<P & WithProtectedRouteProps>
+function withPublicRoute<P>(
+  WrappedComponent: React.ComponentType<P & WithPublicRouteProps>
 ) {
   const ComponentWithExtraInfo = (props: P) => {
     const router = useRouter();
     const [isLoading, setLoading] = useState(true);
 
     const checkAuthenticated = useCallback(async () => {
-      const jwtToken = localStorage.getItem(LOCAL_STORAGE.TOKEN);
-      const isTokenValid = isJWTValid(jwtToken);
+      try {
+        const jwtToken = localStorage.getItem(LOCAL_STORAGE.TOKEN);
+        const isTokenValid = isJWTValid(jwtToken);
 
-      if (isTokenValid) {
+        if (isTokenValid) router.push('/');
+      } finally {
         setLoading(false);
-        return;
       }
-
-      router.push('/login');
-      setLoading(false);
     }, [router]);
 
     useEffect(() => {
@@ -30,7 +28,7 @@ function withProtectedRoute<P>(
     }, [checkAuthenticated]);
 
     if (isLoading) {
-      return <h1>Loading auth</h1>;
+      return <h1>Loading</h1>;
     }
 
     return <WrappedComponent {...props} />;
@@ -39,4 +37,4 @@ function withProtectedRoute<P>(
   return ComponentWithExtraInfo;
 }
 
-export { withProtectedRoute };
+export { withPublicRoute };

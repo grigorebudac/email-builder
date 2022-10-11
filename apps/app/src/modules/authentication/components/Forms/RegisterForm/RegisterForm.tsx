@@ -5,9 +5,11 @@ import { Button, Stack } from '@lego/klik-ui';
 import { Lock } from '@lego/klik-ui/icons';
 import { Auth } from '@/modules/authentication/types/auth.types';
 import { TextFieldController } from '@/modules/authentication/controllers/TextFieldController';
+import { Text } from '@lego/klik-ui';
 
 type RegisterFormProps = {
   onSubmit: (credentials: Auth.RegisterRequestPayload) => void;
+  error: string;
 };
 
 const schema = yup.object().shape({
@@ -62,6 +64,8 @@ const RegisterForm = (props: RegisterFormProps) => {
           error={errors?.email}
           control={control}
         />
+
+        <Text color="error.500">{props.error}</Text>
       </Stack>
       <Button float="right" mt={5} type="submit" disabled={isSubmitting}>
         Submit
