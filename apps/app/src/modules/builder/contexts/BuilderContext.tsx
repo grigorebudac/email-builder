@@ -16,20 +16,26 @@ import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
 } from '@/redux/endpoints/template.endpoints';
+import { Template } from '@/types/template.types';
+import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
+import { merge } from 'lodash';
+import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
-  mergeTags: Record<string, string>[];
+  mergeTags: Template.MergeTags;
+  defaultMergeTags: Template.MergeTags;
   onBeforePreview: EmailEditorProviderProps['onBeforePreview'];
-  onChangeMergeTag: (ptah: string, val: string) => void;
+  onUpdateMergeTags: (values: IEmailTemplate) => void;
   onSubmit: (values: IEmailTemplate) => void;
+  onSendTestEmail: (values: Template.MergeTags) => void;
 }
 
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const router = useRouter();
   const [getTemplateById, { data, isLoading }] = useLazyGetTemplateByIdQuery();
 
-  const [mergeTags, setMergeTags] = useState<Record<string, string>[]>([]);
+  const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
   const [updateTemplateMutation] = useUpdateTemplateMutation();
 
   const templateId = router.query?.templateId as string;
@@ -39,36 +45,6 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
       handlePageInit();
     }
   }, [router.query, router.isReady]);
-
-  async function handlePageInit() {
-    try {
-      await getTemplateById(templateId).unwrap();
-    } catch {
-      router.push('/');
-    }
-  }
-
-  const handleBeforePreview: EmailEditorProviderProps['onBeforePreview'] =
-    useCallback((html: string, mergeTags) => {
-      const engine = new Liquid();
-      const tpl = engine.parse(html);
-      return engine.renderSync(tpl, mergeTags);
-    }, []);
-
-  function handleChangeMergeTag(ptah: string, val: string) {
-    console.log('---> merge tag', { ptah, val });
-  }
-
-  async function handleSubmit(values: IEmailTemplate) {
-    try {
-      await updateTemplateMutation({
-        id: templateId,
-        content: values.content,
-      }).unwrap();
-    } catch (error) {
-      console.log({ error });
-    }
-  }
 
   const initialValues: IEmailTemplate = useMemo(() => {
     if (data == null) {
@@ -86,6 +62,48 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     };
   }, [data]);
 
+  const defaultMergeTags = useMemo(() => {
+    const value = merge(DEFAULT_MERGE_TAGS, mergeTags);
+    return { ...value };
+  }, [mergeTags]);
+
+  async function handlePageInit() {
+    try {
+      await getTemplateById(templateId).unwrap();
+    } catch {
+      router.push('/');
+    }
+  }
+
+  const handleBeforePreview: EmailEditorProviderProps['onBeforePreview'] =
+    useCallback((html: string, mergeTags) => {
+      const engine = new Liquid();
+      const tpl = engine.parse(html);
+      return engine.renderSync(tpl, mergeTags);
+    }, []);
+
+  async function handleSubmit(values: IEmailTemplate) {
+    try {
+      await updateTemplateMutation({
+        id: templateId,
+        content: values.content,
+      }).unwrap();
+
+      handleUpdateMergeTags(values);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  function handleUpdateMergeTags(values: IEmailTemplate) {
+    const mergeTags = getMergeTagsFromString(JSON.stringify(values));
+    setMergeTags(mergeTags);
+  }
+
+  function handleSendTestEmail(values: Template.MergeTags) {
+    setMergeTags((prev) => merge({ ...prev }, values));
+  }
+
   if (isLoading) {
     return <h1>Loading</h1>;
   }
@@ -95,9 +113,11 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
       value={{
         initialValues,
         mergeTags,
+        defaultMergeTags,
         onBeforePreview: handleBeforePreview,
-        onChangeMergeTag: handleChangeMergeTag,
         onSubmit: handleSubmit,
+        onSendTestEmail: handleSendTestEmail,
+        onUpdateMergeTags: handleUpdateMergeTags,
       }}
     >
       {props.children}
