@@ -7,8 +7,6 @@ import {
   ExtensionProps,
   StandardLayout,
 } from 'easy-email-extensions';
-import { useMediaQuery } from '@chakra-ui/media-query';
-import BuilderLayout from '../../components/BuilderLayout';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
@@ -18,9 +16,11 @@ import {
   BuilderContextProvider,
   BuilderContext,
 } from '../../contexts/BuilderContext';
+import BuilderLayout from '../../components/BuilderLayout';
 import { defaultCategories } from '../../customBlocks';
 import { AdvancedType } from 'easy-email-core';
 import { Panel as ButtonPanel } from '../../customBlocks/Pages/Button';
+import { useMediaQuery } from '@chakra-ui/media-query';
 
 BlockAttributeConfigurationManager.add({
   [AdvancedType.BUTTON]: ButtonPanel,
