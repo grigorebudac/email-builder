@@ -1,5 +1,5 @@
 import { IconFont, useEditorProps, useFocusIdx } from 'easy-email-editor';
-import { Collapse, Grid, Popover, Space } from '@arco-design/web-react';
+import { Grid, Popover, Space } from '@arco-design/web-react';
 import {
   Align,
   AttributesPanelWrapper,
@@ -7,7 +7,6 @@ import {
   Border,
   ClassName,
   Color,
-  ColorPickerField,
   ContainerBackgroundColor,
   FontFamily,
   FontSize,
@@ -17,7 +16,6 @@ import {
   LineHeight,
   Link,
   MergeTags,
-  NumberField,
   Padding,
   TextDecoration,
   TextField,
@@ -39,7 +37,7 @@ export function Panel() {
     <>
       {/* @ts-ignore */}
       <AttributesPanelWrapper>
-        <div style={{ padding: 20 }}>
+        <div>
           <div>
             <Space direction="vertical">
               <TextField

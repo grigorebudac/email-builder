@@ -3,7 +3,6 @@ import { TemplateController } from './template.controller';
 import { TemplateService } from './template.service';
 
 @Module({
-  imports: [],
   controllers: [TemplateController],
   providers: [TemplateService],
 })

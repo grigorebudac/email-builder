@@ -4,24 +4,27 @@ import { Button, ButtonGroup, Text } from '@lego/klik-ui';
 
 import SimpleTable from '@/components/Tables/SimpleTable';
 import { unixToReadableFormat } from '@/utils/date.utils';
+import { Template } from '@/types/template.types';
 
 interface TemplatesTableProps {
-  data: object[];
+  data: Template.Template[];
+  onEdit: (templateId: string) => void;
+  onDelete: (templateId: string) => void;
 }
 
 const TemplatesTable = (props: TemplatesTableProps) => {
-  const columns: Column[] = useMemo(() => {
+  const columns: Column<Template.Template>[] = useMemo(() => {
     return [
       {
         Header: 'Name',
         accessor: (originalRow) => {
-          return <Text variant="h3">{originalRow.name}</Text>;
+          return <Text variant="h3">{originalRow.title}</Text>;
         },
       },
       {
         Header: 'Description',
         accessor: (originalRow) => {
-          return <Text variant="h3">{originalRow.description}</Text>;
+          return <Text variant="h3">{originalRow.subtitle}</Text>;
         },
       },
       {
@@ -41,11 +44,12 @@ const TemplatesTable = (props: TemplatesTableProps) => {
       {
         Header: 'Actions',
         accessor: (originalRow) => {
+          const templateId = originalRow.id;
+
           return (
             <ButtonGroup size="xs">
-              <Button>Send</Button>
-              <Button>Edit</Button>
-              <Button>Delete</Button>
+              <Button onClick={() => props.onEdit(templateId)}>Edit</Button>
+              <Button onClick={() => props.onDelete(templateId)}>Delete</Button>
             </ButtonGroup>
           );
         },
@@ -53,7 +57,7 @@ const TemplatesTable = (props: TemplatesTableProps) => {
     ];
   }, []);
 
-  return <SimpleTable columns={columns} data={props.data} />;
+  return <SimpleTable<Template.Template> columns={columns} data={props.data} />;
 };
 
 export default TemplatesTable;

@@ -18,8 +18,8 @@ const CreateTemplateModal = (props: CreateTemplateModalProps) => {
     formState: { isSubmitting, errors },
   } = useForm<Template.CreateTemplate>({
     defaultValues: {
-      name: '',
-      description: '',
+      title: '',
+      subtitle: '',
     },
   });
 
@@ -32,17 +32,17 @@ const CreateTemplateModal = (props: CreateTemplateModalProps) => {
       <form onSubmit={handleSubmit(props.onSubmit)}>
         <Box mb="1rem">
           <Input
-            {...register('name', { required: true })}
-            placeholder="Name"
-            isInvalid={errors.name != null}
+            {...register('title', { required: true })}
+            placeholder="Title"
+            isInvalid={errors.title != null}
           />
         </Box>
 
         <Box mb="1rem">
           <Input
-            {...register('description', { required: true })}
+            {...register('subtitle', { required: true })}
             placeholder="Description"
-            isInvalid={errors.description != null}
+            isInvalid={errors.subtitle != null}
           />
         </Box>
 

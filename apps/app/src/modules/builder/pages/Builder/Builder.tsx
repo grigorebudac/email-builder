@@ -7,6 +7,8 @@ import {
   ExtensionProps,
   StandardLayout,
 } from 'easy-email-extensions';
+import { useMediaQuery } from '@chakra-ui/media-query';
+import BuilderLayout from '../../components/BuilderLayout';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
@@ -16,7 +18,6 @@ import {
   BuilderContextProvider,
   BuilderContext,
 } from '../../contexts/BuilderContext';
-import { useMediaQuery } from '@chakra-ui/media-query';
 import { defaultCategories } from '../../customBlocks';
 import { AdvancedType } from 'easy-email-core';
 import { Panel as ButtonPanel } from '../../customBlocks/Pages/Button';
@@ -55,16 +56,31 @@ const Builder = () => {
   return (
     <BuilderContextProvider>
       <BuilderContext.Consumer>
-        {({ initialValues }) => (
+        {({
+          initialValues,
+          mergeTags,
+          defaultMergeTags,
+          onBeforePreview,
+          onSubmit,
+          onSendTestEmail,
+        }) => (
           <EmailEditorProvider
             data={initialValues}
             height={'calc(100vh - 72px)'}
             autoComplete
             dashed={false}
+            mergeTags={defaultMergeTags}
+            mergeTagGenerate={(tag) => `{{${tag}}}`}
+            onBeforePreview={onBeforePreview}
+            onSubmit={onSubmit}
           >
-            {({ values }) => {
+            {({ values }, { submit }) => {
               return (
-                <>
+                <BuilderLayout
+                  mergeTags={mergeTags}
+                  onSave={submit}
+                  onSendTestEmail={onSendTestEmail}
+                >
                   {/* @ts-ignore */}
                   <StandardLayout
                     compact={!isSmallScene}
@@ -73,7 +89,7 @@ const Builder = () => {
                   >
                     <EmailEditor />
                   </StandardLayout>
-                </>
+                </BuilderLayout>
               );
             }}
           </EmailEditorProvider>
