@@ -2,24 +2,39 @@ import React from 'react';
 import { AdvancedType } from 'easy-email-core';
 
 import {
+  // @ts-ignore
   TextBlockItem,
+  // @ts-ignore
   ImageBlockItem,
+  // @ts-ignore
   ButtonBlockItem,
+  // @ts-ignore
   HeroBlockItem,
+  // @ts-ignore
   NavbarBlockItem,
+  // @ts-ignore
   SpacerBlockItem,
+  // @ts-ignore
   DividerBlockItem,
+  // @ts-ignore
   AccordionBlockItem,
+  // @ts-ignore
   CarouselBlockItem,
+  // @ts-ignore
   SocialBlockItem,
+  // @ts-ignore
   WrapperBlockItem,
+  // @ts-ignore
   SectionBlockItem,
+  // @ts-ignore
   GroupBlockItem,
+  // @ts-ignore
   ColumnBlockItem,
   Stack,
   TextStyle,
 } from 'easy-email-editor';
 import { BlockMarketCategory } from 'easy-email-extensions';
+import { theme } from '@lego/klik-ui';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -31,15 +46,10 @@ export const defaultCategories: BlockMarketCategory[] = [
         title: 'Text',
         description: 'This block allows you to display text in your email.',
         component: TextBlockItem,
+        // @ts-ignore
         payload: {
           attributes: {
-            color: 'red',
-            'font-family': 'cursive',
-          },
-          data: {
-            value: {
-              content: 'Hello World',
-            },
+            'font-family': 'Cera Pro',
           },
         },
       },
@@ -63,6 +73,13 @@ export const defaultCategories: BlockMarketCategory[] = [
         title: 'Button',
         description: 'Displays a customizable button.',
         component: ButtonBlockItem,
+        // @ts-ignore
+        payload: {
+          attributes: {
+            'font-family': 'Cera Pro',
+            'background-color': theme.colors.information[400],
+          },
+        },
       },
       {
         type: AdvancedType.HERO,
