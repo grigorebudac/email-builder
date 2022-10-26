@@ -1,10 +1,11 @@
 import React from 'react';
 import { Container, Tabs } from '@lego/klik-ui';
+import { Auth } from '../../../types/auth.types';
 
 type AuthenticationLayoutProps = {
   loginSection: React.ReactNode;
   registerSection: React.ReactNode;
-  initial: 'login' | 'register';
+  initial: Auth.InitialAuthSection;
 };
 
 const AuthenticationLayout: React.FC<AuthenticationLayoutProps> = ({
@@ -14,12 +15,7 @@ const AuthenticationLayout: React.FC<AuthenticationLayoutProps> = ({
 }) => {
   return (
     <Container height="100vh" display="grid" placeItems="center">
-      <Tabs
-        isFitted={true}
-        width="100%"
-        height="400"
-        defaultIndex={initial === 'register' ? 1 : 0}
-      >
+      <Tabs isFitted={true} width="100%" height="400" defaultIndex={initial}>
         <Tabs.TabList>
           <Tabs.Tab>Log in</Tabs.Tab>
           <Tabs.Tab>Register</Tabs.Tab>

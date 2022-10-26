@@ -11,4 +11,9 @@ export declare namespace Auth {
   export type RegisterRequestPayload = LoginRequestPayload;
 
   export type RegisterResponse = LoginRespose;
+
+  export enum InitialAuthSection {
+    Login = 0,
+    Register = 1
+  }
 }
