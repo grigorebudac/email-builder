@@ -13,4 +13,7 @@ export declare namespace Template {
     title: string;
     subtitle: string;
   }
+  export interface MergeTags {
+    [key: string]: string | MergeTags;
+  }
 }
