@@ -1,10 +1,11 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query';
+import { LOCAL_STORAGE } from '@/config/constants';
+import { logout } from '@/redux/slices/user.slice';
+import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-export const rootApiBaseQuery = fetchBaseQuery({
+const rootApiBaseQuery = fetchBaseQuery({
   baseUrl: `${process.env.NEXT_PUBLIC_ROOT_API_ENDPOINT}`,
-  prepareHeaders: async (headers) => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzI1ZjJlZDM0OTFkZDQ0M2NhMGEwNjkiLCJpYXQiOjE2NjUxNTk5OTgsImV4cCI6MTY5NjcxNzU5OH0.-Fvw5ASQn_dQe2vdzLqzUjboTBC2izZC6Yi7S-r6Ebk';
+  prepareHeaders: async (headers, { getState }) => {
+    const token = localStorage.getItem(LOCAL_STORAGE.TOKEN)
 
     if (token != null) {
       headers.set('Authorization', `Bearer ${token}`);
@@ -13,3 +14,16 @@ export const rootApiBaseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
+export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions
+) => {
+  const result = await rootApiBaseQuery(args, api, extraOptions);
+
+  if (result.error && result.error.status === 401) {
+    api.dispatch(logout());
+  }
+  return result;
+};

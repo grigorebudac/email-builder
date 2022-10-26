@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { withProtectedRoute } from 'src/hocs/withProtectedRoute';
 import { Button, Flex, useDisclosure } from '@lego/klik-ui';
 import { useRouter } from 'next/router';
 
@@ -66,4 +67,4 @@ Templates.getLayout = function getLayout(page: ReactElement) {
   return <ApplicationLayout title="Templates">{page}</ApplicationLayout>;
 };
 
-export default Templates;
+export default withProtectedRoute(Templates);

@@ -1,21 +1,23 @@
-import { RootApi } from '@/redux/apis/root.api';
+import { RootApi, USER_TAG } from '@/redux/apis/root.api';
+import { Auth } from '../../types/auth.types';
 
 export const AuthenticationEndpoints = RootApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
-    register: builder.mutation<unknown, unknown>({
+    register: builder.mutation<Auth.RegisterResponse, Auth.RegisterRequestPayload>({
       query: (body) => ({
-        url: `/register`,
+        url: `/auth/register`,
         method: 'POST',
         body,
       }),
     }),
-    login: builder.mutation<unknown, unknown>({
+    login: builder.mutation<Auth.LoginRespose, Auth.LoginRequestPayload>({
       query: (body) => ({
-        url: `/login`,
+        url: `/auth/login`,
         method: 'POST',
         body,
       }),
+      invalidatesTags: [USER_TAG],
     }),
   }),
 });
