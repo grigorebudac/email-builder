@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useLoginMutation,
   useRegisterMutation,
 } from '../../redux/endpoints/authentication.endpoints';
 import { useRouter } from 'next/router';
 import { LOCAL_STORAGE } from '@/config/constants';
-import { Auth } from '../../types/auth.types';
+import { Auth, InitialAuthSection } from '../../types/auth.types';
 import { AuthenticationLayout } from '../../components/Layouts/AuthenticationLayout';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import { RegisterForm } from '../../components/Forms/RegisterForm';
 
 type AuthenticationSectionProps = {
-  initial: Auth.InitialAuthSection;
+  initial: InitialAuthSection;
 };
 
 const AuthenticationSection: React.FC<AuthenticationSectionProps> = ({

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container, Tabs } from '@lego/klik-ui';
-import { Auth } from '../../../types/auth.types';
+import { InitialAuthSection } from '../../../types/auth.types';
 
 type AuthenticationLayoutProps = {
   loginSection: React.ReactNode;
   registerSection: React.ReactNode;
-  initial: Auth.InitialAuthSection;
+  initial: InitialAuthSection;
 };
 
 const AuthenticationLayout: React.FC<AuthenticationLayoutProps> = ({
