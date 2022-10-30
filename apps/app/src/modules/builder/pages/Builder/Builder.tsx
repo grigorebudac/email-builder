@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { EmailEditor, EmailEditorProvider } from 'easy-email-editor';
-import { StandardLayout } from 'easy-email-extensions';
-import { useMediaQuery } from '@chakra-ui/media-query';
+import {
+  BlockAttributeConfigurationManager,
+  BlockMarketCategory,
+  BlockMarketManager,
+  ExtensionProps,
+  StandardLayout,
+} from 'easy-email-extensions';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
@@ -12,9 +17,41 @@ import {
   BuilderContext,
 } from '../../contexts/BuilderContext';
 import BuilderLayout from '../../components/BuilderLayout';
+import { defaultCategories } from '../../customBlocks';
+import { AdvancedType } from 'easy-email-core';
+import { Panel as ButtonPanel } from '../../customBlocks/Pages/Button';
+import { useMediaQuery } from '@chakra-ui/media-query';
+
+BlockAttributeConfigurationManager.add({
+  [AdvancedType.BUTTON]: ButtonPanel,
+});
 
 const Builder = () => {
   const [isSmallScene] = useMediaQuery('(max-width: 1280px)');
+  const [categories, setCategories] = useState<ExtensionProps['categories']>(
+    []
+  );
+
+  useEffect(() => {
+    handleSetCategories(defaultCategories);
+
+    BlockMarketManager.subscribe(handleSetCategories);
+    return () => {
+      BlockMarketManager.subscribe(handleSetCategories);
+    };
+  }, []);
+
+  function handleSetCategories(categories: BlockMarketCategory[]) {
+    const newCategories: ExtensionProps['categories'] = categories.map(
+      (category) => ({
+        label: category.name,
+        blocks: category.blocks,
+        active: true,
+      })
+    );
+
+    setCategories(newCategories);
+  }
 
   return (
     <BuilderContextProvider>
@@ -45,7 +82,11 @@ const Builder = () => {
                   onSendTestEmail={onSendTestEmail}
                 >
                   {/* @ts-ignore */}
-                  <StandardLayout compact={!isSmallScene} showSourceCode={true}>
+                  <StandardLayout
+                    compact={!isSmallScene}
+                    showSourceCode={true}
+                    categories={categories}
+                  >
                     <EmailEditor />
                   </StandardLayout>
                 </BuilderLayout>
