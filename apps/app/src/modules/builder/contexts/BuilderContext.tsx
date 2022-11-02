@@ -25,6 +25,7 @@ import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
 import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
+import { theme } from '@lego/klik-ui';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -60,6 +61,10 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     }
   }, [router.query, router.isReady]);
 
+  useEffect(() => {
+    handleOverwriteColorPicker();
+  }, []);
+
   const initialValues: IEmailTemplate = useMemo(() => {
     if (data == null) {
       return {
@@ -80,6 +85,20 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     const value = merge(DEFAULT_MERGE_TAGS, mergeTags);
     return { ...value };
   }, [mergeTags]);
+
+  function handleOverwriteColorPicker() {
+    const defaultColors = [theme.colors.black, theme.colors.white];
+
+    const colors = Object.values(theme.colors).reduce<string[]>((acc, cv) => {
+      if (cv[400] != null) {
+        acc.push(cv[400]);
+      }
+
+      return acc;
+    }, defaultColors);
+
+    localStorage.setItem('CURRENT_COLORS_KEY', JSON.stringify(colors));
+  }
 
   async function handlePageInit() {
     try {

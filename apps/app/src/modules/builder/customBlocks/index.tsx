@@ -1,6 +1,5 @@
 import React from 'react';
 import { AdvancedType } from 'easy-email-core';
-import { ReactComponent as ArrowBackIcon } from '@/assets/svg/arrow-back-outline.svg';
 
 import {
   // @ts-ignore
