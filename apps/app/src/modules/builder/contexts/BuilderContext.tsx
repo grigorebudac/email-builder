@@ -26,6 +26,7 @@ import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 import { theme } from '@lego/klik-ui';
+import { color } from '@lego/design-tokens-core';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -89,7 +90,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   function handleOverwriteColorPicker() {
     const defaultColors = [theme.colors.black, theme.colors.white];
 
-    const colors = Object.values(theme.colors).reduce<string[]>((acc, cv) => {
+    const colors = Object.values(color.core).reduce<string[]>((acc, cv) => {
       if (cv[400] != null) {
         acc.push(cv[400]);
       }
