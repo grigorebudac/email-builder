@@ -1,5 +1,6 @@
 import React from 'react';
 import { AdvancedType } from 'easy-email-core';
+import { ReactComponent as ArrowBackIcon } from '@/assets/svg/arrow-back-outline.svg';
 
 import {
   // @ts-ignore
@@ -35,6 +36,7 @@ import {
 } from 'easy-email-editor';
 import { BlockMarketCategory } from 'easy-email-extensions';
 import { theme } from '@lego/klik-ui';
+import { CustomBlocksType } from '../types/block.types';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -196,6 +198,18 @@ export const defaultCategories: BlockMarketCategory[] = [
           </Stack>
         ),
         component: ColumnBlockItem,
+      },
+    ],
+  },
+  {
+    title: 'Core',
+    name: 'CORE',
+    blocks: [
+      {
+        type: CustomBlocksType.FOOTER,
+        title: 'Footer',
+        description: `Custom footer component.`,
+        component: null,
       },
     ],
   },

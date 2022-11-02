@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { BasicType, BlockManager } from 'easy-email-core';
+import { AdvancedType, BasicType, BlockManager } from 'easy-email-core';
 import { useRouter } from 'next/router';
 import { Liquid } from 'liquidjs';
 import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
@@ -20,6 +20,11 @@ import { Template } from '@/types/template.types';
 import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
 import { merge } from 'lodash';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
+import { CustomBlocksType } from '../types/block.types';
+import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
+import Footer from '../customBlocks/Footer/Footer';
+import FooterPanel from '../customBlocks/Footer/FooterPanel';
+import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -30,6 +35,15 @@ interface BuilderContextValues {
   onSubmit: (values: IEmailTemplate) => void;
   onSendTestEmail: (values: Template.MergeTags) => void;
 }
+
+BlockManager.registerBlocks({
+  [CustomBlocksType.FOOTER]: Footer,
+});
+
+BlockAttributeConfigurationManager.add({
+  [CustomBlocksType.FOOTER]: FooterPanel,
+  [AdvancedType.BUTTON]: ButtonPanel,
+});
 
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const router = useRouter();

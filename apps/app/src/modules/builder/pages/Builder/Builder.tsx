@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { EmailEditor, EmailEditorProvider } from 'easy-email-editor';
 import {
-  BlockAttributeConfigurationManager,
   BlockMarketCategory,
   BlockMarketManager,
   ExtensionProps,
@@ -18,13 +17,7 @@ import {
 } from '../../contexts/BuilderContext';
 import BuilderLayout from '../../components/BuilderLayout';
 import { defaultCategories } from '../../customBlocks';
-import { AdvancedType } from 'easy-email-core';
-import { Panel as ButtonPanel } from '../../customBlocks/Pages/Button';
 import { useMediaQuery } from '@chakra-ui/media-query';
-
-BlockAttributeConfigurationManager.add({
-  [AdvancedType.BUTTON]: ButtonPanel,
-});
 
 const Builder = () => {
   const [isSmallScene] = useMediaQuery('(max-width: 1280px)');
