@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { BasicType, BlockManager } from 'easy-email-core';
+import { AdvancedType, BasicType, BlockManager } from 'easy-email-core';
 import { useRouter } from 'next/router';
 import { Liquid } from 'liquidjs';
 import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
@@ -20,6 +20,13 @@ import { Template } from '@/types/template.types';
 import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
 import { merge } from 'lodash';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
+import { CustomBlocksType } from '../types/block.types';
+import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
+import Footer from '../customBlocks/Footer/Footer';
+import FooterPanel from '../customBlocks/Footer/FooterPanel';
+import ButtonPanel from '../customBlocks/Button/ButtonPanel';
+import { theme } from '@lego/klik-ui';
+import { color } from '@lego/design-tokens-core';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -30,6 +37,15 @@ interface BuilderContextValues {
   onSubmit: (values: IEmailTemplate) => void;
   onSendTestEmail: (values: Template.MergeTags) => void;
 }
+
+BlockManager.registerBlocks({
+  [CustomBlocksType.FOOTER]: Footer,
+});
+
+BlockAttributeConfigurationManager.add({
+  [CustomBlocksType.FOOTER]: FooterPanel,
+  [AdvancedType.BUTTON]: ButtonPanel,
+});
 
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const router = useRouter();
@@ -45,6 +61,10 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
       handlePageInit();
     }
   }, [router.query, router.isReady]);
+
+  useEffect(() => {
+    handleOverwriteColorPicker();
+  }, []);
 
   const initialValues: IEmailTemplate = useMemo(() => {
     if (data == null) {
@@ -66,6 +86,20 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     const value = merge(DEFAULT_MERGE_TAGS, mergeTags);
     return { ...value };
   }, [mergeTags]);
+
+  function handleOverwriteColorPicker() {
+    const defaultColors = [theme.colors.black, theme.colors.white];
+
+    const colors = Object.values(color.core).reduce<string[]>((acc, cv) => {
+      if (cv[400] != null) {
+        acc.push(cv[400]);
+      }
+
+      return acc;
+    }, defaultColors);
+
+    localStorage.setItem('CURRENT_COLORS_KEY', JSON.stringify(colors));
+  }
 
   async function handlePageInit() {
     try {

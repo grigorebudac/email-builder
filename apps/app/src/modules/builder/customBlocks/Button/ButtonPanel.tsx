@@ -25,7 +25,7 @@ import React from 'react';
 import { useField } from 'react-final-form';
 import { Button as ArcoButton } from '@arco-design/web-react';
 
-export function Panel() {
+function ButtonPanel() {
   const { focusIdx } = useFocusIdx();
   const { mergeTags } = useEditorProps();
 
@@ -147,3 +147,5 @@ export function Panel() {
     </>
   );
 }
+
+export default ButtonPanel;
