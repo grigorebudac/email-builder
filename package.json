@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@arco-themes/react-easy-email-theme": "^0.0.3",
+    "@aws-sdk/client-ses": "^3.202.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@faker-js/faker": "^7.5.0",
