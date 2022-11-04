@@ -1,5 +1,4 @@
 import {
-  IsAlphanumeric,
   IsEmail,
   IsNotEmpty,
   IsNotEmptyObject,
@@ -25,7 +24,6 @@ export class SendEmailDto {
   @IsNotEmpty()
   toAddress: string;
 
-  @IsAlphanumeric()
   @IsNotEmpty()
   subject: string;
 
