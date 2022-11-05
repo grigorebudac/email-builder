@@ -24,7 +24,8 @@ const TestEmailModal = (props: TestEmailModalProps) => {
 
   function handleTriggerSubmit(data: Template.MergeTags) {
     props.onSubmit(data);
-    props.onClose();
+    console.log('close the modal');
+    // props.onClose();
   }
 
   const flattenedMergeTags = useMemo(() => {
@@ -41,6 +42,9 @@ const TestEmailModal = (props: TestEmailModalProps) => {
       onClose={props.onClose}
     >
       <form onSubmit={handleSubmit(handleTriggerSubmit)}>
+        <Box mb="1rem">
+          <Input />
+        </Box>
         {Object.entries(flattenedMergeTags).map(([tagName, tagValue]) => (
           <Box key={tagName} mb="1rem">
             <Input

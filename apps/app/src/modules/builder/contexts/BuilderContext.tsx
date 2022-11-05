@@ -16,6 +16,7 @@ import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
 } from '@/redux/endpoints/template.endpoints';
+import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
 import { Template } from '@/types/template.types';
 import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
 import { merge } from 'lodash';
@@ -25,6 +26,8 @@ import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
 import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
+import mjml from 'mjml-browser';
+import { JsonToMjml } from 'easy-email-core';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 
@@ -50,9 +53,11 @@ BlockAttributeConfigurationManager.add({
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const router = useRouter();
   const [getTemplateById, { data, isLoading }] = useLazyGetTemplateByIdQuery();
-
-  const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
   const [updateTemplateMutation] = useUpdateTemplateMutation();
+  const [sendEmailMutation, { data: emailData, isLoading: sendingEmail }] =
+    useSendEmailMutation();
+  const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
+  const [template, setTemplate] = useState<Template.Template>();
 
   const templateId = router.query?.templateId as string;
 
@@ -103,7 +108,10 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   async function handlePageInit() {
     try {
-      await getTemplateById(templateId).unwrap();
+      const template = await getTemplateById(templateId).unwrap();
+      setTemplate(template);
+      const mergeTags = getMergeTagsFromString(JSON.stringify(template));
+      setMergeTags(mergeTags);
     } catch {
       router.push('/');
     }
@@ -134,8 +142,37 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     setMergeTags(mergeTags);
   }
 
-  function handleSendTestEmail(values: Template.MergeTags) {
+  async function handleSendTestEmail(values: Template.MergeTags) {
     setMergeTags((prev) => merge({ ...prev }, values));
+
+    const emailHtml = mjml(
+      JsonToMjml({
+        data: template.content,
+        mode: 'production',
+        context: template.content,
+        dataSource: mergeTags,
+      }),
+      {
+        beautify: true,
+        validationLevel: 'soft',
+      }
+    ).html;
+
+    const textFromHtml = emailHtml.replace(/<[^>]+>/g, '');
+
+    try {
+      const sendEmailResponse = await sendEmailMutation({
+        toAddress: 'andy27hush@gmail.com',
+        subject: 'Test Email',
+        body: {
+          html: emailHtml,
+          text: textFromHtml,
+        },
+      }).unwrap();
+      console.log('fulfilled', sendEmailResponse);
+    } catch (error) {
+      console.error('rejected', error);
+    }
   }
 
   if (isLoading) {

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { SendEmailDto } from './dto/send-email.dto';
 import * as aws from '@aws-sdk/client-ses';
 import { createTransport } from 'nodemailer';
@@ -52,6 +52,6 @@ export class EmailsService {
       );
     }
 
-    return response.messageId;
+    return { messageId: response.messageId };
   }
 }
