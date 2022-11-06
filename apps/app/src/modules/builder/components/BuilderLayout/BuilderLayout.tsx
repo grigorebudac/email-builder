@@ -14,7 +14,7 @@ interface BuilderLayoutProps {
   onSendTestEmail: (
     values: Template.MergeTags
   ) => Promise<Email.SendEmailResponse>;
-  onPreviewEmail: (values: unknown) => void;
+  onPreviewEmail: (values: Template.MergeTags) => void;
   onSave: () => Promise<IEmailTemplate>;
 }
 
