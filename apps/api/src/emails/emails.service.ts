@@ -10,7 +10,6 @@ const FROM_ADDRESS = 'abostan.ir@gmail.com';
 export class EmailsService {
   async send(sendEmailDto: SendEmailDto) {
     let response: SentMessageInfo | null = null;
-    const testData = 'some,stuff,to,send';
 
     try {
       const ses = new aws.SES({
@@ -29,18 +28,6 @@ export class EmailsService {
         subject: sendEmailDto.subject,
         html: sendEmailDto.body.html,
         text: sendEmailDto.body.text,
-        // https://nodemailer.com/message/attachments/
-        attachments: [
-          {
-            filename: 'usefulData.csv',
-            content: testData,
-          },
-        ],
-        // TODO:
-        // cc: null,
-        // bcc: null,
-        // priority: 'high',
-        // icalEvent: { }
       });
     } catch (error) {
       throw new HttpException(
