@@ -33,6 +33,7 @@ import mjml from 'mjml-browser';
 import { JsonToMjml } from 'easy-email-core';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
+import { Email } from '@/types/email.types';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -42,7 +43,9 @@ interface BuilderContextValues {
   onUpdateMergeTags: (values: IEmailTemplate) => void;
   onSubmit: (values: IEmailTemplate) => void;
   onPreviewEmail: (values: Template.MergeTags) => void;
-  onSendTestEmail: (values: unknown) => void;
+  onSendTestEmail: (
+    values: Template.MergeTags
+  ) => Promise<Email.SendEmailResponse>;
 }
 
 BlockManager.registerBlocks({
@@ -58,8 +61,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const router = useRouter();
   const [getTemplateById, { data, isLoading }] = useLazyGetTemplateByIdQuery();
   const [updateTemplateMutation] = useUpdateTemplateMutation();
-  const [sendEmailMutation, { data: emailData, isLoading: sendingEmail }] =
-    useSendEmailMutation();
+  const [sendEmailMutation] = useSendEmailMutation();
   const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
   const [template, setTemplate] = useState<Template.Template>();
 
@@ -162,7 +164,6 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
         dataSource: mergeTags,
       }),
       {
-        beautify: true,
         validationLevel: 'soft',
       }
     ).html;
@@ -170,19 +171,14 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     emailHtml = replaceMergeTagsWithValuesInBody(emailHtml, values);
     const textFromHtml = emailHtml.replace(/<[^>]+>/g, '');
 
-    try {
-      // const sendEmailResponse = await sendEmailMutation({
-      //   toAddress: values['to'].toString(),
-      //   subject: values['subject'].toString(),
-      //   body: {
-      //     html: emailHtml,
-      //     text: textFromHtml,
-      //   },
-      // }).unwrap();
-      // console.log('fulfilled', sendEmailResponse);
-    } catch (error) {
-      console.error('rejected', error);
-    }
+    return sendEmailMutation({
+      toAddress: values['to'].toString(),
+      subject: values['subject'].toString(),
+      body: {
+        html: emailHtml,
+        text: textFromHtml,
+      },
+    }).unwrap();
   }
 
   if (isLoading) {

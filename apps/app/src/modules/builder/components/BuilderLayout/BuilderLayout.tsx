@@ -7,10 +7,13 @@ import useAsyncAction from '@/hooks/useAsyncAction';
 import PreviewEmailModal from '../PreviewEmailModal';
 import TestEmailModal from '../TestEmailModal';
 import { Template } from '@/types/template.types';
+import { Email } from '@/types/email.types';
 
 interface BuilderLayoutProps {
   mergeTags: Template.MergeTags;
-  onSendTestEmail: (values: Template.MergeTags) => void;
+  onSendTestEmail: (
+    values: Template.MergeTags
+  ) => Promise<Email.SendEmailResponse>;
   onPreviewEmail: (values: unknown) => void;
   onSave: () => Promise<IEmailTemplate>;
 }

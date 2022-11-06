@@ -1,17 +1,19 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Button, Input, Divider } from '@lego/klik-ui';
+import { Box, Button, Input, Divider, Text } from '@lego/klik-ui';
 import * as yup from 'yup';
 import SimpleModal from '@/components/Modals/SimpleModal';
 import { Template } from '@/types/template.types';
 import { flatten } from '../../utils/flatten';
 import { TextFieldController } from '@/components/Controllers/TextFieldController';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Email } from '@/types/email.types';
+
 interface TestEmailModalProps {
   isOpen: boolean;
   mergeTags: Template.MergeTags;
   onClose: () => void;
-  onSubmit: (data: Template.MergeTags) => void;
+  onSubmit: (values: Template.MergeTags) => Promise<Email.SendEmailResponse>;
 }
 
 const schema = yup.object().shape({
@@ -34,10 +36,15 @@ const TestEmailModal = (props: TestEmailModalProps) => {
     },
   });
 
-  function handleTriggerSubmit(data: Template.MergeTags) {
-    props.onSubmit(data);
-    console.log('close the modal');
-    // props.onClose();
+  const [error, setError] = useState('');
+
+  async function handleTriggerSubmit(data: Template.MergeTags) {
+    try {
+      await props.onSubmit(data);
+      props.onClose();
+    } catch (error) {
+      setError(error.data.error);
+    }
   }
 
   const flattenedMergeTags = useMemo(() => {
@@ -87,6 +94,9 @@ const TestEmailModal = (props: TestEmailModalProps) => {
           </Box>
         ))}
 
+        <Text fontSize="0.8rem" color="error.400">
+          {error}
+        </Text>
         <Button type="submit" size="md" float="right" isLoading={isSubmitting}>
           Send
         </Button>
