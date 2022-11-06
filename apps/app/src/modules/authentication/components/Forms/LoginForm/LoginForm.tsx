@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Button, Stack } from '@lego/klik-ui';
 import { Lock } from '@lego/klik-ui/icons';
 import { Auth } from '@/modules/authentication/types/auth.types';
-import { TextFieldController } from '@/modules/authentication/controllers/TextFieldController';
+import { TextFieldController } from '@/components/Controllers/TextFieldController';
 import { Text } from '@lego/klik-ui';
 
 type LoginFormProps = {
@@ -47,7 +47,7 @@ const LoginForm = (props: LoginFormProps) => {
           type="password"
           isRequired
           icon={<Lock color="slate.400" fontSize="1.375rem" />}
-          error={errors?.email}
+          error={errors?.password}
           control={control}
         />
 

@@ -18,8 +18,11 @@ import {
 } from '@/redux/endpoints/template.endpoints';
 import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
 import { Template } from '@/types/template.types';
-import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
-import { merge } from 'lodash';
+import {
+  getMergeTagsFromString,
+  replaceMergeTagsWithValuesInBody,
+} from '../utils/getMergeTagsFromString';
+import { merge, omit } from 'lodash';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
@@ -38,7 +41,8 @@ interface BuilderContextValues {
   onBeforePreview: EmailEditorProviderProps['onBeforePreview'];
   onUpdateMergeTags: (values: IEmailTemplate) => void;
   onSubmit: (values: IEmailTemplate) => void;
-  onSendTestEmail: (values: Template.MergeTags) => void;
+  onPreviewEmail: (values: Template.MergeTags) => void;
+  onSendTestEmail: (values: unknown) => void;
 }
 
 BlockManager.registerBlocks({
@@ -142,10 +146,15 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     setMergeTags(mergeTags);
   }
 
-  async function handleSendTestEmail(values: Template.MergeTags) {
+  async function handlePreviewEmail(values: Template.MergeTags) {
     setMergeTags((prev) => merge({ ...prev }, values));
+  }
 
-    const emailHtml = mjml(
+  async function handleSendTestEmail(values: Template.MergeTags) {
+    const mergeTagsWithoutFormData = omit(values, 'to', 'subject');
+    setMergeTags((prev) => merge({ ...prev }, mergeTagsWithoutFormData));
+
+    let emailHtml = mjml(
       JsonToMjml({
         data: template.content,
         mode: 'production',
@@ -158,18 +167,19 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
       }
     ).html;
 
+    emailHtml = replaceMergeTagsWithValuesInBody(emailHtml, values);
     const textFromHtml = emailHtml.replace(/<[^>]+>/g, '');
 
     try {
-      const sendEmailResponse = await sendEmailMutation({
-        toAddress: 'andy27hush@gmail.com',
-        subject: 'Test Email',
-        body: {
-          html: emailHtml,
-          text: textFromHtml,
-        },
-      }).unwrap();
-      console.log('fulfilled', sendEmailResponse);
+      // const sendEmailResponse = await sendEmailMutation({
+      //   toAddress: values['to'].toString(),
+      //   subject: values['subject'].toString(),
+      //   body: {
+      //     html: emailHtml,
+      //     text: textFromHtml,
+      //   },
+      // }).unwrap();
+      // console.log('fulfilled', sendEmailResponse);
     } catch (error) {
       console.error('rejected', error);
     }
@@ -187,6 +197,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
         defaultMergeTags,
         onBeforePreview: handleBeforePreview,
         onSubmit: handleSubmit,
+        onPreviewEmail: handlePreviewEmail,
         onSendTestEmail: handleSendTestEmail,
         onUpdateMergeTags: handleUpdateMergeTags,
       }}

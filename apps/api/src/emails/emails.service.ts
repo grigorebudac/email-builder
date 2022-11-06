@@ -39,7 +39,7 @@ export class EmailsService {
         // TODO:
         // cc: null,
         // bcc: null,
-        priority: 'high',
+        // priority: 'high',
         // icalEvent: { }
       });
     } catch (error) {

@@ -10,8 +10,8 @@ export type TextFieldControllerProps = Omit<
   control?: Control<any, object>;
   icon?: React.ReactNode;
   error?: FieldError;
+  label?: string;
   name: string;
-  label: string;
 };
 
 const TextFieldController: React.FC<TextFieldControllerProps> = ({

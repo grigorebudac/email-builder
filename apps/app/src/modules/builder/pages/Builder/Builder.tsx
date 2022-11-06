@@ -6,7 +6,6 @@ import {
   ExtensionProps,
   StandardLayout,
 } from 'easy-email-extensions';
-
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
 import '@arco-themes/react-easy-email-theme/css/arco.css';
@@ -55,6 +54,7 @@ const Builder = () => {
           defaultMergeTags,
           onBeforePreview,
           onSubmit,
+          onPreviewEmail,
           onSendTestEmail,
         }) => (
           <EmailEditorProvider
@@ -72,6 +72,7 @@ const Builder = () => {
                 <BuilderLayout
                   mergeTags={mergeTags}
                   onSave={submit}
+                  onPreviewEmail={onPreviewEmail}
                   onSendTestEmail={onSendTestEmail}
                 >
                   {/* @ts-ignore */}
