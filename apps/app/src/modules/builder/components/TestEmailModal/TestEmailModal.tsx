@@ -30,8 +30,8 @@ const TestEmailModal = (props: TestEmailModalProps) => {
   } = useForm<Template.MergeTags>({
     resolver: yupResolver(schema),
     defaultValues: {
-      to: 'andy27hush@gmail.com',
-      subject: 'TestSubj',
+      to: '',
+      subject: '',
       ...props.mergeTags,
     },
   });
