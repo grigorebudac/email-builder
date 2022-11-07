@@ -24,6 +24,8 @@ import { CustomBlocksType } from '../types/block.types';
 import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
 import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
+import Card from '../customBlocks/Card/Card';
+import CardPanel from '../customBlocks/Card/CardPanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
@@ -40,10 +42,12 @@ interface BuilderContextValues {
 
 BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
+  [CustomBlocksType.CARD]: Card,
 });
 
 BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
+  [CustomBlocksType.CARD]: CardPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
 
