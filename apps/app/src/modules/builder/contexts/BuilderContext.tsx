@@ -16,17 +16,22 @@ import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
 } from '@/redux/endpoints/template.endpoints';
+import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
 import { Template } from '@/types/template.types';
 import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
 import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
+import mjml from 'mjml-browser';
+import { JsonToMjml } from 'easy-email-core';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
+import { Email } from '@/types/email.types';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -35,7 +40,10 @@ interface BuilderContextValues {
   onBeforePreview: EmailEditorProviderProps['onBeforePreview'];
   onUpdateMergeTags: (values: IEmailTemplate) => void;
   onSubmit: (values: IEmailTemplate) => void;
-  onSendTestEmail: (values: Template.MergeTags) => void;
+  onPreviewEmail: (values: Template.MergeTags) => void;
+  onSendTestEmail: (
+    values: Template.MergeTags
+  ) => Promise<Email.SendEmailResponse>;
 }
 
 BlockManager.registerBlocks({
@@ -50,9 +58,9 @@ BlockAttributeConfigurationManager.add({
 export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const router = useRouter();
   const [getTemplateById, { data, isLoading }] = useLazyGetTemplateByIdQuery();
-
-  const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
   const [updateTemplateMutation] = useUpdateTemplateMutation();
+  const [sendEmailMutation] = useSendEmailMutation();
+  const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
 
   const templateId = router.query?.templateId as string;
 
@@ -103,7 +111,9 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   async function handlePageInit() {
     try {
-      await getTemplateById(templateId).unwrap();
+      const template = await getTemplateById(templateId).unwrap();
+      const mergeTags = getMergeTagsFromString(JSON.stringify(template));
+      setMergeTags(mergeTags);
     } catch {
       router.push('/');
     }
@@ -134,8 +144,43 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     setMergeTags(mergeTags);
   }
 
-  function handleSendTestEmail(values: Template.MergeTags) {
+  async function handlePreviewEmail(values: Template.MergeTags) {
     setMergeTags((prev) => merge({ ...prev }, values));
+  }
+
+  async function handleSendTestEmail(values: Template.MergeTags) {
+    const mergeTagsWithoutFormData = omit(values, 'to', 'subject');
+    setMergeTags((prev) => merge({ ...prev }, mergeTagsWithoutFormData));
+
+    if (data == null) return;
+
+    let emailHtml: string = mjml(
+      JsonToMjml({
+        data: data.content,
+        mode: 'production',
+        context: data.content,
+        dataSource: mergeTags,
+      }),
+      {
+        validationLevel: 'soft',
+      }
+    ).html;
+
+    const engine = new Liquid();
+    const tpl = engine.parse(emailHtml);
+    emailHtml = engine.renderSync(tpl, mergeTagsWithoutFormData);
+
+    const removeHtmlTagsRegExp = new RegExp(/<[^>]+>/g);
+    const textFromHtml = emailHtml.replace(removeHtmlTagsRegExp, '');
+
+    return sendEmailMutation({
+      toAddress: values['to'].toString(),
+      subject: values['subject'].toString(),
+      body: {
+        html: emailHtml,
+        text: textFromHtml,
+      },
+    }).unwrap();
   }
 
   if (isLoading) {
@@ -150,6 +195,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
         defaultMergeTags,
         onBeforePreview: handleBeforePreview,
         onSubmit: handleSubmit,
+        onPreviewEmail: handlePreviewEmail,
         onSendTestEmail: handleSendTestEmail,
         onUpdateMergeTags: handleUpdateMergeTags,
       }}

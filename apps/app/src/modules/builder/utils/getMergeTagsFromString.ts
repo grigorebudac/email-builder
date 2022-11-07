@@ -1,4 +1,5 @@
 import set from 'lodash/set';
+import get from 'lodash/get';
 import { Template } from '@/types/template.types';
 
 export function getMergeTagsFromString(content: string) {
