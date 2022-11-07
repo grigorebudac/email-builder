@@ -9,8 +9,6 @@ const FROM_ADDRESS = 'abostan.ir@gmail.com';
 @Injectable()
 export class EmailsService {
   async send(sendEmailDto: SendEmailDto) {
-    let response: SentMessageInfo | null = null;
-
     try {
       const ses = new aws.SES({
         apiVersion: '2010-12-01',
@@ -21,7 +19,7 @@ export class EmailsService {
         SES: { ses, aws },
       });
 
-      response = await transporter.sendMail({
+      const response = await transporter.sendMail({
         from: FROM_ADDRESS,
         to: sendEmailDto.toAddress,
         inReplyTo: FROM_ADDRESS,
@@ -29,6 +27,8 @@ export class EmailsService {
         html: sendEmailDto.body.html,
         text: sendEmailDto.body.text,
       });
+
+      return { messageId: response.messageId };
     } catch (error) {
       throw new HttpException(
         {
@@ -38,7 +38,5 @@ export class EmailsService {
         error.$metadata.httpStatusCode
       );
     }
-
-    return { messageId: response.messageId };
   }
 }

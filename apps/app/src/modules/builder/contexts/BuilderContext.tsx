@@ -18,11 +18,9 @@ import {
 } from '@/redux/endpoints/template.endpoints';
 import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
 import { Template } from '@/types/template.types';
-import {
-  getMergeTagsFromString,
-  replaceMergeTagsWithValuesInBody,
-} from '../utils/getMergeTagsFromString';
-import { merge, omit } from 'lodash';
+import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
+import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
@@ -63,7 +61,6 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const [updateTemplateMutation] = useUpdateTemplateMutation();
   const [sendEmailMutation] = useSendEmailMutation();
   const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
-  const [template, setTemplate] = useState<Template.Template>();
 
   const templateId = router.query?.templateId as string;
 
@@ -115,7 +112,6 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   async function handlePageInit() {
     try {
       const template = await getTemplateById(templateId).unwrap();
-      setTemplate(template);
       const mergeTags = getMergeTagsFromString(JSON.stringify(template));
       setMergeTags(mergeTags);
     } catch {
@@ -156,11 +152,13 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     const mergeTagsWithoutFormData = omit(values, 'to', 'subject');
     setMergeTags((prev) => merge({ ...prev }, mergeTagsWithoutFormData));
 
-    let emailHtml = mjml(
+    if (data == null) return;
+
+    let emailHtml: string = mjml(
       JsonToMjml({
-        data: template.content,
+        data: data.content,
         mode: 'production',
-        context: template.content,
+        context: data.content,
         dataSource: mergeTags,
       }),
       {
@@ -168,8 +166,12 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
       }
     ).html;
 
-    emailHtml = replaceMergeTagsWithValuesInBody(emailHtml, values);
-    const textFromHtml = emailHtml.replace(/<[^>]+>/g, '');
+    const engine = new Liquid();
+    const tpl = engine.parse(emailHtml);
+    emailHtml = engine.renderSync(tpl, mergeTagsWithoutFormData);
+
+    const removeHtmlTagsRegExp = new RegExp(/<[^>]+>/g);
+    const textFromHtml = emailHtml.replace(removeHtmlTagsRegExp, '');
 
     return sendEmailMutation({
       toAddress: values['to'].toString(),

@@ -7,7 +7,7 @@ export class EmailsController {
   constructor(private readonly emailsService: EmailsService) {}
 
   @Post('/send')
-  create(@Body() sendEmailDto: SendEmailDto) {
+  send(@Body() sendEmailDto: SendEmailDto) {
     return this.emailsService.send(sendEmailDto);
   }
 }
