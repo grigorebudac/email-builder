@@ -37,6 +37,7 @@ const Card = createCustomBlock<CardBlockData>({
     BasicType.COLUMN,
     AdvancedType.GROUP,
     BasicType.GROUP,
+    // test
   ],
   create: (payload) => {
     const defaultData: CardBlockData = {
