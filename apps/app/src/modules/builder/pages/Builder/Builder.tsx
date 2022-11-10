@@ -74,7 +74,6 @@ const Builder = () => {
                   onSave={submit}
                   onSendTestEmail={onSendTestEmail}
                 >
-                  {/* <Autosave /> */}
                   {/* @ts-ignore */}
                   <StandardLayout
                     compact={!isSmallScene}
