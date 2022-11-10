@@ -32,7 +32,7 @@ export type CardBlockData = IBlockData<
     buttonLabel: string;
     options: string[];
     href: string;
-    target: '_blank' | '_self';
+    target: React.HTMLAttributeAnchorTarget;
   }
 >;
 
