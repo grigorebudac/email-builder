@@ -9,9 +9,8 @@ import {
 
 import React from 'react';
 import { merge } from 'lodash';
-import { getContentEditableClassName } from 'easy-email-editor';
-import { CustomBlocksType } from '../../types/block.types';
 import { theme } from '@lego/klik-ui';
+import { CustomBlocksType } from '../../types/block.types';
 
 const { Section, Column, Text, Image, Button } = components;
 
@@ -23,15 +22,17 @@ export type CardBlockData = IBlockData<
     'padding-bottom': string;
     'padding-left': string;
     'padding-right': string;
+    'button-color': string;
+    'button-label-color': string;
   },
   {
     title: string;
     description: string;
     imageSrc: string;
-    insetImage: boolean;
-    withImage: boolean;
-    withBoreder: boolean;
-    withButton: boolean;
+    buttonLabel: string;
+    options: string[];
+    href: string;
+    target: '_blank' | '_self';
   }
 >;
 
@@ -56,10 +57,10 @@ const Card = createCustomBlock<CardBlockData>({
           description:
             'With amazing detail, this awesome LEGO® Trolls World Tour Pop Village Celebration (41255) Trolls tree house building set opens a world of imaginative play for young Trolls fans.',
           imageSrc: '',
-          insetImage: false,
-          withImage: true,
-          withBoreder: true,
-          withButton: false,
+          buttonLabel: 'Action',
+          href: '#',
+          target: '_self',
+          options: ['with_image', 'with_border'],
         },
       },
       attributes: {
@@ -69,6 +70,8 @@ const Card = createCustomBlock<CardBlockData>({
         'padding-bottom': '0px',
         'padding-left': '0px',
         'padding-right': '0px',
+        'button-color': theme.colors['light-blue'][400],
+        'button-label-color': theme.colors['white'],
       },
       children: [],
     };
@@ -76,16 +79,14 @@ const Card = createCustomBlock<CardBlockData>({
     return merge(payload, defaultData);
   },
   render: ({ data, idx, mode }) => {
-    const {
-      title,
-      description,
-      imageSrc,
-      insetImage,
-      withImage,
-      withBoreder,
-      withButton,
-    } = data.data.value;
+    const { title, description, imageSrc, buttonLabel, href, target, options } =
+      data.data.value;
     const attributes = data.attributes;
+
+    const insetImage = options.includes('inset_image');
+    const withImage = options.includes('with_image');
+    const withBorder = options.includes('with_border');
+    const withButton = options.includes('with_button');
 
     return (
       <Section
@@ -96,12 +97,12 @@ const Card = createCustomBlock<CardBlockData>({
       >
         <Column
           border={
-            withBoreder ? `1px solid ${theme.colors['slate'][200]}` : 'none'
+            withBorder ? `1px solid ${theme.colors['slate'][200]}` : 'none'
           }
         >
-          {withImage != null && (
+          {withImage && (
             <Image
-              padding={insetImage ? '20px' : '0px'}
+              padding={insetImage ? '15px' : '0px'}
               alt="card-image"
               src={
                 imageSrc ||
@@ -127,7 +128,18 @@ const Card = createCustomBlock<CardBlockData>({
             {description}
           </Text>
 
-          {withButton && <Button align="left">Opaa</Button>}
+          {withButton && (
+            <Button
+              align="left"
+              padding="0px 15px 15px 15px"
+              color={attributes['button-label-color']}
+              background-color={attributes['button-color']}
+              href={href}
+              target={target}
+            >
+              {buttonLabel}
+            </Button>
+          )}
         </Column>
       </Section>
     );

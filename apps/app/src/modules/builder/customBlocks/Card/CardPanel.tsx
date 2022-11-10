@@ -1,22 +1,20 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Stack, useFocusIdx } from 'easy-email-editor';
 import { Collapse, Grid, Space } from '@arco-design/web-react';
+import { IconLink } from '@arco-design/web-react/icon';
 import {
   AttributesPanelWrapper,
   ImageUploaderField,
   TextField,
   InputWithUnitField,
   ColorPickerField,
-  RadioGroupField,
   CheckboxField,
+  SelectField,
 } from 'easy-email-extensions';
 import CollapseWrapper from '../../components/CollapseWrapper';
-import { Checkbox } from '@lego/klik-ui';
 
 function CardPanel() {
   const { focusIdx } = useFocusIdx();
-
-  const testRef = useRef();
 
   return (
     // @ts-ignore
@@ -39,49 +37,64 @@ function CardPanel() {
               name={`${focusIdx}.data.value.description`}
               alignment="center"
             />
+            <TextField
+              label="Button Text"
+              name={`${focusIdx}.data.value.buttonLabel`}
+              alignment="center"
+            />
+            <Grid.Row>
+              <Grid.Col span={11}>
+                <TextField
+                  prefix={<IconLink />}
+                  label={<span>Href&nbsp;&nbsp;&nbsp;</span>}
+                  name={`${focusIdx}.data.value.href`}
+                />
+              </Grid.Col>
+              <Grid.Col offset={1} span={11}>
+                <SelectField
+                  label="Target"
+                  name={`${focusIdx}.data.value.target`}
+                  options={[
+                    {
+                      value: '',
+                      label: '_self',
+                    },
+                    {
+                      value: '_blank',
+                      label: '_blank',
+                    },
+                  ]}
+                />
+              </Grid.Col>
+            </Grid.Row>
           </Space>
         </Collapse.Item>
 
         <Collapse.Item name="0" header="Appearance">
-          <Stack vertical spacing="extraTight">
-            <Grid.Row>
-              <Grid.Col span={11}>
-                {/* <CheckboxField
-                  name={`${focusIdx}.data.value.insetImage`}
-                  label="Image"
-                  options={[
-                    {
-                      value: 'inset_image',
-                      label: 'Inset Image',
-                    },
-                    {
-                      value: 'with_image',
-                      label: 'With Image',
-                    },
-                  ]}
-                /> */}
-
-                <Checkbox
-                  size="sm"
-                  ref={testRef}
-                  name={`${focusIdx}.data.value.insetImage`}
-                >
-                  Inset Image
-                </Checkbox>
-              </Grid.Col>
-              <Grid.Col offset={1} span={11}>
-                {/* name={`${focusIdx}.data.value.withImage`} */}
-              </Grid.Col>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Col span={11}>
-                {/* name={`${focusIdx}.data.value.withBorder`} */}
-              </Grid.Col>
-              <Grid.Col offset={1} span={11}>
-                {/* name={`${focusIdx}.data.value.withButton`} */}
-              </Grid.Col>
-            </Grid.Row>
-          </Stack>
+          <CheckboxField
+            name={`${focusIdx}.data.value.options`}
+            label="Image"
+            direction="horizontal"
+            labelHidden
+            options={[
+              {
+                value: 'with_image',
+                label: 'With Image',
+              },
+              {
+                value: 'with_border',
+                label: 'With Border',
+              },
+              {
+                value: 'inset_image',
+                label: 'Inset Image',
+              },
+              {
+                value: 'with_button',
+                label: 'With Button',
+              },
+            ]}
+          />
         </Collapse.Item>
 
         <Collapse.Item name="2" header="Padding">
@@ -131,6 +144,22 @@ function CardPanel() {
                 <ColorPickerField
                   label="Description color"
                   name={`${focusIdx}.attributes.description-color`}
+                  alignment="center"
+                />
+              </Grid.Col>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Col span={11}>
+                <ColorPickerField
+                  label="Button color"
+                  name={`${focusIdx}.attributes.button-color`}
+                  alignment="center"
+                />
+              </Grid.Col>
+              <Grid.Col offset={1} span={11}>
+                <ColorPickerField
+                  label="Button text color"
+                  name={`${focusIdx}.attributes.button-label-color`}
                   alignment="center"
                 />
               </Grid.Col>
