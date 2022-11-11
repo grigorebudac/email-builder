@@ -210,6 +210,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         description: `Custom footer component.`,
         component: null,
       },
+      {
+        type: CustomBlocksType.CARD,
+        title: 'Card',
+        description: `Custom card component.`,
+        component: null,
+      },
     ],
   },
 ];

@@ -56,7 +56,7 @@ const Footer = createCustomBlock<FooterBlockData>({
         },
       ],
     };
-    return merge(defaultData, payload);
+    return merge(payload, defaultData);
   },
   render: ({ data, idx, mode, context, dataSource }) => {
     const { title, description } = data.data.value;
