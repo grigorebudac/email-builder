@@ -11,6 +11,7 @@ import React from 'react';
 import { merge } from 'lodash';
 import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../../types/block.types';
+import { CardOptionsType, CardTargetType } from '../../types/cardOptions.types';
 
 const { Section, Column, Text, Image, Button } = components;
 
@@ -59,8 +60,8 @@ const Card = createCustomBlock<CardBlockData>({
           imageSrc: '',
           buttonLabel: 'Action',
           href: '#',
-          target: '_self',
-          options: ['with_image', 'with_border'],
+          target: CardTargetType.SELF,
+          options: [CardOptionsType.WITH_IMAGE, CardOptionsType.WITH_BORDER],
         },
       },
       attributes: {
@@ -83,10 +84,10 @@ const Card = createCustomBlock<CardBlockData>({
       data.data.value;
     const attributes = data.attributes;
 
-    const insetImage = options.includes('inset_image');
-    const withImage = options.includes('with_image');
-    const withBorder = options.includes('with_border');
-    const withButton = options.includes('with_button');
+    const insetImage = options.includes(CardOptionsType.INSET_IMAGE);
+    const withImage = options.includes(CardOptionsType.WITH_IMAGE);
+    const withBorder = options.includes(CardOptionsType.WITH_BORDER);
+    const withButton = options.includes(CardOptionsType.WITH_BUTTON);
 
     return (
       <Section

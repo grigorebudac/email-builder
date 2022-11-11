@@ -12,7 +12,7 @@ import {
   SelectField,
 } from 'easy-email-extensions';
 import CollapseWrapper from '../../components/CollapseWrapper';
-import { CardOptionsType } from '../../types/cardOptions.types';
+import { CardOptionsType, CardTargetType } from '../../types/cardOptions.types';
 
 function CardPanel() {
   const { focusIdx } = useFocusIdx();
@@ -57,12 +57,12 @@ function CardPanel() {
                   name={`${focusIdx}.data.value.target`}
                   options={[
                     {
-                      value: '_self',
-                      label: '_self',
+                      value: CardTargetType.SELF,
+                      label: CardTargetType.SELF,
                     },
                     {
-                      value: '_blank',
-                      label: '_blank',
+                      value: CardTargetType.BLANK,
+                      label: CardTargetType.BLANK,
                     },
                   ]}
                 />
