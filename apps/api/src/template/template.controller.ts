@@ -10,12 +10,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { CreateTemplateDTO } from './dto';
 import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 import { TemplateService } from './template.service';
 
-@UseGuards(JwtGuard)
 @Controller('templates')
 export class TemplateController {
   constructor(private templateService: TemplateService) {}
@@ -34,9 +34,10 @@ export class TemplateController {
     return this.templateService.updateTemplate(id, user.id, dto);
   }
 
+  @UseGuards(AuthGuard('azure-ad'))
   @Get('')
-  getTemplates(@GetUser() user: User) {
-    return this.templateService.getTemplates(user.id);
+  getTemplates() {
+    return this.templateService.getTemplates();
   }
 
   @Get('/:id')

@@ -42,11 +42,11 @@ export class TemplateService {
     return template;
   }
 
-  async getTemplates(userId: string) {
+  async getTemplates() {
     const templates = await this.prisma.template.findMany({
-      where: {
-        userId,
-      },
+      // where: {
+      //   userId,
+      // },
     });
 
     return templates;
