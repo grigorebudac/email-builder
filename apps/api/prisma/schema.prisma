@@ -13,7 +13,7 @@ datasource db {
 
 model User {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique()
+  email     String @unique()
   createdAt DateTime @default(now())
  	updatedAt DateTime @updatedAt
 }
@@ -23,6 +23,7 @@ model Template {
   title     String
   subtitle  String
   content   Json
+  html      String
   userId    String?
   createdAt DateTime @default(now())
  	updatedAt DateTime @updatedAt

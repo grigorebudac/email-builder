@@ -15,6 +15,7 @@ export class TemplateService {
         title: dto.title,
         subtitle: dto.subtitle,
         content: {},
+        html: '',
         userId,
       },
     });
@@ -36,6 +37,7 @@ export class TemplateService {
       },
       data: {
         content: dto.content,
+        html: dto.html,
       },
     });
 
