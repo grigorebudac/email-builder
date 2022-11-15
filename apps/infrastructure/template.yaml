@@ -106,6 +106,10 @@ Resources:
         attributes_request_method: GET
         oidc_issuer: !Sub ${MicrosoftOidcIssuer}
         authorize_scopes: 'email profile openid'
+      AttributeMapping:
+        sub: "username"
+        email: "email"
+        name: "name"
   # Roles
   CognitoUnAuthorizedRole:
     Type: AWS::IAM::Role
