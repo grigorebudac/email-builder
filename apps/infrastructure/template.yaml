@@ -1,0 +1,176 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  infrastructure
+
+Parameters:
+  OAuthCallbackUrl:
+    Type: String
+    Default: 'http://localhost:4200/'
+  OAuthLogoutUrl:
+    Type: String
+    Default: 'http://localhost:4200/'
+  UserPoolDomainName:
+    Type: String
+    Default: ''
+  MicrosoftClientId:
+    Type: String
+    Default: ''
+  MicrosoftClientSecret:
+    Type: String
+    Default: ''
+  MicrosoftOidcIssuer:
+    Type: String
+    Default: 'https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0'
+
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: nodejs14.x
+    Handler: index.handler
+
+Resources:
+  # User Pool
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: user_pool
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      UsernameConfiguration:
+        CaseSensitive: false
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      UserPoolAddOns:
+        AdvancedSecurityMode: ENFORCED
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: false
+          RequireNumbers: false
+          RequireSymbols: false
+          RequireUppercase: false
+  # User Pool Client
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: user_pool_client
+      GenerateSecret: false
+      RefreshTokenValidity: 365
+      AllowedOAuthFlowsUserPoolClient: true
+      PreventUserExistenceErrors: ENABLED
+      AllowedOAuthScopes:
+        - 'email'
+        - 'openid'
+        - 'profile'
+      AllowedOAuthFlows:
+        - 'implicit'
+        - 'code'
+      SupportedIdentityProviders:
+        - Microsoft
+      CallbackURLs:
+        - !Sub ${OAuthCallbackUrl}
+      LogoutURLs:
+        - !Sub ${OAuthLogoutUrl}
+  # Identity Pool
+  UserIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      IdentityPoolName: !Sub user_identity_pool
+      AllowUnauthenticatedIdentities: false
+      CognitoIdentityProviders:
+        - ClientId: !Ref UserPoolClient
+          ProviderName: !GetAtt UserPool.ProviderName
+  # User Pool Domain
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Sub ${UserPoolDomainName}
+      UserPoolId: !Ref UserPool
+  # # Microsoft
+  MicrosoftUserPoolIdentityProvider:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      ProviderName: Microsoft
+      ProviderType: OIDC
+      UserPoolId: !Ref UserPool
+      AttributeMapping:
+        sub: 'username'
+        email: 'email'
+      ProviderDetails:
+        client_id: !Sub ${MicrosoftClientId}
+        client_secret: !Sub ${MicrosoftClientSecret}
+        attributes_request_method: GET
+        oidc_issuer: !Sub ${MicrosoftOidcIssuer}
+        authorize_scopes: 'email profile openid'
+      AttributeMapping:
+        sub: "username"
+        email: "email"
+        name: "name"
+  # Roles
+  CognitoUnAuthorizedRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                cognito-identity.amazonaws.com:aud: !Ref UserIdentityPool
+              ForAnyValue:StringLike:
+                cognito-identity.amazonaws.com:amr: unauthenticated
+      Policies:
+        - PolicyName: CognitoUnauthorizedPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - mobileanalytics:PutEvents
+                  - cognito-sync:*
+                Resource: '*'
+  CognitoAuthorizedRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Federated: 'cognito-identity.amazonaws.com'
+            Action:
+              - 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud': !Ref UserIdentityPool
+              ForAnyValue:StringLike:
+                'cognito-identity.amazonaws.com:amr': authenticated
+      Policies:
+        - PolicyName: 'CognitoAuthorizedPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'mobileanalytics:PutEvents'
+                  - 'cognito-sync:*'
+                  - 'cognito-identity:*'
+                  - 'mobiletargeting:UpdateEndpoint'
+                  - 'mobiletargeting:PutEvents'
+                  - 'lambda:InvokeFunction'
+                Resource: '*'
+  # Assigns the roles to the Identity Pool
+  IdentityPoolRoleMapping:
+    Type: 'AWS::Cognito::IdentityPoolRoleAttachment'
+    Properties:
+      IdentityPoolId: !Ref UserIdentityPool
+      Roles:
+        authenticated: !GetAtt CognitoAuthorizedRole.Arn
+        unauthenticated: !GetAtt CognitoUnAuthorizedRole.Arn

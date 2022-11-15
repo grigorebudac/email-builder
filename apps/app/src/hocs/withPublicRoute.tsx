@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { LOCAL_STORAGE } from '@/config/constants';
-import { isJWTValid } from '@/modules/authentication/utils/auth.utils';
+import { Auth } from '@aws-amplify/auth';
 
-type WithPublicRouteProps = unknown;
+type WithPublicRouteProps = {};
 
 function withPublicRoute<P>(
   WrappedComponent: React.ComponentType<P & WithPublicRouteProps>
@@ -14,10 +13,8 @@ function withPublicRoute<P>(
 
     const checkAuthenticated = useCallback(async () => {
       try {
-        const jwtToken = localStorage.getItem(LOCAL_STORAGE.TOKEN);
-        const isTokenValid = isJWTValid(jwtToken);
-
-        if (isTokenValid) router.push('/');
+        await Auth.currentAuthenticatedUser();
+        router.push('/');
       } finally {
         setLoading(false);
       }

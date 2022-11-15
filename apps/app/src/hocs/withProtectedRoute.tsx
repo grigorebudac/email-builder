@@ -1,29 +1,43 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { LOCAL_STORAGE } from '@/config/constants';
-import { isJWTValid } from '@/modules/authentication/utils/auth.utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { Auth } from '@aws-amplify/auth';
 
-type WithProtectedRouteProps = unknown;
+import { UserSlice } from '@/redux/slices';
+import { UserSelectors } from '@/redux/selectors';
+
+type WithProtectedRouteProps = {};
 
 function withProtectedRoute<P>(
   WrappedComponent: React.ComponentType<P & WithProtectedRouteProps>
 ) {
   const ComponentWithExtraInfo = (props: P) => {
     const router = useRouter();
-    const [isLoading, setLoading] = useState(true);
+    const dispatch = useDispatch();
+    const user = useSelector(UserSelectors.user);
+
+    const [isLoading, setLoading] = useState(user == null);
 
     const checkAuthenticated = useCallback(async () => {
-      const jwtToken = localStorage.getItem(LOCAL_STORAGE.TOKEN);
-      const isTokenValid = isJWTValid(jwtToken);
-
-      if (isTokenValid) {
+      if (user != null) {
         setLoading(false);
         return;
       }
 
-      router.push('/login');
-      setLoading(false);
-    }, [router]);
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        console.log({ user });
+        dispatch(
+          UserSlice.setUser({
+            id: user.username,
+          })
+        );
+      } catch (error) {
+        router.push('/login');
+      } finally {
+        setLoading(false);
+      }
+    }, [dispatch, router, user]);
 
     useEffect(() => {
       checkAuthenticated();

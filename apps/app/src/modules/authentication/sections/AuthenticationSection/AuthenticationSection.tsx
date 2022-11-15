@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import {
-  useLoginMutation,
-  useRegisterMutation,
-} from '../../redux/endpoints/authentication.endpoints';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
-import { LOCAL_STORAGE } from '@/config/constants';
 import { Auth, InitialAuthSection } from '../../types/auth.types';
 import { AuthenticationLayout } from '../../components/Layouts/AuthenticationLayout';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import { RegisterForm } from '../../components/Forms/RegisterForm';
+import {
+  Auth as AmplifyAuth,
+  CognitoHostedUIIdentityProvider,
+} from '@aws-amplify/auth';
 
 type AuthenticationSectionProps = {
   initial: InitialAuthSection;
@@ -19,36 +18,33 @@ const AuthenticationSection: React.FC<AuthenticationSectionProps> = ({
 }) => {
   const [loginError, setLoginError] = useState('');
   const [registerError, setRegisterError] = useState('');
-  const [logInCall] = useLoginMutation();
-  const [registerCall] = useRegisterMutation();
   const router = useRouter();
-
-  async function handleAuthResponse(tokenResponse: Auth.LoginRespose) {
-    if (tokenResponse.access_token == null) return;
-
-    localStorage.setItem(LOCAL_STORAGE.TOKEN, tokenResponse.access_token);
-    setRegisterError('');
-    setLoginError('');
-    router.push('/');
-  }
 
   async function handleSignIn(credentials: Auth.LoginRequestPayload) {
     try {
-      const tokenResponse = await logInCall(credentials).unwrap();
-      handleAuthResponse(tokenResponse);
+      await AmplifyAuth.signIn(credentials.email, credentials.password);
+      router.push('/');
     } catch (error) {
-      setLoginError(error?.data?.message);
+      error instanceof Error ? setLoginError(error.message) : setLoginError('');
     }
   }
 
   async function handleRegister(credentials: Auth.RegisterRequestPayload) {
     try {
-      const tokenResponse = await registerCall(credentials).unwrap();
-      handleAuthResponse(tokenResponse);
+      await AmplifyAuth.signUp(credentials.email, credentials.password);
+      router.push('/');
     } catch (error) {
-      setRegisterError(error?.data?.message);
+      error instanceof Error
+        ? setRegisterError(error.message)
+        : setRegisterError('');
     }
   }
+
+  const handleSignInWithMicrosoft = useCallback(() => {
+    AmplifyAuth.federatedSignIn({
+      provider: 'Microsoft' as CognitoHostedUIIdentityProvider,
+    });
+  }, []);
 
   return (
     <AuthenticationLayout
@@ -57,6 +53,7 @@ const AuthenticationSection: React.FC<AuthenticationSectionProps> = ({
         <RegisterForm onSubmit={handleRegister} error={registerError} />
       }
       initial={initial}
+      onLoginWithMicrosoft={handleSignInWithMicrosoft}
     />
   );
 };
