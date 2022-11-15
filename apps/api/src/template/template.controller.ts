@@ -1,5 +1,6 @@
 import { GetUserId } from '@/auth/decorator';
 import { JwtGuard } from '@/auth/guard';
+import { Multer } from 'multer';
 import {
   Body,
   Controller,
@@ -8,11 +9,14 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateTemplateDTO } from './dto';
 import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 import { TemplateService } from './template.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(JwtGuard)
 @Controller('templates')
@@ -46,5 +50,14 @@ export class TemplateController {
   @Delete('/:id')
   deleteTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
     return this.templateService.deleteTemplateById(id, userId);
+  }
+
+  @Post('/:id/upload-image')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadImage(
+    @Param('id') templateId: string,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    return this.templateService.uploadImage(templateId, file);
   }
 }

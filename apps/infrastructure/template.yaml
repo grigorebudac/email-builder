@@ -174,3 +174,13 @@ Resources:
       Roles:
         authenticated: !GetAtt CognitoAuthorizedRole.Arn
         unauthenticated: !GetAtt CognitoUnAuthorizedRole.Arn
+  # S3 Buckets
+  TemplateBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: bachelor-templates-bucket
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
