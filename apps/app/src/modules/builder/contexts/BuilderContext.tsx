@@ -195,7 +195,8 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
       const data = new FormData();
       data.append('file', file);
 
-      return uploadTemplateImage({ id: templateId, data }).unwrap();
+      const res = await uploadTemplateImage({ id: templateId, data }).unwrap();
+      return res.location;
     } catch {
       return null;
     }

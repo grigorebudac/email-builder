@@ -16,4 +16,8 @@ export declare namespace Template {
   export interface MergeTags {
     [key: string]: string | MergeTags;
   }
+
+  export interface UploadImageResponse {
+    location: string;
+  }
 }

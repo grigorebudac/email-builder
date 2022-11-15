@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { S3 } from 'aws-sdk';
+import { randomUUID } from 'crypto';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateTemplateDTO } from './dto';
@@ -87,6 +89,21 @@ export class TemplateService {
   }
 
   async uploadImage(templateId: string, file: Express.Multer.File) {
-    return '';
+    const s3 = new S3();
+
+    const extension = file.mimetype.split('/')[1];
+    const filename = `${randomUUID()}.${extension}`;
+
+    const result = await s3
+      .upload({
+        Bucket: this.config.get('TEMPLATE_IMAGES_S3_BUCKET'),
+        Body: file.buffer,
+        ContentType: file.mimetype,
+        ACL: 'public-read',
+        Key: `${templateId}/${filename}`,
+      })
+      .promise();
+
+    return { location: result.Location };
   }
 }

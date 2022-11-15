@@ -85,7 +85,7 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
       invalidatesTags: [TEMPLATE_TAG],
     }),
     uploadTemplateImage: builder.mutation<
-      string,
+      Template.UploadImageResponse,
       { id: string; data: FormData }
     >({
       query: ({ id, data }) => ({
