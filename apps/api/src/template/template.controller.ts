@@ -1,4 +1,4 @@
-import { GetUser } from '@/auth/decorator';
+import { GetUserId } from '@/auth/decorator';
 import { JwtGuard } from '@/auth/guard';
 import {
   Body,
@@ -10,7 +10,6 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { CreateTemplateDTO } from './dto';
 import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 import { TemplateService } from './template.service';
@@ -21,27 +20,27 @@ export class TemplateController {
   constructor(private templateService: TemplateService) {}
 
   @Post('')
-  createTemplate(@GetUser() user: User, @Body() dto: CreateTemplateDTO) {
-    return this.templateService.createTemplate(user.id, dto);
+  createTemplate(@GetUserId() userId: string, @Body() dto: CreateTemplateDTO) {
+    return this.templateService.createTemplate(userId, dto);
   }
 
   @Patch('/:id')
   updateTemplate(
     @Param('id') id: string,
-    @GetUser() user: User,
+    @GetUserId() userId: string,
     @Body() dto: UpdateTemplateDTO
   ) {
-    return this.templateService.updateTemplate(id, user.id, dto);
+    return this.templateService.updateTemplate(id, userId, dto);
   }
 
   @Get('')
-  getTemplates(@GetUser() user: User) {
-    return this.templateService.getTemplates(user.id);
+  getTemplates(@GetUserId() userId: string) {
+    return this.templateService.getTemplates(userId);
   }
 
   @Get('/:id')
-  getTemplateById(@Param('id') id: string, @GetUser() user: User) {
-    return this.templateService.getTemplateById(id, user.id);
+  getTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
+    return this.templateService.getTemplateById(id, userId);
   }
   @Get('/:id/html')
   getTemplateHTMLById(@Param('id') id: string, @GetUser() user: User) {
@@ -49,7 +48,7 @@ export class TemplateController {
   }
 
   @Delete('/:id')
-  deleteTemplateById(@Param('id') id: string, @GetUser() user: User) {
-    return this.templateService.deleteTemplateById(id, user.id);
+  deleteTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
+    return this.templateService.deleteTemplateById(id, userId);
   }
 }
