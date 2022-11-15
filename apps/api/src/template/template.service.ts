@@ -108,7 +108,10 @@ export class TemplateService {
   }
 
   async uploadImage(templateId: string, file: Express.Multer.File) {
-    const s3 = new S3();
+    const s3 = new S3({
+      accessKeyId: this.config.get('AWS_S3_ACCESS_KEY'),
+      secretAccessKey: this.config.get('AWS_S3_KEY_SECRET'),
+    });
 
     const extension = file.mimetype.split('/')[1];
     const filename = `${randomUUID()}.${extension}`;
