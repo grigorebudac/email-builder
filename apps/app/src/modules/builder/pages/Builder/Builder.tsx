@@ -57,6 +57,7 @@ const Builder = () => {
           onSubmit,
           onPreviewEmail,
           onSendTestEmail,
+          onUploadImage,
         }) => (
           <EmailEditorProvider
             data={initialValues}
@@ -67,6 +68,7 @@ const Builder = () => {
             mergeTagGenerate={(tag) => `{{${tag}}}`}
             onBeforePreview={onBeforePreview}
             onSubmit={onSubmit}
+            onUploadImage={onUploadImage}
           >
             {({ values }, { submit }) => {
               return (
