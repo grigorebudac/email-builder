@@ -26,11 +26,10 @@ function withProtectedRoute<P>(
 
       try {
         const user = await Auth.currentAuthenticatedUser();
-
+        console.log({ user });
         dispatch(
           UserSlice.setUser({
             id: user.username,
-            email: user.username,
           })
         );
       } catch (error) {

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '@prisma/client';
 
 type UserState = {
-  user: Pick<User, 'id' | 'email'> | null;
+  user: Pick<User, 'id'> | null;
 };
 
 const initialState: UserState = {
