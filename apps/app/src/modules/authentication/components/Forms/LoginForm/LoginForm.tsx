@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Button, Stack } from '@lego/klik-ui';
+import { Box, Button, Stack } from '@lego/klik-ui';
 import { Lock } from '@lego/klik-ui/icons';
 import { Auth } from '@/modules/authentication/types/auth.types';
 import { TextFieldController } from '@/components/Controllers/TextFieldController';
@@ -53,9 +53,12 @@ const LoginForm = (props: LoginFormProps) => {
 
         <Text color="error.500">{props.error}</Text>
       </Stack>
-      <Button float="right" mt={5} type="submit" disabled={isSubmitting}>
-        Submit
-      </Button>
+
+      <Box mt={5}>
+        <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+          Submit
+        </Button>
+      </Box>
     </form>
   );
 };

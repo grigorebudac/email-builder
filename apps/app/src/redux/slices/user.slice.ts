@@ -1,10 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { User } from '@prisma/client';
-import { LOCAL_STORAGE } from '@/config/constants';
 
 type UserState = {
-  user: User | null;
+  user: Pick<User, 'id' | 'email'> | null;
 };
 
 const initialState: UserState = {
@@ -15,13 +14,15 @@ const slice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setUser: (state, action: PayloadAction<UserState['user'] | undefined>) => {
+      state.user = action.payload || null;
+    },
     logout: (state) => {
-      localStorage.removeItem(LOCAL_STORAGE.TOKEN);
       state.user = null;
-    }
+    },
   },
 });
 
-export const { logout } = slice.actions;
+export const { setUser, logout } = slice.actions;
 
 export default slice.reducer;

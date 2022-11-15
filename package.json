@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@arco-themes/react-easy-email-theme": "^0.0.3",
+    "@aws-amplify/auth": "^5.0.1",
     "@aws-sdk/client-ses": "^3.202.0",
     "@aws-sdk/credential-provider-node": "^3.202.0",
     "@emotion/react": "^11",
