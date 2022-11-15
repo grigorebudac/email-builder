@@ -84,6 +84,16 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
       }),
       invalidatesTags: [TEMPLATE_TAG],
     }),
+    uploadTemplateImage: builder.mutation<
+      string,
+      { id: string; data: FormData }
+    >({
+      query: ({ id, data }) => ({
+        url: `/templates/${id}/upload-image`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
     deleteTemplateById: builder.mutation<unknown, string>({
       query: (templateId: string) => {
         return {
@@ -120,4 +130,5 @@ export const {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
   useDeleteTemplateByIdMutation,
+  useUploadTemplateImageMutation,
 } = TemplateEndpoints;

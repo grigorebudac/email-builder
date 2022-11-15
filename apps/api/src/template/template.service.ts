@@ -85,4 +85,8 @@ export class TemplateService {
 
     return template;
   }
+
+  async uploadImage(templateId: string, file: Express.Multer.File) {
+    return '';
+  }
 }

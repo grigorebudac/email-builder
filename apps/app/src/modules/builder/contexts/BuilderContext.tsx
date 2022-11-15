@@ -15,6 +15,7 @@ import { Builder } from '../types/builder.types';
 import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
+  useUploadTemplateImageMutation,
 } from '@/redux/endpoints/template.endpoints';
 import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
 import { Template } from '@/types/template.types';
@@ -46,6 +47,7 @@ interface BuilderContextValues {
   onSendTestEmail: (
     values: Template.MergeTags
   ) => Promise<Email.SendEmailResponse>;
+  onUploadImage: (file: Blob) => Promise<string>;
 }
 
 BlockManager.registerBlocks({
@@ -64,6 +66,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const [getTemplateById, { data, isLoading }] = useLazyGetTemplateByIdQuery();
   const [updateTemplateMutation] = useUpdateTemplateMutation();
   const [sendEmailMutation] = useSendEmailMutation();
+  const [uploadTemplateImage] = useUploadTemplateImageMutation();
   const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
 
   const templateId = router.query?.templateId as string;
@@ -187,6 +190,17 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     }).unwrap();
   }
 
+  async function handleUploadImage(file: Blob) {
+    try {
+      const data = new FormData();
+      data.append('file', file);
+
+      return uploadTemplateImage({ id: templateId, data }).unwrap();
+    } catch {
+      return null;
+    }
+  }
+
   if (isLoading) {
     return <h1>Loading</h1>;
   }
@@ -202,6 +216,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
         onPreviewEmail: handlePreviewEmail,
         onSendTestEmail: handleSendTestEmail,
         onUpdateMergeTags: handleUpdateMergeTags,
+        onUploadImage: handleUploadImage,
       }}
     >
       {props.children}
