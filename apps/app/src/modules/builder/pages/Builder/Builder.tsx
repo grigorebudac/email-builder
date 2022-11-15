@@ -17,6 +17,7 @@ import {
 import BuilderLayout from '../../components/BuilderLayout';
 import { defaultCategories } from '../../customBlocks';
 import { useMediaQuery } from '@chakra-ui/media-query';
+import Autosave from '../../components/Autosave';
 
 const Builder = () => {
   const [isSmallScene] = useMediaQuery('(max-width: 1280px)');
@@ -75,6 +76,7 @@ const Builder = () => {
                   onPreviewEmail={onPreviewEmail}
                   onSendTestEmail={onSendTestEmail}
                 >
+                  <Autosave values={values} onSave={submit} />
                   {/* @ts-ignore */}
                   <StandardLayout
                     compact={!isSmallScene}
