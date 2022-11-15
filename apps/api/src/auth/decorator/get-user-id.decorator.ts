@@ -1,13 +1,12 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { Request } from 'express';
 
 interface ExtendedRequest extends Request {
-  user?: User;
+  user?: string;
 }
 
-export const GetUser = createParamDecorator(
-  (data: keyof User | undefined, ctx: ExecutionContext) => {
+export const GetUserId = createParamDecorator(
+  (data: string | undefined, ctx: ExecutionContext) => {
     const request: ExtendedRequest = ctx.switchToHttp().getRequest();
 
     const user = request.user;
