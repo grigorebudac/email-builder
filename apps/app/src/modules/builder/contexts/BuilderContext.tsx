@@ -28,6 +28,8 @@ import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import Card from '../customBlocks/Card/Card';
 import CardPanel from '../customBlocks/Card/CardPanel';
+import Table from '../customBlocks/Table/Table';
+import TablePanel from '../customBlocks/Table/TablePanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 import mjml from 'mjml-browser';
 import { JsonToMjml } from 'easy-email-core';
@@ -51,11 +53,13 @@ interface BuilderContextValues {
 BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
+  [CustomBlocksType.TABLE]: Table,
 });
 
 BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
+  [CustomBlocksType.TABLE]: TablePanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
 
