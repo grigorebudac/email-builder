@@ -24,6 +24,7 @@ export type TableBlockData = IBlockData<
   },
   {
     title: string;
+    text_align: string;
   }
 >;
 
@@ -45,6 +46,7 @@ const Table = createCustomBlock<TableBlockData>({
       data: {
         value: {
           title: 'LEGO cart',
+          text_align: 'left',
         },
       },
       attributes: {
@@ -58,7 +60,7 @@ const Table = createCustomBlock<TableBlockData>({
     return merge(payload, defaultData);
   },
   render: ({ data, idx, mode }) => {
-    const { title } = data.data.value;
+    const { title, text_align } = data.data.value;
     const attributes = data.attributes;
 
     // const insetImage = options.includes(TableOptionsType.INSET_IMAGE);
@@ -89,8 +91,8 @@ const Table = createCustomBlock<TableBlockData>({
                 ).join(' ')}
               >
                 <Section padding="1px 10px">
-                  <Text font-size="16px" font-weight="bold">
-                    To Convert
+                  <Text font-size="16px" align={text_align}>
+                    To Converttt
                   </Text>
                 </Section>
               </Section>
@@ -104,11 +106,11 @@ const Table = createCustomBlock<TableBlockData>({
                     border-bottom={`1px solid ${theme.colors.slate[50]}`}
                     css-class={getContentEditableClassName(
                       BasicType.TEXT,
-                      `${idx}.data.value.col-${j}`
+                      `${idx}.data.value.cell-${i}-${j}`
                     ).join(' ')}
                   >
                     <Section padding="4px 5px">
-                      <Text>col1</Text>
+                      <Text align={text_align}>col1</Text>
                     </Section>
                   </Section>
                 )

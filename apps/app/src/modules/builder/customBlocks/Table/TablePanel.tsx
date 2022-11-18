@@ -68,7 +68,7 @@ function TablePanel() {
     // @ts-ignore
     <AttributesPanelWrapper>
       <CollapseWrapper defaultActiveKey={['0', '1', '2', '3', '4']}>
-        <Collapse.Item name="1" header="Size">
+        <Collapse.Item name="1" header="Size & Settings">
           <Space direction="vertical">
             <Grid.Row>
               <Grid.Col span={11}>
@@ -136,61 +136,112 @@ function TablePanel() {
         </Collapse.Item>
 
         <Collapse.Item name="0" header="Appearance">
-          <RadioGroupField
-            name={`${focusIdx}.attributes.text_align`}
-            label="Text-align"
-            direction="horizontal"
-            options={[
-              {
-                value: 'CardOptionsType.WITH_IMAGE',
-                label: 'left',
-              },
-              {
-                value: 'CardOptionsType.WITH_BORDER',
-                label: 'center',
-              },
-              {
-                value: 'CardOptionsType.INSET_IMAGE',
-                label: 'right',
-              },
-            ]}
-          />
+          <Space direction="vertical">
+            <RadioGroupField
+              name={`${focusIdx}.data.value.text_align`}
+              label="Text-align"
+              direction="horizontal"
+              options={[
+                {
+                  value: TableOptionsType.ALIGN_LEFT,
+                  label: 'left',
+                },
+                {
+                  value: TableOptionsType.ALIGN_CENTER,
+                  label: 'center',
+                },
+                {
+                  value: TableOptionsType.ALIGN_RIGHT,
+                  label: 'right',
+                },
+              ]}
+            />
 
-          <CheckboxField
-            name={`${focusIdx}.test`}
-            label="Border"
-            direction="horizontal"
-            options={[
-              {
-                value: TableOptionsType.WITH_BORDER,
-                label: 'Border',
-              },
-            ]}
-          />
+            <CheckboxField
+              name={`${focusIdx}.test`}
+              label="Border"
+              direction="horizontal"
+              options={[
+                {
+                  value: TableOptionsType.WITH_BORDER,
+                  label: 'Border',
+                },
+              ]}
+            />
 
-          <ColorPickerField
-            name={`${focusIdx}.attributes.header-color`}
-            label={'Header color'}
-          />
+            <ColorPickerField
+              name={`${focusIdx}.attributes.header-background-color`}
+              label={'Header Background Color'}
+            />
 
-          {/* 
+            <ColorPickerField
+              name={`${focusIdx}.attributes.header-font-color`}
+              label={'Header Font Color'}
+            />
 
-            Header Background-Color
+            <ColorPickerField
+              name={`${focusIdx}.attributes.body-background-color`}
+              label={'Body Background Color'}
+            />
 
-            Body Background-Color
+            <ColorPickerField
+              name={`${focusIdx}.attributes.body-font-color`}
+              label={'Body Font Color'}
+            />
 
-            Header Font-Color
+            <InputWithUnitField
+              label="Border Spacing"
+              name={`${focusIdx}.attributes.border-spacing`}
+            />
 
-            Body Font-Color
+            <InputWithUnitField
+              label="Border Width"
+              name={`${focusIdx}.attributes.border-width`}
+            />
 
-            Border-Collapse
-
-            Border-Spacing
-
-            Border-Width 
-          Border-Style
-
-            */}
+            <SelectField
+              label="Border Style"
+              name={`${focusIdx}.data.value.border-style`}
+              options={[
+                {
+                  value: 'none',
+                  label: 'none',
+                },
+                {
+                  value: 'solid',
+                  label: 'solid',
+                },
+                {
+                  value: 'dotted',
+                  label: 'dotted',
+                },
+                {
+                  value: 'dashed',
+                  label: 'dashed',
+                },
+                {
+                  value: 'double',
+                  label: 'double',
+                },
+                {
+                  value: 'groove',
+                  label: 'groove',
+                },
+                {
+                  value: 'ridge',
+                  label: 'ridge',
+                },
+                {
+                  value: 'inset',
+                  label: 'inset',
+                },
+                {
+                  value: 'outset',
+                  label: 'outset',
+                },
+              ]}
+            />
+          </Space>
         </Collapse.Item>
 
         <Collapse.Item name="2" header="Padding">
