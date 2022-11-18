@@ -77,7 +77,7 @@ const Table = createCustomBlock<TableBlockData>({
         direction="rtl"
       >
         <Section padding="0px" border-bottom="none">
-          {Array.from({ length: Number(attributes['table-rows']) }, (_, i) => (
+          {Array.from({ length: Number(attributes['table-cols']) }, (_, i) => (
             <Column key={i}>
               <Section
                 padding="5px 0px"
@@ -85,7 +85,7 @@ const Table = createCustomBlock<TableBlockData>({
                 border-bottom={`2px solid ${theme.colors.slate[100]}`}
                 css-class={getContentEditableClassName(
                   BasicType.TEXT,
-                  `${idx}.data.value.title`
+                  `${idx}.data.value.header-${i}`
                 ).join(' ')}
               >
                 <Section padding="1px 10px">
@@ -96,7 +96,7 @@ const Table = createCustomBlock<TableBlockData>({
               </Section>
 
               {Array.from(
-                { length: Number(attributes['table-cols']) },
+                { length: Number(attributes['table-rows']) },
                 (_, j) => (
                   <Section
                     key={j}
@@ -104,7 +104,7 @@ const Table = createCustomBlock<TableBlockData>({
                     border-bottom={`1px solid ${theme.colors.slate[50]}`}
                     css-class={getContentEditableClassName(
                       BasicType.TEXT,
-                      `${idx}.data.value.title`
+                      `${idx}.data.value.col-${j}`
                     ).join(' ')}
                   >
                     <Section padding="4px 5px">

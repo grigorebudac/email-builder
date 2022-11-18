@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Stack, useFocusIdx } from 'easy-email-editor';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Stack,
+  useEditorContext,
+  useEditorProps,
+  useFocusIdx,
+} from 'easy-email-editor';
 import { Collapse, Grid, Space, Typography } from '@arco-design/web-react';
 import { IconLink } from '@arco-design/web-react/icon';
 import {
@@ -11,6 +16,8 @@ import {
   CheckboxField,
   SelectField,
   NumberField,
+  Align,
+  RadioGroupField,
 } from 'easy-email-extensions';
 import CollapseWrapper from '../../components/CollapseWrapper';
 import {
@@ -20,9 +27,13 @@ import {
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { theme } from '@lego/klik-ui';
+import { Field } from 'react-final-form';
+import { table } from 'console';
 
 function TablePanel() {
   const { focusIdx } = useFocusIdx();
+  const { pageData, formHelpers, formState } = useEditorContext();
+  const isInitialMount = useRef(true);
 
   const [tableSize, setTableSize] = useState<{
     row: number;
@@ -40,8 +51,14 @@ function TablePanel() {
     col: 0,
   });
 
+  // only works on update and not on initial load
   useEffect(() => {
-    console.log(tableSize);
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      formHelpers.change(`${focusIdx}.attributes.table-rows`, tableSize.row);
+      formHelpers.change(`${focusIdx}.attributes.table-cols`, tableSize.col);
+    }
   }, [tableSize]);
 
   const Row = Grid.Row;
@@ -51,8 +68,8 @@ function TablePanel() {
     // @ts-ignore
     <AttributesPanelWrapper>
       <CollapseWrapper defaultActiveKey={['0', '1', '2', '3', '4']}>
-        <Collapse.Item name="1" header="Settings">
-          <Stack vertical spacing="extraTight">
+        <Collapse.Item name="1" header="Size">
+          <Space direction="vertical">
             <Grid.Row>
               <Grid.Col span={11}>
                 <NumberField
@@ -60,54 +77,89 @@ function TablePanel() {
                   label={'Rows'}
                   max={5}
                   min={1}
+                  hideControl
+                  onChangeCapture={(e) => {
+                    const formValue = (e.target as HTMLInputElement).value;
+                    const row = Number(formValue);
+                    if (row < 0 && row > 5) {
+                      return;
+                    }
+                    setTableSize({ row: Number(row), col: tableSize.col });
+                  }}
                 />
               </Grid.Col>
               <Grid.Col offset={1} span={11}>
                 <NumberField
                   name={`${focusIdx}.attributes.table-cols`}
-                  label={'Rows'}
+                  label={'Columns'}
                   max={5}
                   min={1}
+                  hideControl
+                  onChangeCapture={(e) => {
+                    const col = (e.target as HTMLInputElement).value;
+                    setTableSize({ row: tableSize.row, col: Number(col) });
+                  }}
                 />
               </Grid.Col>
             </Grid.Row>
-          </Stack>
 
-          <Typography style={{ marginBottom: 5 }}>Table Size:</Typography>
+            <Typography style={{ marginBottom: 5 }}>Table Size:</Typography>
 
-          <div
-            onMouseLeave={() => setHoveredTableSize({ row: 0, col: 0 })}
-            style={{ width: 'fit-content' }}
-          >
-            {Array.from({ length: 5 }, (_, i) => (
-              <Row key={i} style={{ marginBottom: 6 }}>
-                <Space direction="horizontal">
-                  {Array.from({ length: 5 }, (_, j) => (
-                    <Col span={4} key={j}>
-                      <RowColIndicator
-                        selected={i < tableSize.row && j < tableSize.col}
-                        hovered={
-                          i < hoveredTbleSize.row && j < hoveredTbleSize.col
-                        }
-                        onMouseEnter={() =>
-                          setHoveredTableSize({ row: i + 1, col: j + 1 })
-                        }
-                        onClick={() => setTableSize({ row: i + 1, col: j + 1 })}
-                      ></RowColIndicator>
-                    </Col>
-                  ))}
-                </Space>
-              </Row>
-            ))}
-          </div>
+            <div
+              onMouseLeave={() => setHoveredTableSize({ row: 0, col: 0 })}
+              style={{ width: 'fit-content', marginTop: '-10px' }}
+            >
+              {Array.from({ length: 5 }, (_, i) => (
+                <Row key={i} style={{ marginBottom: 6 }}>
+                  <Space direction="horizontal">
+                    {Array.from({ length: 5 }, (_, j) => (
+                      <Col span={4} key={j}>
+                        <RowColIndicator
+                          selected={i < tableSize.row && j < tableSize.col}
+                          hovered={
+                            i < hoveredTbleSize.row && j < hoveredTbleSize.col
+                          }
+                          onMouseEnter={() =>
+                            setHoveredTableSize({ row: i + 1, col: j + 1 })
+                          }
+                          onClick={() =>
+                            setTableSize({ row: i + 1, col: j + 1 })
+                          }
+                        ></RowColIndicator>
+                      </Col>
+                    ))}
+                  </Space>
+                </Row>
+              ))}
+            </div>
+          </Space>
         </Collapse.Item>
 
         <Collapse.Item name="0" header="Appearance">
-          <CheckboxField
-            name={`${focusIdx}.data.value.options`}
-            label="Image"
+          <RadioGroupField
+            name={`${focusIdx}.attributes.text_align`}
+            label="Text-align"
             direction="horizontal"
-            labelHidden
+            options={[
+              {
+                value: 'CardOptionsType.WITH_IMAGE',
+                label: 'left',
+              },
+              {
+                value: 'CardOptionsType.WITH_BORDER',
+                label: 'center',
+              },
+              {
+                value: 'CardOptionsType.INSET_IMAGE',
+                label: 'right',
+              },
+            ]}
+          />
+
+          <CheckboxField
+            name={`${focusIdx}.test`}
+            label="Border"
+            direction="horizontal"
             options={[
               {
                 value: TableOptionsType.WITH_BORDER,
@@ -115,6 +167,30 @@ function TablePanel() {
               },
             ]}
           />
+
+          <ColorPickerField
+            name={`${focusIdx}.attributes.header-color`}
+            label={'Header color'}
+          />
+
+          {/* 
+
+            Header Background-Color
+
+            Body Background-Color
+
+            Header Font-Color
+
+            Body Font-Color
+
+            Border-Collapse
+
+            Border-Spacing
+
+            Border-Width 
+          Border-Style
+
+            */}
         </Collapse.Item>
 
         <Collapse.Item name="2" header="Padding">
