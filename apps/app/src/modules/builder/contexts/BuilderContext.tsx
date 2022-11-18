@@ -135,9 +135,22 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   async function handleSubmit(values: IEmailTemplate) {
     try {
+      const emailHtml = mjml(
+        JsonToMjml({
+          data: values.content,
+          mode: 'production',
+          context: values.content,
+          dataSource: mergeTags,
+        }),
+        {
+          validationLevel: 'soft',
+        }
+      ).html;
+
       await updateTemplateMutation({
         id: templateId,
         content: values.content,
+        html: emailHtml,
       }).unwrap();
 
       handleUpdateMergeTags(values);

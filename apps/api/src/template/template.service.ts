@@ -87,7 +87,7 @@ export class TemplateService {
       },
     });
 
-    return template;
+    return template.html;
   }
 
   async deleteTemplateById(id: string, userId: string) {

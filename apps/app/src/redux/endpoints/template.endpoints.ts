@@ -30,6 +30,7 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
                 title: body.title,
                 subtitle: body.subtitle,
                 content: {} as Template.Template['content'],
+                html: '',
                 createdAt: date,
                 updatedAt: date,
               };
@@ -73,13 +74,14 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
     }),
     updateTemplate: builder.mutation<
       Template.Template,
-      { id: string; content: IEmailTemplate['content'] }
+      { id: string; content: IEmailTemplate['content']; html: string }
     >({
-      query: ({ id, content }) => ({
+      query: ({ id, content, html }) => ({
         url: `/templates/${id}`,
         method: 'PATCH',
         body: {
           content,
+          html,
         },
       }),
       invalidatesTags: [TEMPLATE_TAG],
