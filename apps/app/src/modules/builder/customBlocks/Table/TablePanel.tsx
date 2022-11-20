@@ -16,30 +16,36 @@ import {
   TableBorderType,
 } from '../../types/tableOptions.types';
 import TableSizeGenerator from './components/TableSizeGenerator';
-import { table } from 'console';
+import { TableGeneratorValues } from '../../types/table.types';
 
 function TablePanel() {
   const { focusIdx } = useFocusIdx();
   const { formHelpers } = useEditorContext();
   const isInitialMount = useRef(true);
 
-  const [tableSize, setTableSize] = useState<{
-    row: number;
-    col: number;
-  }>({
+  const [tableSize, setTableSize] = useState<TableGeneratorValues>({
     row: 3,
     col: 3,
   });
 
-  const [hoveredTableSize, setHoveredTableSize] = useState<{
-    row: number;
-    col: number;
-  }>({
-    row: 0,
-    col: 0,
-  });
+  const [hoveredTableSize, setHoveredTableSize] =
+    useState<TableGeneratorValues>({
+      row: 0,
+      col: 0,
+    });
 
-  // only works on update and not on initial load
+  // loads the table size generator
+  useEffect(() => {
+    const cols = Number(
+      formHelpers.getFieldState(`${focusIdx}.attributes.table-cols`).value
+    );
+    const rows = Number(
+      formHelpers.getFieldState(`${focusIdx}.attributes.table-rows`).value
+    );
+    setTableSize({ row: rows, col: cols });
+  }, []);
+
+  // updates the values for the table size generator, nly works on update and not on initial load
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -295,6 +301,22 @@ function TablePanel() {
               label="Last Row Padding"
               name={`${focusIdx}.attributes.last-row-padding`}
             />
+          </Stack>
+        </Collapse.Item>
+
+        <Collapse.Item name="2" header="Table Values">
+          <Stack vertical spacing="extraTight">
+            {[...Array(3)].map((_, i) => (
+              <div key={i}>
+                {[...Array(3)].map((_, j) => (
+                  <InputWithUnitField
+                    key={j}
+                    label={`Cell ${i}-${j}`}
+                    name={`${focusIdx}.data.value.cell-${i}-${j}`}
+                  />
+                ))}
+              </div>
+            ))}
           </Stack>
         </Collapse.Item>
       </CollapseWrapper>

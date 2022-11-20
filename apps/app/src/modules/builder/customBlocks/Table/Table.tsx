@@ -125,6 +125,9 @@ const Table = createCustomBlock<TableBlockData>({
       ? `${attributes['header-border-width']} ${borderStyle} ${attributes['border-color']}`
       : 'none';
 
+    const numberOfTableRows = Number(attributes['table-rows']);
+    const numberOfTableCols = Number(attributes['table-cols']);
+
     return (
       <Wrapper
         css-class={
@@ -135,7 +138,7 @@ const Table = createCustomBlock<TableBlockData>({
         direction="rtl"
       >
         <Section padding="0px" border-bottom="none" border={tableOutsideBorder}>
-          {Array.from({ length: Number(attributes['table-cols']) }, (_, i) => (
+          {[...Array(numberOfTableCols)].map((_, i) => (
             <Column key={i}>
               {hasHeader && (
                 <Section
@@ -154,49 +157,48 @@ const Table = createCustomBlock<TableBlockData>({
                       align={headerTextAlign}
                       color={attributes['header-font-color']}
                     >
-                      To Convert
+                      {`Heading ${i}`}
                     </Text>
                   </Section>
                 </Section>
               )}
 
-              {Array.from(
-                { length: Number(attributes['table-rows']) },
-                (_, j) => (
+              {[...Array(numberOfTableRows)].map((_, j) => (
+                <Section
+                  key={j}
+                  padding={
+                    j != numberOfTableRows - 1
+                      ? '0px'
+                      : `0px 0px ${attributes['last-row-padding']} 0px`
+                  }
+                  background-color={attributes['body-background-color']}
+                  border-bottom={
+                    j != numberOfTableRows - 1 ||
+                    (hasInsideBorder && !hasOutsideBorder)
+                      ? tableInsideBorder
+                      : 'none'
+                  }
+                >
                   <Section
-                    key={j}
-                    padding={
-                      j != Number(attributes['table-rows']) - 1
-                        ? '0px'
-                        : `0px 0px ${attributes['last-row-padding']} 0px`
-                    }
-                    background-color={attributes['body-background-color']}
-                    border-bottom={
-                      j != Number(attributes['table-rows']) - 1 ||
-                      (hasInsideBorder && !hasOutsideBorder)
-                        ? tableInsideBorder
-                        : 'none'
-                    }
+                    padding={`${attributes['inner-cell-padding-v']} ${attributes['inner-cell-padding-h']}`}
                     css-class={getContentEditableClassName(
                       BasicType.TEXT,
                       `${idx}.data.value.cell-${i}-${j}`
                     ).join(' ')}
                   >
-                    <Section
-                      padding={`${attributes['inner-cell-padding-v']} ${attributes['inner-cell-padding-h']}`}
+                    <Text
+                      font-size={`${attributes['cell-font-size']}`}
+                      align={bodyTextAlign}
+                      color={attributes['body-font-color']}
+                      font-weight="300"
                     >
-                      <Text
-                        font-size={`${attributes['cell-font-size']}`}
-                        align={bodyTextAlign}
-                        color={attributes['body-font-color']}
-                        font-weight="300"
-                      >
-                        cell
-                      </Text>
-                    </Section>
+                      {data['data']['value'][`cell-${i}-${j}`]
+                        ? data['data']['value'][`cell-${i}-${j}`]
+                        : `cell-${i}-${j}`}
+                    </Text>
                   </Section>
-                )
-              )}
+                </Section>
+              ))}
             </Column>
           ))}
         </Section>
