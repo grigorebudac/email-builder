@@ -306,11 +306,19 @@ function TablePanel() {
 
         <Collapse.Item name="2" header="Table Values">
           <Stack vertical spacing="extraTight">
-            {[...Array(3)].map((_, i) => (
-              <div key={i}>
-                {[...Array(3)].map((_, j) => (
+            {[...Array(tableSize.row)].map((_, i) => (
+              <div key={`header-${i}`}>
+                <InputWithUnitField
+                  label={`Header ${i}`}
+                  name={`${focusIdx}.data.value.header-${i}`}
+                />
+              </div>
+            ))}
+            {[...Array(tableSize.row)].map((_, i) => (
+              <div key={`cell-group-${i}`}>
+                {[...Array(tableSize.col)].map((_, j) => (
                   <InputWithUnitField
-                    key={j}
+                    key={`cell-${i}-${j}`}
                     label={`Cell ${i}-${j}`}
                     name={`${focusIdx}.data.value.cell-${i}-${j}`}
                   />

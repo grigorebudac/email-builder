@@ -145,10 +145,6 @@ const Table = createCustomBlock<TableBlockData>({
                   padding="0px"
                   background-color={attributes['header-background-color']}
                   border-bottom={tableHeaderBorder}
-                  css-class={getContentEditableClassName(
-                    BasicType.TEXT,
-                    `${idx}.data.value.header-${i}`
-                  ).join(' ')}
                 >
                   <Section padding="5px 10px">
                     <Text
@@ -156,8 +152,14 @@ const Table = createCustomBlock<TableBlockData>({
                       font-weight="bold"
                       align={headerTextAlign}
                       color={attributes['header-font-color']}
+                      css-class={getContentEditableClassName(
+                        BasicType.TEXT,
+                        `${idx}.data.value.header-${i}`
+                      ).join(' ')}
                     >
-                      {`Heading ${i}`}
+                      {data['data']['value'][`header-${i}`]
+                        ? data['data']['value'][`header-${i}`]
+                        : `header-${i}`}
                     </Text>
                   </Section>
                 </Section>
@@ -181,16 +183,16 @@ const Table = createCustomBlock<TableBlockData>({
                 >
                   <Section
                     padding={`${attributes['inner-cell-padding-v']} ${attributes['inner-cell-padding-h']}`}
-                    css-class={getContentEditableClassName(
-                      BasicType.TEXT,
-                      `${idx}.data.value.cell-${i}-${j}`
-                    ).join(' ')}
                   >
                     <Text
                       font-size={`${attributes['cell-font-size']}`}
                       align={bodyTextAlign}
                       color={attributes['body-font-color']}
                       font-weight="300"
+                      css-class={getContentEditableClassName(
+                        BasicType.TEXT,
+                        `${idx}.data.value.cell-${i}-${j}`
+                      ).join(' ')}
                     >
                       {data['data']['value'][`cell-${i}-${j}`]
                         ? data['data']['value'][`cell-${i}-${j}`]
