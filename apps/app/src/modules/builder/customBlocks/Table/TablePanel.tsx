@@ -15,8 +15,8 @@ import {
   TableOptionsType,
   TableBorderType,
 } from '../../types/tableOptions.types';
-import styled from '@emotion/styled';
-import { theme } from '@lego/klik-ui';
+import TableSizeGenerator from './components/TableSizeGenerator';
+import { table } from 'console';
 
 function TablePanel() {
   const { focusIdx } = useFocusIdx();
@@ -31,7 +31,7 @@ function TablePanel() {
     col: 3,
   });
 
-  const [hoveredTbleSize, setHoveredTableSize] = useState<{
+  const [hoveredTableSize, setHoveredTableSize] = useState<{
     row: number;
     col: number;
   }>({
@@ -49,13 +49,10 @@ function TablePanel() {
     }
   }, [tableSize]);
 
-  const Row = Grid.Row;
-  const Col = Grid.Col;
-
   return (
     // @ts-ignore
     <AttributesPanelWrapper>
-      <CollapseWrapper defaultActiveKey={['0', '1', '2', '3', '4']}>
+      <CollapseWrapper defaultActiveKey={['0', '1', '2']}>
         <Collapse.Item name="1" header="Size & Settings">
           <Space direction="vertical">
             <Grid.Row>
@@ -66,15 +63,6 @@ function TablePanel() {
                   max={5}
                   min={1}
                   disabled
-                  hideControl
-                  onChangeCapture={(e) => {
-                    const formValue = (e.target as HTMLInputElement).value;
-                    const row = Number(formValue);
-                    if (row < 0 && row > 5) {
-                      return;
-                    }
-                    setTableSize({ row: Number(row), col: tableSize.col });
-                  }}
                 />
               </Grid.Col>
               <Grid.Col offset={1} span={11}>
@@ -84,44 +72,18 @@ function TablePanel() {
                   max={5}
                   min={1}
                   disabled
-                  hideControl
-                  onChangeCapture={(e) => {
-                    const col = (e.target as HTMLInputElement).value;
-                    setTableSize({ row: tableSize.row, col: Number(col) });
-                  }}
                 />
               </Grid.Col>
             </Grid.Row>
 
             <Typography style={{ marginBottom: 5 }}>Table Size</Typography>
 
-            <div
-              onMouseLeave={() => setHoveredTableSize({ row: 0, col: 0 })}
-              style={{ width: 'fit-content', marginTop: '-10px' }}
-            >
-              {Array.from({ length: 5 }, (_, i) => (
-                <Row key={i} style={{ marginBottom: 6 }}>
-                  <Space direction="horizontal">
-                    {Array.from({ length: 5 }, (_, j) => (
-                      <Col span={4} key={j}>
-                        <RowColIndicator
-                          selected={i < tableSize.row && j < tableSize.col}
-                          hovered={
-                            i < hoveredTbleSize.row && j < hoveredTbleSize.col
-                          }
-                          onMouseEnter={() =>
-                            setHoveredTableSize({ row: i + 1, col: j + 1 })
-                          }
-                          onClick={() =>
-                            setTableSize({ row: i + 1, col: j + 1 })
-                          }
-                        ></RowColIndicator>
-                      </Col>
-                    ))}
-                  </Space>
-                </Row>
-              ))}
-            </div>
+            <TableSizeGenerator
+              setHoveredTableSize={setHoveredTableSize}
+              setTableSize={setTableSize}
+              tableSize={tableSize}
+              hoveredTableSize={hoveredTableSize}
+            />
 
             <CheckboxField
               name={`${focusIdx}.data.value.options`}
@@ -186,6 +148,16 @@ function TablePanel() {
                   label: 'right',
                 },
               ]}
+            />
+
+            <InputWithUnitField
+              label="Header Font Size"
+              name={`${focusIdx}.attributes.header-font-size`}
+            />
+
+            <InputWithUnitField
+              label="Cell Font Size"
+              name={`${focusIdx}.attributes.cell-font-size`}
             />
 
             <ColorPickerField
@@ -303,32 +275,31 @@ function TablePanel() {
                 />
               </Grid.Col>
             </Grid.Row>
+
+            <Grid.Row>
+              <Grid.Col span={11}>
+                <InputWithUnitField
+                  label="Inner Cell Horizontal"
+                  name={`${focusIdx}.attributes.inner-cell-padding-h`}
+                />
+              </Grid.Col>
+              <Grid.Col offset={1} span={11}>
+                <InputWithUnitField
+                  label="Inner Cell Vertical"
+                  name={`${focusIdx}.attributes.inner-cell-padding-v`}
+                />
+              </Grid.Col>
+            </Grid.Row>
+
+            <InputWithUnitField
+              label="Last Row Padding"
+              name={`${focusIdx}.attributes.last-row-padding`}
+            />
           </Stack>
         </Collapse.Item>
       </CollapseWrapper>
     </AttributesPanelWrapper>
   );
 }
-
-const RowColIndicator = styled.div<{ selected: boolean; hovered: boolean }>`
-  width: 20px;
-  height: 20px;
-  border: 1px solid ${theme.colors['dark-blue'][400]};
-  background: ${(props) => {
-    if (props.hovered && props.selected) {
-      return theme.colors.magenta[100];
-    }
-
-    if (props.selected) {
-      return theme.colors['dark-blue'][400];
-    }
-
-    if (props.hovered) {
-      return theme.colors['light-blue'][100];
-    }
-
-    return 'transparent';
-  }};
-`;
 
 export default TablePanel;

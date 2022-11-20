@@ -32,6 +32,15 @@ export type TableBlockData = IBlockData<
     'inside-border-width': string;
     'outside-border-width': string;
     'header-border-width': string;
+    'padding-top': string;
+    'padding-bottom': string;
+    'padding-left': string;
+    'padding-right': string;
+    'last-row-padding': string;
+    'inner-cell-padding-h': string;
+    'inner-cell-padding-v': string;
+    'header-font-size': string;
+    'cell-font-size': string;
   },
   {
     title: string;
@@ -70,6 +79,8 @@ const Table = createCustomBlock<TableBlockData>({
         'background-color': theme.colors.slate[50],
         'table-rows': '3',
         'table-cols': '3',
+        'header-font-size': '16px',
+        'cell-font-size': '14px',
         'header-background-color': theme.colors.slate[50],
         'header-font-color': theme.colors.black,
         'body-font-color': theme.colors.black,
@@ -78,6 +89,13 @@ const Table = createCustomBlock<TableBlockData>({
         'inside-border-width': '2px',
         'outside-border-width': '2px',
         'header-border-width': '3px',
+        'padding-top': '0px',
+        'padding-bottom': '0px',
+        'padding-left': '0px',
+        'padding-right': '0px',
+        'last-row-padding': '0px',
+        'inner-cell-padding-h': '10px',
+        'inner-cell-padding-v': '2px',
       },
       children: [],
     };
@@ -112,7 +130,7 @@ const Table = createCustomBlock<TableBlockData>({
         css-class={
           mode === 'testing' ? getPreviewClassName(idx, data.type) : ''
         }
-        padding="0px"
+        padding={`${attributes['padding-top']} ${attributes['padding-right']} ${attributes['padding-bottom']} ${attributes['padding-left']}`}
         border="none"
         direction="rtl"
       >
@@ -129,9 +147,9 @@ const Table = createCustomBlock<TableBlockData>({
                     `${idx}.data.value.header-${i}`
                   ).join(' ')}
                 >
-                  <Section padding="1px 10px">
+                  <Section padding="5px 10px">
                     <Text
-                      font-size="16px"
+                      font-size={`${attributes['header-font-size']}`}
                       font-weight="bold"
                       align={headerTextAlign}
                       color={attributes['header-font-color']}
@@ -147,11 +165,15 @@ const Table = createCustomBlock<TableBlockData>({
                 (_, j) => (
                   <Section
                     key={j}
-                    padding="0px"
+                    padding={
+                      j != Number(attributes['table-rows']) - 1
+                        ? '0px'
+                        : `0px 0px ${attributes['last-row-padding']} 0px`
+                    }
                     background-color={attributes['body-background-color']}
                     border-bottom={
-                      j != Number(attributes['table-rows']) - 1 &&
-                      hasInsideBorder
+                      j != Number(attributes['table-rows']) - 1 ||
+                      (hasInsideBorder && !hasOutsideBorder)
                         ? tableInsideBorder
                         : 'none'
                     }
@@ -160,12 +182,16 @@ const Table = createCustomBlock<TableBlockData>({
                       `${idx}.data.value.cell-${i}-${j}`
                     ).join(' ')}
                   >
-                    <Section padding="1px 10px">
+                    <Section
+                      padding={`${attributes['inner-cell-padding-v']} ${attributes['inner-cell-padding-h']}`}
+                    >
                       <Text
+                        font-size={`${attributes['cell-font-size']}`}
                         align={bodyTextAlign}
                         color={attributes['body-font-color']}
+                        font-weight="300"
                       >
-                        col
+                        cell
                       </Text>
                     </Section>
                   </Section>
