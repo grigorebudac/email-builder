@@ -1,38 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Stack,
-  useEditorContext,
-  useEditorProps,
-  useFocusIdx,
-} from 'easy-email-editor';
+import { Stack, useEditorContext, useFocusIdx } from 'easy-email-editor';
 import { Collapse, Grid, Space, Typography } from '@arco-design/web-react';
-import { IconLink } from '@arco-design/web-react/icon';
 import {
   AttributesPanelWrapper,
-  ImageUploaderField,
-  TextField,
   InputWithUnitField,
   ColorPickerField,
   CheckboxField,
   SelectField,
   NumberField,
-  Align,
   RadioGroupField,
 } from 'easy-email-extensions';
 import CollapseWrapper from '../../components/CollapseWrapper';
 import {
   TableOptionsType,
-  TableTargetType,
+  TableBorderType,
 } from '../../types/tableOptions.types';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { theme } from '@lego/klik-ui';
-import { Field } from 'react-final-form';
-import { table } from 'console';
 
 function TablePanel() {
   const { focusIdx } = useFocusIdx();
-  const { pageData, formHelpers, formState } = useEditorContext();
+  const { formHelpers } = useEditorContext();
   const isInitialMount = useRef(true);
 
   const [tableSize, setTableSize] = useState<{
@@ -77,6 +65,7 @@ function TablePanel() {
                   label={'Rows'}
                   max={5}
                   min={1}
+                  disabled
                   hideControl
                   onChangeCapture={(e) => {
                     const formValue = (e.target as HTMLInputElement).value;
@@ -94,6 +83,7 @@ function TablePanel() {
                   label={'Columns'}
                   max={5}
                   min={1}
+                  disabled
                   hideControl
                   onChangeCapture={(e) => {
                     const col = (e.target as HTMLInputElement).value;
@@ -103,7 +93,7 @@ function TablePanel() {
               </Grid.Col>
             </Grid.Row>
 
-            <Typography style={{ marginBottom: 5 }}>Table Size:</Typography>
+            <Typography style={{ marginBottom: 5 }}>Table Size</Typography>
 
             <div
               onMouseLeave={() => setHoveredTableSize({ row: 0, col: 0 })}
@@ -132,14 +122,35 @@ function TablePanel() {
                 </Row>
               ))}
             </div>
+
+            <CheckboxField
+              name={`${focusIdx}.data.value.options`}
+              label="Options"
+              direction="horizontal"
+              style={{ marginTop: '-20px' }}
+              options={[
+                {
+                  value: TableOptionsType.WITH_HEADER,
+                  label: 'Header',
+                },
+                {
+                  value: TableOptionsType.WITH_INSIDE_BORDER,
+                  label: 'Inside Border',
+                },
+                {
+                  value: TableOptionsType.WITH_OUTSIDE_BORDER,
+                  label: 'Outside Border',
+                },
+              ]}
+            />
           </Space>
         </Collapse.Item>
 
         <Collapse.Item name="0" header="Appearance">
           <Space direction="vertical">
             <RadioGroupField
-              name={`${focusIdx}.data.value.text_align`}
-              label="Text-align"
+              name={`${focusIdx}.data.value.headerTextAlign`}
+              label="Header Text Align"
               direction="horizontal"
               options={[
                 {
@@ -157,14 +168,22 @@ function TablePanel() {
               ]}
             />
 
-            <CheckboxField
-              name={`${focusIdx}.test`}
-              label="Border"
+            <RadioGroupField
+              name={`${focusIdx}.data.value.bodyTextAlign`}
+              label="Body Text Align"
               direction="horizontal"
               options={[
                 {
-                  value: TableOptionsType.WITH_BORDER,
-                  label: 'Border',
+                  value: TableOptionsType.ALIGN_LEFT,
+                  label: 'left',
+                },
+                {
+                  value: TableOptionsType.ALIGN_CENTER,
+                  label: 'center',
+                },
+                {
+                  value: TableOptionsType.ALIGN_RIGHT,
+                  label: 'right',
                 },
               ]}
             />
@@ -189,54 +208,64 @@ function TablePanel() {
               label={'Body Font Color'}
             />
 
-            <InputWithUnitField
-              label="Border Spacing"
-              name={`${focusIdx}.attributes.border-spacing`}
+            <ColorPickerField
+              name={`${focusIdx}.attributes.border-color`}
+              label={'Border Color'}
             />
 
             <InputWithUnitField
-              label="Border Width"
-              name={`${focusIdx}.attributes.border-width`}
+              label="Outside Border Width"
+              name={`${focusIdx}.attributes.outside-border-width`}
+            />
+
+            <InputWithUnitField
+              label="Inside Border Width"
+              name={`${focusIdx}.attributes.inside-border-width`}
+            />
+
+            <InputWithUnitField
+              label="Header Border Width"
+              name={`${focusIdx}.attributes.header-border-width`}
             />
 
             <SelectField
               label="Border Style"
-              name={`${focusIdx}.data.value.border-style`}
+              name={`${focusIdx}.data.value.borderStyle`}
               options={[
                 {
-                  value: 'none',
+                  value: TableBorderType.NONE,
                   label: 'none',
                 },
                 {
-                  value: 'solid',
+                  value: TableBorderType.SOLID,
                   label: 'solid',
                 },
                 {
-                  value: 'dotted',
+                  value: TableBorderType.DOTTED,
                   label: 'dotted',
                 },
                 {
-                  value: 'dashed',
+                  value: TableBorderType.DASHED,
                   label: 'dashed',
                 },
                 {
-                  value: 'double',
+                  value: TableBorderType.DOUBLE,
                   label: 'double',
                 },
                 {
-                  value: 'groove',
+                  value: TableBorderType.GROOVE,
                   label: 'groove',
                 },
                 {
-                  value: 'ridge',
+                  value: TableBorderType.RIDGE,
                   label: 'ridge',
                 },
                 {
-                  value: 'inset',
+                  value: TableBorderType.INSET,
                   label: 'inset',
                 },
                 {
-                  value: 'outset',
+                  value: TableBorderType.OUTSET,
                   label: 'outset',
                 },
               ]}

@@ -104,7 +104,11 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   }, [mergeTags]);
 
   function handleOverwriteColorPicker() {
-    const defaultColors = [theme.colors.black, theme.colors.white];
+    const defaultColors = [
+      theme.colors.black,
+      theme.colors.white,
+      theme.colors.slate[100],
+    ];
 
     const colors = Object.values(color.core).reduce<string[]>((acc, cv) => {
       if (cv[400] != null) {
