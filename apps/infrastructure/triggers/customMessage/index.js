@@ -1,5 +1,4 @@
 const handler = async (event, context, callback) => {
-  console.log({ event, context, eventStringified: JSON.stringify({ event }) });
   const code = event.request.codeParameter;
   const username = event.userName;
   const email =
