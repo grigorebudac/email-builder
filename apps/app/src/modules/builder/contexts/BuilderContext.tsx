@@ -10,7 +10,6 @@ import { AdvancedType, BasicType, BlockManager } from 'easy-email-core';
 import { useRouter } from 'next/router';
 import { Liquid } from 'liquidjs';
 import { EmailEditorProviderProps, IEmailTemplate } from 'easy-email-editor';
-
 import { Builder } from '../types/builder.types';
 import {
   useLazyGetTemplateByIdQuery,
@@ -30,11 +29,10 @@ import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import Card from '../customBlocks/Card/Card';
 import CardPanel from '../customBlocks/Card/CardPanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
-import mjml from 'mjml-browser';
-import { JsonToMjml } from 'easy-email-core';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
+import { jsonToHtml } from '../utils/jsonToHtml';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -135,17 +133,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   async function handleSubmit(values: IEmailTemplate) {
     try {
-      const emailHtml = mjml(
-        JsonToMjml({
-          data: values.content,
-          mode: 'production',
-          context: values.content,
-          dataSource: mergeTags,
-        }),
-        {
-          validationLevel: 'soft',
-        }
-      ).html;
+      const emailHtml = jsonToHtml(values.content, mergeTags);
 
       await updateTemplateMutation({
         id: templateId,
@@ -174,17 +162,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
     if (data == null) return;
 
-    let emailHtml: string = mjml(
-      JsonToMjml({
-        data: data.content,
-        mode: 'production',
-        context: data.content,
-        dataSource: mergeTags,
-      }),
-      {
-        validationLevel: 'soft',
-      }
-    ).html;
+    let emailHtml = jsonToHtml(data.content, mergeTags);
 
     const engine = new Liquid();
     const tpl = engine.parse(emailHtml);
