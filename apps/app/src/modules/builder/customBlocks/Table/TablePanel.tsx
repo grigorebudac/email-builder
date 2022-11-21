@@ -5,7 +5,6 @@ import {
   AttributesPanelWrapper,
   InputWithUnitField,
   ColorPickerField,
-  CheckboxField,
   SelectField,
   NumberField,
   RadioGroupField,
@@ -17,6 +16,7 @@ import {
 } from '../../types/tableOptions.types';
 import TableSizeGenerator from './components/TableSizeGenerator';
 import { TableGeneratorValues } from '../../types/table.types';
+import { BorderCheckboxSection, TableSizeLabel } from './TablePanel.styles';
 
 function TablePanel() {
   const { focusIdx } = useFocusIdx();
@@ -82,7 +82,9 @@ function TablePanel() {
               </Grid.Col>
             </Grid.Row>
 
-            <Typography style={{ marginBottom: 5 }}>Table Size</Typography>
+            <TableSizeLabel style={{ marginBottom: 5 }}>
+              Table Size
+            </TableSizeLabel>
 
             <TableSizeGenerator
               setHoveredTableSize={setHoveredTableSize}
@@ -91,11 +93,10 @@ function TablePanel() {
               hoveredTableSize={hoveredTableSize}
             />
 
-            <CheckboxField
+            <BorderCheckboxSection
               name={`${focusIdx}.data.value.options`}
               label="Options"
               direction="horizontal"
-              style={{ marginTop: '-20px' }}
               options={[
                 {
                   value: TableOptionsType.WITH_HEADER,

@@ -115,14 +115,18 @@ const Table = createCustomBlock<TableBlockData>({
       TableOptionsType.WITH_OUTSIDE_BORDER
     );
 
+    const borderStyling = (type: string) =>
+      `${attributes[`${type}-border-width`]} ${borderStyle} 
+      ${attributes['border-color']}`;
+
     const tableOutsideBorder = hasOutsideBorder
-      ? `${attributes['outside-border-width']} ${borderStyle} ${attributes['border-color']}`
+      ? borderStyling('outside')
       : 'none';
     const tableInsideBorder = hasInsideBorder
-      ? `${attributes['inside-border-width']} ${borderStyle} ${attributes['border-color']}`
+      ? borderStyling('inside')
       : 'none';
     const tableHeaderBorder = hasInsideBorder
-      ? `${attributes['header-border-width']} ${borderStyle} ${attributes['border-color']}`
+      ? borderStyling('header')
       : 'none';
 
     const numberOfTableRows = Number(attributes['table-rows']);
