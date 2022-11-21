@@ -1,0 +1,11 @@
+{
+  "name": "infrastructure",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "sam build --beta-features",
+    "deploy": "npm run build && sam deploy",
+    "start": "npm run build && sam local start-api"
+  }
+}
