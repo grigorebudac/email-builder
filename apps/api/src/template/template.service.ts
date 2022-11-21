@@ -17,6 +17,7 @@ export class TemplateService {
         title: dto.title,
         subtitle: dto.subtitle,
         content: {},
+        html: '',
         userId,
       },
     });
@@ -38,6 +39,7 @@ export class TemplateService {
       },
       data: {
         content: dto.content,
+        html: dto.html,
       },
     });
 
@@ -69,6 +71,23 @@ export class TemplateService {
     });
 
     return template;
+  }
+
+  async getTemplateHTMLById(id: string, userId: string) {
+    const template = await this.prisma.template.findFirst({
+      where: {
+        AND: [
+          {
+            id,
+          },
+          {
+            userId,
+          },
+        ],
+      },
+    });
+
+    return template.html;
   }
 
   async deleteTemplateById(id: string, userId: string) {

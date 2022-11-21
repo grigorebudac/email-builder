@@ -46,6 +46,10 @@ export class TemplateController {
   getTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
     return this.templateService.getTemplateById(id, userId);
   }
+  @Get('/:id/html')
+  getTemplateHTMLById(@Param('id') id: string, @GetUserId() userId: string) {
+    return this.templateService.getTemplateHTMLById(id, userId);
+  }
 
   @Delete('/:id')
   deleteTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
