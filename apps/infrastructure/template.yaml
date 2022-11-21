@@ -52,6 +52,10 @@ Resources:
           RequireNumbers: false
           RequireSymbols: false
           RequireUppercase: false
+      LambdaConfig:
+        CustomMessage: !GetAtt customMessageTriggerFunction.Arn
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
   # User Pool Client
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
@@ -90,7 +94,7 @@ Resources:
     Properties:
       Domain: !Sub ${UserPoolDomainName}
       UserPoolId: !Ref UserPool
-  # # Microsoft
+  # Microsoft
   MicrosoftUserPoolIdentityProvider:
     Type: AWS::Cognito::UserPoolIdentityProvider
     Properties:
@@ -100,16 +104,13 @@ Resources:
       AttributeMapping:
         sub: 'username'
         email: 'email'
+        name: 'name'
       ProviderDetails:
         client_id: !Sub ${MicrosoftClientId}
         client_secret: !Sub ${MicrosoftClientSecret}
         attributes_request_method: GET
         oidc_issuer: !Sub ${MicrosoftOidcIssuer}
         authorize_scopes: 'email profile openid'
-      AttributeMapping:
-        sub: "username"
-        email: "email"
-        name: "name"
   # Roles
   CognitoUnAuthorizedRole:
     Type: AWS::IAM::Role
@@ -174,6 +175,28 @@ Resources:
       Roles:
         authenticated: !GetAtt CognitoAuthorizedRole.Arn
         unauthenticated: !GetAtt CognitoUnAuthorizedRole.Arn
+  # Invocations
+  CustomMessageInvocationPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt customMessageTriggerFunction.Arn
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !GetAtt UserPool.Arn
+  # Triggers
+  customMessageTriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub customMessageTrigger
+      CodeUri: triggers/customMessage
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'es2020'
+        Sourcemap: true
+        EntryPoints:
+          - index.ts
   # S3 Buckets
   TemplateBucket:
     Type: AWS::S3::Bucket

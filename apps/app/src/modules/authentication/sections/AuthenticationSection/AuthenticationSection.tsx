@@ -31,7 +31,13 @@ const AuthenticationSection: React.FC<AuthenticationSectionProps> = ({
 
   async function handleRegister(credentials: Auth.RegisterRequestPayload) {
     try {
-      await AmplifyAuth.signUp(credentials.email, credentials.password);
+      await AmplifyAuth.signUp({
+        username: credentials.email,
+        password: credentials.password,
+        autoSignIn: {
+          enabled: true,
+        },
+      });
       router.push('/');
     } catch (error) {
       error instanceof Error
