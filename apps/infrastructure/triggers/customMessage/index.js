@@ -1,19 +1,16 @@
-import { CustomMessageTriggerHandler } from 'aws-lambda';
-
-export const handler: CustomMessageTriggerHandler = async (
-  event,
-  context,
-  callback
-) => {
+const handler = async (event, context, callback) => {
+  console.log({ event, context, eventStringified: JSON.stringify({ event }) });
   const code = event.request.codeParameter;
   const username = event.userName;
+  const email =
+    event.request.usernameParameter || event.request.userAttributes.email;
 
-  const baseUrl = 'http://localhost:4200/';
+  const baseUrl = 'http://localhost:4200';
 
   const forgotPasswordMessage = `
       <p>
       Hi, <br /> <br />
-      Click <a href="${baseUrl}/forgot-password-submit?code=${code}&username=${username}">here</a> to reset your password.
+      Click <a href="${baseUrl}/reset-password?code=${code}&username=${username}&email=${email}">here</a> to reset your password.
       </p>
       `;
 
@@ -183,7 +180,7 @@ export const handler: CustomMessageTriggerHandler = async (
 
                             <div style="line-height: 160%; text-align: center; word-wrap: break-word;">
                               <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 22px; line-height: 35.2px;">Hi, </span></p>
-                              <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 18px; line-height: 28.8px;">You're almost ready to get started. Please click on the button below to verify your email address and enjoy exclusive cleaning services with us! </span></p>
+                              <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 18px; line-height: 28.8px;">You're almost ready to get started. Please click on the button below to verify your email address and enjoy creating emails with us! </span></p>
                             </div>
 
                           </td>
@@ -218,7 +215,6 @@ export const handler: CustomMessageTriggerHandler = async (
 
                             <div style="line-height: 160%; text-align: center; word-wrap: break-word;">
                               <p style="line-height: 160%; font-size: 14px;"><span style="font-size: 18px; line-height: 28.8px;">Thanks,</span></p>
-                              <p style="line-height: 160%; font-size: 14px;"><span style="font-size: 18px; line-height: 28.8px;">The SEP 6 Team</span></p>
                             </div>
 
                           </td>
@@ -286,16 +282,15 @@ export const handler: CustomMessageTriggerHandler = async (
 
 </html>
       `;
-
   if (event.triggerSource === 'CustomMessage_ForgotPassword') {
     event.response.emailSubject = 'Reset your Password';
     event.response.emailMessage = forgotPasswordMessage;
   }
-
   if (event.triggerSource === 'CustomMessage_SignUp') {
     event.response.emailSubject = 'Confirm your Account';
     event.response.emailMessage = verifyAccountMessage;
   }
-
   callback(null, event);
 };
+
+exports.handler = handler;

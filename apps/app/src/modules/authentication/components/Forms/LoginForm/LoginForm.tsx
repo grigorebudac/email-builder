@@ -6,6 +6,7 @@ import { Lock } from '@lego/klik-ui/icons';
 import { Auth } from '@/modules/authentication/types/auth.types';
 import { TextFieldController } from '@/components/Controllers/TextFieldController';
 import { Text } from '@lego/klik-ui';
+import Link from 'next/link';
 
 type LoginFormProps = {
   onSubmit: (credentials: Auth.LoginRequestPayload) => void;
@@ -50,6 +51,12 @@ const LoginForm = (props: LoginFormProps) => {
           error={errors?.password}
           control={control}
         />
+
+        <Box mt={5}>
+          <Link href="/forgot-password" passHref>
+            <a>Forgot your password?</a>
+          </Link>
+        </Box>
 
         <Text color="error.500">{props.error}</Text>
       </Stack>

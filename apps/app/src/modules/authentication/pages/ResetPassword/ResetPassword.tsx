@@ -29,7 +29,7 @@ const ResetPassword = () => {
     credentials: Pick<Auth.ResetPassword, 'password'>
   ) {
     try {
-      const { code, username } = query;
+      const { code, username, email } = query;
 
       await AmplifyAuth.forgotPasswordSubmit(
         username as string,
@@ -37,7 +37,12 @@ const ResetPassword = () => {
         credentials.password
       );
 
-      await AmplifyAuth.signIn(username as string, credentials.password);
+      if (email != null) {
+        await AmplifyAuth.signIn({
+          username: username as string,
+          password: credentials.password,
+        });
+      }
 
       push('/');
     } catch (error) {
