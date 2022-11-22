@@ -12,6 +12,7 @@
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
+    login(): void;
     typeLogin(email: string, password: string): void;
     typeRegister(
       email: string,
@@ -24,6 +25,13 @@ declare namespace Cypress {
 /**
  * Login
  */
+Cypress.Commands.add('login', () => {
+  cy.visit('/login');
+  cy.get('[data-cy=login-email]').type(Cypress.env('CYPRESS_USER_EMAIL'));
+  cy.get('[data-cy=login-password]').type(Cypress.env('CYPRESS_USER_PASSWORD'));
+  cy.get('[data-cy=login-submit]').click();
+});
+
 Cypress.Commands.add('typeLogin', (email, password) => {
   cy.get('[data-cy=login-email]').type(email);
   cy.get('[data-cy=login-password]').type(password);
