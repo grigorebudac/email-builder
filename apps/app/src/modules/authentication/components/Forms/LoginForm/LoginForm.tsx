@@ -35,6 +35,7 @@ const LoginForm = (props: LoginFormProps) => {
     <form onSubmit={handleSubmit(props.onSubmit)}>
       <Stack>
         <TextFieldController
+          data-cy="login-email"
           name="email"
           label="Email"
           isRequired
@@ -43,6 +44,7 @@ const LoginForm = (props: LoginFormProps) => {
         />
 
         <TextFieldController
+          data-cy="login-password"
           name="password"
           label="Password"
           type="password"
@@ -62,7 +64,12 @@ const LoginForm = (props: LoginFormProps) => {
       </Stack>
 
       <Box mt={5}>
-        <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+        <Button
+          data-cy="login-submit"
+          type="submit"
+          isLoading={isSubmitting}
+          disabled={isSubmitting}
+        >
           Submit
         </Button>
       </Box>

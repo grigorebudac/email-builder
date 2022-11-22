@@ -41,7 +41,7 @@ const Templates: NextPageWithLayout = () => {
   return (
     <div>
       <Flex justifyContent="flex-end" marginBottom="2rem">
-        <Button size="sm" onClick={onOpen}>
+        <Button data-cy="createTemplate" size="sm" onClick={onOpen}>
           Create Template
         </Button>
       </Flex>

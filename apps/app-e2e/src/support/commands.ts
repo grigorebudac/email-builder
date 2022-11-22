@@ -12,22 +12,50 @@
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
-    login(email: string, password: string): void;
+    login(): void;
+    typeLogin(email: string, password: string): void;
+    typeRegister(
+      email: string,
+      password: string,
+      confirmPassword: string
+    ): void;
+
+    typeCreateTemplate(title: string, description: string): void;
   }
 }
-//
-// -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+
+/**
+ * Login
+ */
+Cypress.Commands.add('login', () => {
+  cy.intercept('/api/templates').as('getTemplates');
+
+  cy.visit('/login');
+  cy.get('[data-cy=login-email]').type(Cypress.env('CYPRESS_USER_EMAIL'));
+  cy.get('[data-cy=login-password]').type(Cypress.env('CYPRESS_USER_PASSWORD'));
+  cy.get('[data-cy=login-submit]').click();
+
+  cy.wait('@getTemplates');
 });
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('typeLogin', (email, password) => {
+  cy.get('[data-cy=login-email]').type(email);
+  cy.get('[data-cy=login-password]').type(password);
+});
+
+/**
+ * Register
+ */
+Cypress.Commands.add('typeRegister', (email, password, confirmPassword) => {
+  cy.get('[data-cy=register-email]').type(email);
+  cy.get('[data-cy=register-password]').type(password);
+  cy.get('[data-cy=register-confirmPassword]').type(confirmPassword);
+});
+
+/**
+ * Template
+ */
+Cypress.Commands.add('typeCreateTemplate', (title, description) => {
+  cy.get('[data-cy=createTemplate-title]').type(title);
+  cy.get('[data-cy=createTemplate-description]').type(description);
+});

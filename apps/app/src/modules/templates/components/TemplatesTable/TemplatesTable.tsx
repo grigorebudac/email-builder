@@ -48,8 +48,18 @@ const TemplatesTable = (props: TemplatesTableProps) => {
 
           return (
             <ButtonGroup size="xs">
-              <Button onClick={() => props.onEdit(templateId)}>Edit</Button>
-              <Button onClick={() => props.onDelete(templateId)}>Delete</Button>
+              <Button
+                data-cy={`editTemplate-${templateId}`}
+                onClick={() => props.onEdit(templateId)}
+              >
+                Edit
+              </Button>
+              <Button
+                data-cy={`deleteTemplate-${templateId}`}
+                onClick={() => props.onDelete(templateId)}
+              >
+                Delete
+              </Button>
             </ButtonGroup>
           );
         },

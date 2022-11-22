@@ -32,6 +32,7 @@ const CreateTemplateModal = (props: CreateTemplateModalProps) => {
       <form onSubmit={handleSubmit(props.onSubmit)}>
         <Box mb="1rem">
           <Input
+            data-cy="createTemplate-title"
             {...register('title', { required: true })}
             placeholder="Title"
             isInvalid={errors.title != null}
@@ -40,13 +41,19 @@ const CreateTemplateModal = (props: CreateTemplateModalProps) => {
 
         <Box mb="1rem">
           <Input
+            data-cy="createTemplate-description"
             {...register('subtitle', { required: true })}
             placeholder="Description"
             isInvalid={errors.subtitle != null}
           />
         </Box>
 
-        <Button type="submit" size="sm" isLoading={isSubmitting}>
+        <Button
+          data-cy="createTemplate-submit"
+          type="submit"
+          size="sm"
+          isLoading={isSubmitting}
+        >
           Create
         </Button>
       </form>
