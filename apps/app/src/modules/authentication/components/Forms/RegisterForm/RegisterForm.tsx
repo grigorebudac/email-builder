@@ -69,7 +69,12 @@ const RegisterForm = (props: RegisterFormProps) => {
       </Stack>
 
       <Box mt={5}>
-        <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+        <Button
+          data-cy="submit-register"
+          type="submit"
+          isLoading={isSubmitting}
+          disabled={isSubmitting}
+        >
           Submit
         </Button>
       </Box>

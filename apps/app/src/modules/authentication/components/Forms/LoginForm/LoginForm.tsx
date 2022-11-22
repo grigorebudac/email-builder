@@ -62,7 +62,12 @@ const LoginForm = (props: LoginFormProps) => {
       </Stack>
 
       <Box mt={5}>
-        <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+        <Button
+          data-cy="submit-login"
+          type="submit"
+          isLoading={isSubmitting}
+          disabled={isSubmitting}
+        >
           Submit
         </Button>
       </Box>
