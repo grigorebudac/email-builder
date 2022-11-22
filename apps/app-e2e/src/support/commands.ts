@@ -12,11 +12,28 @@
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
-    login(email: string, password: string): void;
+    typeLogin(email: string, password: string): void;
+    typeRegister(
+      email: string,
+      password: string,
+      confirmPassword: string
+    ): void;
   }
 }
-//
-// -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+
+/**
+ * Login
+ */
+Cypress.Commands.add('typeLogin', (email, password) => {
+  cy.get('[data-cy=login-email]').type(email);
+  cy.get('[data-cy=login-password]').type(password);
+});
+
+/**
+ * Register
+ */
+Cypress.Commands.add('typeRegister', (email, password, confirmPassword) => {
+  cy.get('[data-cy=register-email]').type(email);
+  cy.get('[data-cy=register-password]').type(password);
+  cy.get('[data-cy=register-confirmPassword]').type(confirmPassword);
 });

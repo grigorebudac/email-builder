@@ -38,6 +38,7 @@ const RegisterForm = (props: RegisterFormProps) => {
     <form onSubmit={handleSubmit(props.onSubmit)}>
       <Stack>
         <TextFieldController
+          data-cy="register-email"
           name="email"
           label="Email"
           isRequired
@@ -46,6 +47,7 @@ const RegisterForm = (props: RegisterFormProps) => {
         />
 
         <TextFieldController
+          data-cy="register-password"
           name="password"
           label="Password"
           type="password"
@@ -56,6 +58,7 @@ const RegisterForm = (props: RegisterFormProps) => {
         />
 
         <TextFieldController
+          data-cy="register-confirmPassword"
           name="confirmPassword"
           label="Confirm password"
           type="password"

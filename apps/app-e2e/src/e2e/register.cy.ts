@@ -12,4 +12,10 @@ describe('Register', () => {
     cy.get('[data-invalid]').should('have.length', 3);
     cy.location('pathname').should('eq', '/register');
   });
+
+  it('does not allow invalid credentials', () => {
+    cy.typeRegister('notemail', 'hello', 'hello2');
+    cy.get('[data-cy=submit-register]').click();
+    cy.get('[data-invalid]').should('have.length', 3);
+  });
 });

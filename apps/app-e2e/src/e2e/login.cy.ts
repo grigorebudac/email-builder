@@ -12,4 +12,10 @@ describe('Login', () => {
     cy.get('[data-invalid]').should('have.length', 2);
     cy.location('pathname').should('eq', '/login');
   });
+
+  it('does not allow invalid credentials', () => {
+    cy.typeLogin('notemail', 'hello');
+    cy.get('[data-cy=submit-login]').click();
+    cy.get('[data-invalid]').should('have.length', 2);
+  });
 });
