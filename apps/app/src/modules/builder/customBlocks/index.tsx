@@ -1,5 +1,5 @@
 import React from 'react';
-import { AdvancedType } from 'easy-email-core';
+import { AdvancedType, BasicType } from 'easy-email-core';
 
 import {
   // @ts-ignore
@@ -33,9 +33,9 @@ import {
   Stack,
   TextStyle,
 } from 'easy-email-editor';
-import { BlockMarketCategory } from 'easy-email-extensions';
 import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
+import { BlockMarketCategory } from 'easy-email-extensions';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -214,6 +214,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         type: CustomBlocksType.CARD,
         title: 'Card',
         description: `Custom card component.`,
+        component: null,
+      },
+      {
+        type: CustomBlocksType.TABLE,
+        title: 'Table',
+        description: 'Custom table component',
         component: null,
       },
     ],

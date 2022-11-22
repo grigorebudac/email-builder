@@ -28,6 +28,8 @@ import Footer from '../customBlocks/Footer/Footer';
 import FooterPanel from '../customBlocks/Footer/FooterPanel';
 import Card from '../customBlocks/Card/Card';
 import CardPanel from '../customBlocks/Card/CardPanel';
+import Table from '../customBlocks/Table/Table';
+import TablePanel from '../customBlocks/Table/TablePanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
@@ -51,11 +53,13 @@ interface BuilderContextValues {
 BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
+  [CustomBlocksType.TABLE]: Table,
 });
 
 BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
+  [CustomBlocksType.TABLE]: TablePanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
 
@@ -101,7 +105,11 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   }, [mergeTags]);
 
   function handleOverwriteColorPicker() {
-    const defaultColors = [theme.colors.black, theme.colors.white];
+    const defaultColors = [
+      theme.colors.black,
+      theme.colors.white,
+      theme.colors.slate[100],
+    ];
 
     const colors = Object.values(color.core).reduce<string[]>((acc, cv) => {
       if (cv[400] != null) {
