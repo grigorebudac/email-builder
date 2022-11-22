@@ -43,6 +43,7 @@
     "liquidjs": "^9.42.0",
     "lodash": "^4.17.21",
     "next": "12.2.5",
+    "node-html-to-image": "^3.2.4",
     "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",

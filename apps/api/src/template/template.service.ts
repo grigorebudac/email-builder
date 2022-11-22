@@ -7,9 +7,18 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { CreateTemplateDTO } from './dto';
 import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 
+const nodeHtmlToImage = require('node-html-to-image');
+
 @Injectable()
 export class TemplateService {
-  constructor(private prisma: PrismaService, private config: ConfigService) {}
+  s3: S3;
+
+  constructor(private prisma: PrismaService, private config: ConfigService) {
+    this.s3 = new S3({
+      accessKeyId: this.config.get('AWS_S3_ACCESS_KEY'),
+      secretAccessKey: this.config.get('AWS_S3_KEY_SECRET'),
+    });
+  }
 
   async createTemplate(userId: string, dto: CreateTemplateDTO) {
     const template = await this.prisma.template.create({
@@ -108,15 +117,10 @@ export class TemplateService {
   }
 
   async uploadImage(templateId: string, file: Express.Multer.File) {
-    const s3 = new S3({
-      accessKeyId: this.config.get('AWS_S3_ACCESS_KEY'),
-      secretAccessKey: this.config.get('AWS_S3_KEY_SECRET'),
-    });
-
     const extension = file.mimetype.split('/')[1];
     const filename = `${randomUUID()}.${extension}`;
 
-    const result = await s3
+    const result = await this.s3
       .upload({
         Bucket: this.config.get('TEMPLATE_IMAGES_S3_BUCKET'),
         Body: file.buffer,
@@ -127,5 +131,41 @@ export class TemplateService {
       .promise();
 
     return { location: result.Location };
+  }
+
+  async updateTemplatePreviewImage(id: string, userId: string) {
+    const template = await this.getTemplateById(id, userId);
+
+    const image = await nodeHtmlToImage({
+      html: template.html,
+    });
+
+    const result = await this.s3
+      .upload({
+        Bucket: this.config.get('TEMPLATE_IMAGES_S3_BUCKET'),
+        Body: image,
+        ContentType: image.mimetype,
+        ACL: 'public-read',
+        Key: `${id}/preview.png`,
+      })
+      .promise();
+
+    const updatedTemplate = await this.prisma.template.updateMany({
+      where: {
+        AND: [
+          {
+            id,
+          },
+          {
+            userId,
+          },
+        ],
+      },
+      data: {
+        previewImage: result.Location,
+      },
+    });
+
+    return updatedTemplate;
   }
 }
