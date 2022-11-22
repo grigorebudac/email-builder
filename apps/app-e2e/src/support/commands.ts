@@ -19,6 +19,8 @@ declare namespace Cypress {
       password: string,
       confirmPassword: string
     ): void;
+
+    typeCreateTemplate(title: string, description: string): void;
   }
 }
 
@@ -26,10 +28,14 @@ declare namespace Cypress {
  * Login
  */
 Cypress.Commands.add('login', () => {
+  cy.intercept('/api/templates').as('getTemplates');
+
   cy.visit('/login');
   cy.get('[data-cy=login-email]').type(Cypress.env('CYPRESS_USER_EMAIL'));
   cy.get('[data-cy=login-password]').type(Cypress.env('CYPRESS_USER_PASSWORD'));
   cy.get('[data-cy=login-submit]').click();
+
+  cy.wait('@getTemplates');
 });
 
 Cypress.Commands.add('typeLogin', (email, password) => {
@@ -44,4 +50,12 @@ Cypress.Commands.add('typeRegister', (email, password, confirmPassword) => {
   cy.get('[data-cy=register-email]').type(email);
   cy.get('[data-cy=register-password]').type(password);
   cy.get('[data-cy=register-confirmPassword]').type(confirmPassword);
+});
+
+/**
+ * Template
+ */
+Cypress.Commands.add('typeCreateTemplate', (title, description) => {
+  cy.get('[data-cy=createTemplate-title]').type(title);
+  cy.get('[data-cy=createTemplate-description]').type(description);
 });
