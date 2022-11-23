@@ -24,6 +24,7 @@ const config: StorybookConfig = {
       },
     },
   ],
+  features: { emotionAlias: false },
   webpackFinal: async (config, { configType }: Options) => {
     // apply any global webpack configs that might have been specified in .storybook/main.ts
     if (rootMain.webpackFinal) {
@@ -31,6 +32,12 @@ const config: StorybookConfig = {
     }
 
     // add your own webpack tweaks if needed
+    if (config?.resolve?.alias != null) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@': path.resolve(__dirname, '../src'),
+      };
+    }
 
     return config;
   },

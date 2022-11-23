@@ -18,14 +18,7 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
-  "exclude": [
-    "node_modules",
-    "jest.config.ts",
-    "**/*.stories.ts",
-    "**/*.stories.js",
-    "**/*.stories.jsx",
-    "**/*.stories.tsx"
-  ],
+  "exclude": ["node_modules", "jest.config.ts"],
   "references": [
     {
       "path": "./.storybook/tsconfig.json"
