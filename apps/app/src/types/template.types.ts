@@ -21,4 +21,8 @@ export declare namespace Template {
   export interface UploadImageResponse {
     location: string;
   }
+
+  export interface TemplatePreviewImageResponse {
+    count: number;
+  }
 }
