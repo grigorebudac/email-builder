@@ -26,12 +26,10 @@ const config: StorybookConfig = {
   ],
   features: { emotionAlias: false },
   webpackFinal: async (config, { configType }: Options) => {
-    // apply any global webpack configs that might have been specified in .storybook/main.ts
     if (rootMain.webpackFinal) {
       config = await rootMain.webpackFinal(config, { configType } as Options);
     }
 
-    // add your own webpack tweaks if needed
     if (config?.resolve?.alias != null) {
       config.resolve.alias = {
         ...config.resolve.alias,
