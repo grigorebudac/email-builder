@@ -12,7 +12,7 @@ import { merge } from 'lodash';
 import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../../types/block.types';
 import { CardOptionsType, CardTargetType } from '../../types/cardOptions.types';
-import { DEFAULT_IMAGE } from '@/constants/defaultImageSource';
+import { CARD_PREVIEW_IMAGE_URL } from '@/constants/defaultImageSource';
 
 const { Section, Column, Text, Image, Button } = components;
 
@@ -58,7 +58,7 @@ const Card = createCustomBlock<CardBlockData>({
           title: 'Lorem ipsum',
           description:
             'With amazing detail, this awesome LEGO® Trolls World Tour Pop Village Celebration (41255) Trolls tree house building set opens a world of imaginative play for young Trolls fans.',
-          imageSrc: DEFAULT_IMAGE,
+          imageSrc: CARD_PREVIEW_IMAGE_URL,
           buttonLabel: 'Action',
           href: '#',
           target: CardTargetType.SELF,

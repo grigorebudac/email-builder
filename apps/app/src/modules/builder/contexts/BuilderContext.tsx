@@ -14,7 +14,7 @@ import { Builder } from '../types/builder.types';
 import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
-  useUpdateTemplatePreviewImageMutation,
+  useTemplatePreviewImageMutation,
   useUploadTemplateImageMutation,
 } from '@/redux/endpoints/template.endpoints';
 import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
@@ -67,8 +67,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const [sendEmailMutation] = useSendEmailMutation();
   const [uploadTemplateImage] = useUploadTemplateImageMutation();
   const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
-  const [updateTemplatePreviewImageMutation] =
-    useUpdateTemplatePreviewImageMutation();
+  const [templatePreviewImageMutation] = useTemplatePreviewImageMutation();
 
   const templateId = router.query?.templateId as string;
 
@@ -84,7 +83,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   useEffect(() => {
     return () => {
-      updateTemplatePreviewImageMutation(templateId);
+      templatePreviewImageMutation(templateId);
     };
   }, [templateId]);
 

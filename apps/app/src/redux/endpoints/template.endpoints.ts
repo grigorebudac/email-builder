@@ -86,7 +86,7 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
       }),
       invalidatesTags: [TEMPLATE_TAG],
     }),
-    updateTemplatePreviewImage: builder.mutation<
+    templatePreviewImage: builder.mutation<
       Template.TemplatePreviewImageResponse,
       string
     >({
@@ -141,7 +141,7 @@ export const {
   useGetTemplatesQuery,
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
-  useUpdateTemplatePreviewImageMutation,
+  useTemplatePreviewImageMutation,
   useDeleteTemplateByIdMutation,
   useUploadTemplateImageMutation,
 } = TemplateEndpoints;
