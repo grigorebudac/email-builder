@@ -30,7 +30,7 @@ const Builder = () => {
 
     BlockMarketManager.subscribe(handleSetCategories);
     return () => {
-      BlockMarketManager.subscribe(handleSetCategories);
+      BlockMarketManager.unsubscribe(handleSetCategories);
     };
   }, []);
 

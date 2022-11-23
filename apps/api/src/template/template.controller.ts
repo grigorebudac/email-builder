@@ -46,6 +46,7 @@ export class TemplateController {
   getTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
     return this.templateService.getTemplateById(id, userId);
   }
+
   @Get('/:id/html')
   getTemplateHTMLById(@Param('id') id: string, @GetUserId() userId: string) {
     return this.templateService.getTemplateHTMLById(id, userId);
@@ -63,5 +64,13 @@ export class TemplateController {
     @UploadedFile() file: Express.Multer.File
   ) {
     return this.templateService.uploadImage(templateId, file);
+  }
+
+  @Patch('/:id/preview-image')
+  updateTemplatePreviewImage(
+    @Param('id') templateId: string,
+    @GetUserId() userId: string
+  ) {
+    return this.templateService.updateTemplatePreviewImage(templateId, userId);
   }
 }
