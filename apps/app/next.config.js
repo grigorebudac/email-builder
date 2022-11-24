@@ -13,7 +13,6 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
-  output: 'standalone',
 };
 
 module.exports = withNx(nextConfig);
