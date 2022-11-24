@@ -35,6 +35,7 @@ import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
+import { Social } from '../customBlocks/Social/Social';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -54,6 +55,7 @@ BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
   [CustomBlocksType.TABLE]: Table,
+  [CustomBlocksType.SOCIAL]: Social,
 });
 
 BlockAttributeConfigurationManager.add({

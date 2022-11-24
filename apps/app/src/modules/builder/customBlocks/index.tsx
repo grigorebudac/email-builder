@@ -127,13 +127,6 @@ export const defaultCategories: BlockMarketCategory[] = [
           thumbnails depending on the email client they use.`,
         component: CarouselBlockItem,
       },
-      {
-        type: AdvancedType.SOCIAL,
-        title: 'Social',
-        description: `Displays calls-to-action for various social networks with
-          their associated logo.`,
-        component: SocialBlockItem,
-      },
     ],
   },
   {
@@ -220,6 +213,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         type: CustomBlocksType.TABLE,
         title: 'Table',
         description: 'Custom table component',
+        component: null,
+      },
+      {
+        type: CustomBlocksType.SOCIAL,
+        title: 'Social',
+        description: 'Social media links',
         component: null,
       },
     ],
