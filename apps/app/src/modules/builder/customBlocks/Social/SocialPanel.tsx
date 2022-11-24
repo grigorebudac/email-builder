@@ -62,7 +62,7 @@ const iconLabelOptions = [
   },
 ];
 
-export function SocialPanel() {
+export function SocialBannerPanel() {
   const { focusIdx } = useFocusIdx();
   const { focusBlock } = useBlock();
   const value = focusBlock?.data.value as ISocial['data']['value'];

@@ -216,8 +216,8 @@ export const defaultCategories: BlockMarketCategory[] = [
         component: null,
       },
       {
-        type: CustomBlocksType.SOCIAL,
-        title: 'Social',
+        type: CustomBlocksType.SOCIALBANNER,
+        title: 'SocialBanner',
         description: 'Social media links',
         component: null,
       },

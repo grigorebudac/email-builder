@@ -17,8 +17,7 @@ import {
   TWITTER_ICON_URL,
   WWW_ICON_URL,
 } from '@/constants/defaultImageSources';
-
-const { Section, Wrapper } = components;
+import { CustomBlocksType } from '../../types/block.types';
 
 export type ISocial = IBlockData<
   {
@@ -70,12 +69,12 @@ export type ISocial = IBlockData<
   }
 >;
 
-export const Social = createCustomBlock<ISocial>({
+export const SocialBanner = createCustomBlock<ISocial>({
   name: 'Social',
-  type: BasicType.SOCIAL,
+  type: CustomBlocksType.SOCIALBANNER,
   create: (payload) => {
     const defaultData: ISocial = {
-      type: BasicType.SOCIAL,
+      type: CustomBlocksType.SOCIALBANNER,
       data: {
         value: {
           elements: [
@@ -127,11 +126,11 @@ export const Social = createCustomBlock<ISocial>({
         'font-weight': 'normal',
         'border-radius': '3px',
         padding: '10px 25px 10px 25px',
-        'inner-padding': '4px 4px 4px 4px',
+        'inner-padding': '4px 10px 4px 10px',
         'line-height': '22px',
         'text-padding': '4px 4px 4px 0px',
         'icon-padding': '0px',
-        'icon-size': '20px',
+        'icon-size': '40px',
         'font-family': 'Cera Pro',
       },
       children: [],
@@ -139,10 +138,12 @@ export const Social = createCustomBlock<ISocial>({
     return merge(defaultData, payload);
   },
   validParentType: [
-    BasicType.COLUMN,
-    BasicType.PAGE,
     AdvancedType.WRAPPER,
     BasicType.WRAPPER,
+    AdvancedType.COLUMN,
+    BasicType.COLUMN,
+    AdvancedType.GROUP,
+    BasicType.GROUP,
   ],
   render(params) {
     const { data } = params;
