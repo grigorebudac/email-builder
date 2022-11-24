@@ -147,7 +147,6 @@ export const Social = createCustomBlock<ISocial>({
   render(params) {
     const { data } = params;
     const attributes = data.attributes;
-    console.log(attributes.iconLabels);
     const elements = data.data.value.elements
       .map((element) => {
         const elementAttributeStr = Object.keys(element)
