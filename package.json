@@ -3,14 +3,14 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npm nx run-many --parallel --target=serve --projects=app,api",
-    "build": "npm nx build",
-    "build:app": "npm nx export --project app",
-    "e2e": "npm nx e2e app-e2e --watch",
-    "test": "npm nx test",
-    "storybook": "npm nx storybook app",
-    "db:migrate": "cd ./apps/api && npm prisma db push && cd ../..",
-    "db:generate": "cd ./apps/api && npm prisma generate && cd ../.."
+    "start": "npx nx run-many --parallel --target=serve --projects=app,api",
+    "build": "npx nx build",
+    "build:app": "npx nx export --project app",
+    "e2e": "npx nx e2e app-e2e --watch",
+    "test": "npx nx test",
+    "storybook": "npx nx storybook app",
+    "db:migrate": "cd ./apps/api && npx prisma db push && cd ../..",
+    "db:generate": "cd ./apps/api && npx prisma generate && cd ../.."
   },
   "private": true,
   "dependencies": {
