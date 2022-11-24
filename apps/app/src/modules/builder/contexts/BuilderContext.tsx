@@ -14,6 +14,7 @@ import { Builder } from '../types/builder.types';
 import {
   useLazyGetTemplateByIdQuery,
   useUpdateTemplateMutation,
+  useTemplatePreviewImageMutation,
   useUploadTemplateImageMutation,
 } from '@/redux/endpoints/template.endpoints';
 import { useSendEmailMutation } from '@/redux/endpoints/email.endpoints';
@@ -72,6 +73,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   const [sendEmailMutation] = useSendEmailMutation();
   const [uploadTemplateImage] = useUploadTemplateImageMutation();
   const [mergeTags, setMergeTags] = useState<Template.MergeTags>({});
+  const [templatePreviewImageMutation] = useTemplatePreviewImageMutation();
 
   const templateId = router.query?.templateId as string;
 
@@ -84,6 +86,12 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   useEffect(() => {
     handleOverwriteColorPicker();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      templatePreviewImageMutation(templateId);
+    };
+  }, [templateId]);
 
   const initialValues: IEmailTemplate = useMemo(() => {
     if (data == null) {

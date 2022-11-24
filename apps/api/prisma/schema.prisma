@@ -24,6 +24,7 @@ model Template {
   subtitle  String
   content   Json
   html      String
+  previewImage      String?
   userId    String?
   createdAt DateTime @default(now())
  	updatedAt DateTime @updatedAt

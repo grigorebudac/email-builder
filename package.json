@@ -5,8 +5,10 @@
   "scripts": {
     "start": "nx run-many --parallel --target=serve --projects=app,api",
     "build": "nx build",
+    "build:app": "nx build --project app",
     "e2e": "nx e2e app-e2e --watch",
     "test": "nx test",
+    "storybook": "nx storybook app",
     "db:migrate": "cd ./apps/api && prisma db push && cd ../..",
     "db:generate": "cd ./apps/api && prisma generate && cd ../.."
   },
@@ -16,7 +18,7 @@
     "@aws-amplify/auth": "^5.0.1",
     "@aws-sdk/client-ses": "^3.202.0",
     "@aws-sdk/credential-provider-node": "^3.202.0",
-    "@emotion/react": "^11",
+    "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11",
     "@faker-js/faker": "^7.5.0",
     "@hookform/resolvers": "^2.9.8",
@@ -44,6 +46,7 @@
     "liquidjs": "^9.42.0",
     "lodash": "^4.17.21",
     "next": "12.2.5",
+    "node-html-to-image": "^3.2.4",
     "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
@@ -62,6 +65,8 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@babel/core": "7.12.13",
+    "@babel/preset-typescript": "7.12.13",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
     "@nrwl/cli": "14.7.3",
@@ -73,8 +78,15 @@
     "@nrwl/next": "^14.7.3",
     "@nrwl/node": "14.7.3",
     "@nrwl/react": "14.7.3",
+    "@nrwl/storybook": "^15.2.1",
     "@nrwl/web": "14.7.3",
     "@nrwl/workspace": "14.7.3",
+    "@storybook/addon-essentials": "~6.5.9",
+    "@storybook/builder-webpack5": "~6.5.9",
+    "@storybook/core-server": "~6.5.9",
+    "@storybook/manager-webpack5": "~6.5.9",
+    "@storybook/react": "~6.5.9",
+    "@svgr/webpack": "^5.5.0",
     "@testing-library/react": "13.3.0",
     "@types/aws-sdk": "^2.7.0",
     "@types/jest": "28.1.1",
@@ -89,6 +101,7 @@
     "@typescript-eslint/eslint-plugin": "~5.33.1",
     "@typescript-eslint/parser": "~5.33.1",
     "babel-jest": "28.1.1",
+    "babel-loader": "8.1.0",
     "babel-plugin-styled-components": "1.10.7",
     "class-transformer": "^0.5.1",
     "cypress": "^10.7.0",
@@ -107,8 +120,11 @@
     "prettier": "^2.6.2",
     "prisma": "^4.3.1",
     "react-test-renderer": "18.2.0",
+    "storybook-addon-next": "^1.6.6",
+    "storybook-addon-swc": "^1.1.7",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
-    "typescript": "~4.7.2"
+    "typescript": "~4.7.2",
+    "url-loader": "^3.0.0"
   }
 }
