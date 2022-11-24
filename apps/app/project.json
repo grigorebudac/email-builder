@@ -15,9 +15,7 @@
         "development": {
           "outputPath": "apps/app"
         },
-        "production": {
-          "outputPath": "apps/app/dist"
-        }
+        "production": {}
       }
     },
     "serve": {
