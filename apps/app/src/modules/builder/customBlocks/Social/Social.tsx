@@ -9,6 +9,14 @@ import {
 // import { getImg } from '@core/utils/getImg';
 import { merge } from 'lodash';
 import { BasicBlock } from '../../components/BasicBlock/BasicBlock';
+import {
+  FACEBOOK_ICON_URL,
+  GLASSDOOR_ICON_URL,
+  INSTAGRAM_ICON_URL,
+  LINKEDIN_ICON_URL,
+  TWITTER_ICON_URL,
+  WWW_ICON_URL,
+} from '@/constants/defaultImageSources';
 
 const { Section, Wrapper } = components;
 
@@ -21,6 +29,7 @@ export type ISocial = IBlockData<
     'icon-height'?: string;
     'icon-size'?: string;
     mode?: 'vertical' | 'horizontal';
+    iconLabels?: 'none' | 'visible';
     'icon-padding': string;
     'text-padding': string;
     'text-decoration'?: string;
@@ -71,22 +80,40 @@ export const Social = createCustomBlock<ISocial>({
         value: {
           elements: [
             {
-              href: '#',
+              href: 'https://www.linkedin.com/company/lego-group',
               target: '_blank',
-              src: '/facebook.png',
+              src: LINKEDIN_ICON_URL,
+              content: 'LinkedIn',
+            },
+            {
+              href: 'https://www.facebook.com/LEGO',
+              target: '_blank',
+              src: FACEBOOK_ICON_URL,
               content: 'Facebook',
             },
             {
-              href: '#',
+              href: 'https://instagram.com/lego',
               target: '_blank',
-              src: '/facebook.png',
-              content: 'Google',
+              src: INSTAGRAM_ICON_URL,
+              content: 'Instagram',
             },
             {
-              href: '',
+              href: 'https://twitter.com/LEGO_Group',
               target: '_blank',
-              src: '/facebook.png',
+              src: TWITTER_ICON_URL,
               content: 'Twitter',
+            },
+            {
+              href: 'https://www.glassdoor.com/Reviews/The-LEGO-Group-Denmark-Reviews-EI_IE3944.0,14_IL.15,22_IN63.htm?filter.iso3Language=eng',
+              target: '_blank',
+              src: GLASSDOOR_ICON_URL,
+              content: 'Glassdoor',
+            },
+            {
+              href: 'https://www.lego.com/',
+              target: '_blank',
+              src: WWW_ICON_URL,
+              content: 'LEGO.com',
             },
           ],
         },
@@ -95,6 +122,7 @@ export const Social = createCustomBlock<ISocial>({
         align: 'center',
         color: '#333333',
         mode: 'horizontal',
+        iconLabels: 'none',
         'font-size': '13px',
         'font-weight': 'normal',
         'border-radius': '3px',
@@ -104,6 +132,7 @@ export const Social = createCustomBlock<ISocial>({
         'text-padding': '4px 4px 4px 0px',
         'icon-padding': '0px',
         'icon-size': '20px',
+        'font-family': 'Cera Pro',
       },
       children: [],
     };
@@ -117,6 +146,8 @@ export const Social = createCustomBlock<ISocial>({
   ],
   render(params) {
     const { data } = params;
+    const attributes = data.attributes;
+    console.log(attributes.iconLabels);
     const elements = data.data.value.elements
       .map((element) => {
         const elementAttributeStr = Object.keys(element)
@@ -127,7 +158,9 @@ export const Social = createCustomBlock<ISocial>({
           .map((key) => `${key}="${element[key as keyof typeof element]}"`)
           .join(' ');
         return `
-          <mj-social-element ${elementAttributeStr}>${element.content}</mj-social-element>
+          <mj-social-element ${elementAttributeStr}>${
+          attributes.iconLabels === 'visible' ? element.content : ''
+        }</mj-social-element>
           `;
       })
       .join('\n');
