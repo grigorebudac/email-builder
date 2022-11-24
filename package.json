@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nx run-many --parallel --target=serve --projects=app,api",
     "build": "nx build",
-    "build:app": "nx build --project app",
+    "build:app": "nx export --project app",
     "e2e": "nx e2e app-e2e --watch",
     "test": "nx test",
     "storybook": "nx storybook app",
