@@ -4,10 +4,8 @@ import {
   BasicType,
   createCustomBlock,
   AdvancedType,
-  components,
 } from 'easy-email-core';
-// import { getImg } from '@core/utils/getImg';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import { BasicBlock } from '../../components/BasicBlock/BasicBlock';
 import {
   FACEBOOK_ICON_URL,

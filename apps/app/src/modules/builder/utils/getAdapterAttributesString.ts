@@ -4,7 +4,7 @@ import {
   getNodeTypeClassName,
   IBlock,
 } from 'easy-email-core';
-import { isString } from 'lodash';
+import isString from 'lodash/isString';
 
 function classnames(...rest: any[]) {
   return rest.filter((item) => typeof item === 'string').join(' ');

@@ -3,16 +3,17 @@ import {
   getChildIdx,
   IBlock,
 } from 'easy-email-core';
-import { omit } from 'lodash';
-import React from 'react';
+import omit from 'lodash/omit';
+import React, { PropsWithChildren } from 'react';
 import { getPlaceholder } from '../../utils/getPlaceHolder';
 import { BlockRenderer } from './BlockRenderer';
 
-export function BasicBlock(props: {
+interface BasicBlockProps {
   params: Parameters<IBlock['render']>[0];
   tag: string;
-  children?: React.ReactNode;
-}) {
+}
+
+export function BasicBlock(props: PropsWithChildren<BasicBlockProps>) {
   const {
     params,
     params: { data, idx, children: children2, mode },

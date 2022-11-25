@@ -180,8 +180,7 @@ function SocialElement({
   const { onUploadImage, socialIcons } = useEditorProps();
 
   const autoCompleteOptions = useMemo(() => {
-    if (!socialIcons) return undefined;
-    return socialIcons.map((icon) => {
+    return socialIcons?.map((icon) => {
       return {
         label: icon.content,
         value: icon.image,
@@ -196,7 +195,6 @@ function SocialElement({
         autoCompleteOptions={autoCompleteOptions}
         labelHidden
         name={`${focusIdx}.data.value.elements.[${index}].src`}
-        // helpText='The image suffix should be .jpg, jpeg, png, gif, etc. Otherwise, the picture may not be displayed normally.'
         uploadHandler={onUploadImage}
       />
 
