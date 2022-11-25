@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { withProtectedRoute } from 'src/hocs/withProtectedRoute';
-import { Button, Flex, useDisclosure } from '@lego/klik-ui';
+import { Box, Button, Flex, Grid, useDisclosure } from '@lego/klik-ui';
 import { useRouter } from 'next/router';
 
 import {
@@ -11,8 +11,9 @@ import {
 import { NextPageWithLayout } from '@/types/next.types';
 import ApplicationLayout from '@/components/Layouts/ApplicationLayout';
 import { Template } from '@/types/template.types';
-import TemplatesTable from '../../components/TemplatesTable';
 import CreateTemplateModal from '../../components/CreateTemplateModal';
+import Card from '../../components/Card';
+import EmptyCard from '../../components/EmptyCard';
 
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,11 +48,29 @@ const Templates: NextPageWithLayout = () => {
       </Flex>
 
       {!isLoading && (
-        <TemplatesTable
-          data={templates ?? []}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+        <Box paddingRight={100} paddingLeft={100}>
+          <Grid
+            templateColumns={[
+              'repeat(1, 1fr)',
+              'repeat(1, 1fr)',
+              'repeat(3, 1fr)',
+              'repeat(5, 1fr)',
+            ]}
+            gap={10}
+          >
+            <EmptyCard onCreate={onOpen} />
+            {templates.map((template) => {
+              return (
+                <Card
+                  key={template.id}
+                  previewImage={template.previewImage}
+                  onEdit={() => handleEdit(template.id)}
+                  onDelete={() => handleDelete(template.id)}
+                />
+              );
+            })}
+          </Grid>
+        </Box>
       )}
 
       <CreateTemplateModal
