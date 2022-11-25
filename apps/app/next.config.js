@@ -13,6 +13,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
+  images: {
+    domains: ['bachelor-templates-bucket.s3.amazonaws.com'],
+  },
 };
 
 module.exports = withNx(nextConfig);
