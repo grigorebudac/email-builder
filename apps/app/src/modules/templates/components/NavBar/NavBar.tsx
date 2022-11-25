@@ -12,17 +12,7 @@ const NavBar = ({ onCreate }: NavBarProps) => {
         <Text>Email builder</Text>
       </Navbar.Brand>
       <Spacer />
-      <Navbar.Segment display={{ base: 'none', md: 'flex' }}>
-        <Button
-          data-cy="createTemplate"
-          size="sm"
-          variant="ghost"
-          onClick={onCreate}
-          color="white"
-        >
-          Create Template
-        </Button>
-      </Navbar.Segment>
+      <Navbar.Item onClick={onCreate}>Create</Navbar.Item>
       <Navbar.Burger display={{ base: 'block', lg: 'none' }} />
     </Navbar>
   );
