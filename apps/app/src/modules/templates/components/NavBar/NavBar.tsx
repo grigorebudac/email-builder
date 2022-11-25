@@ -1,10 +1,10 @@
-import { Button, LEGOLogo, Navbar, Spacer, Text } from '@lego/klik-ui';
+import { LEGOLogo, Navbar, Spacer, Text } from '@lego/klik-ui';
 
 interface NavBarProps {
-  onCreate: () => void;
+  onLogOut: () => void;
 }
 
-const NavBar = ({ onCreate }: NavBarProps) => {
+const NavBar = ({ onLogOut }: NavBarProps) => {
   return (
     <Navbar>
       <Navbar.Brand href="#brand">
@@ -12,7 +12,7 @@ const NavBar = ({ onCreate }: NavBarProps) => {
         <Text>Email builder</Text>
       </Navbar.Brand>
       <Spacer />
-      <Navbar.Item onClick={onCreate}>Create</Navbar.Item>
+      <Navbar.Item onClick={onLogOut}>Log out</Navbar.Item>
       <Navbar.Burger display={{ base: 'block', lg: 'none' }} />
     </Navbar>
   );

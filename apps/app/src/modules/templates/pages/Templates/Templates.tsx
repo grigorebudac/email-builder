@@ -15,6 +15,7 @@ import CreateTemplateModal from '../../components/CreateTemplateModal';
 import Card from '../../components/Card';
 import EmptyCard from '../../components/EmptyCard';
 import NavBar from '../../components/NavBar/NavBar';
+import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,9 +41,14 @@ const Templates: NextPageWithLayout = () => {
     await deleteTemplateMutation(templateId);
   }
 
+  async function logOut() {
+    await AmplifyAuth.signOut();
+    router.push('/login');
+  }
+
   return (
     <div>
-      <NavBar onCreate={onOpen} />
+      <NavBar onLogOut={logOut} />
 
       {!isLoading && (
         <Box paddingRight={100} paddingLeft={100} marginTop={50}>
@@ -56,7 +62,7 @@ const Templates: NextPageWithLayout = () => {
             gap={10}
           >
             <EmptyCard onCreate={onOpen} />
-            {templates.map((template) => {
+            {templates?.map((template) => {
               return (
                 <Card
                   key={template.id}
