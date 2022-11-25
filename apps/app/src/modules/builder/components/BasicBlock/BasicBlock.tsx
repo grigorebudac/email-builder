@@ -1,3 +1,4 @@
+import { FACEBOOK_ICON_URL } from '@/constants/defaultImageSources';
 import {
   getAdapterAttributesString,
   getChildIdx,
@@ -45,7 +46,7 @@ export function BasicBlock(props: PropsWithChildren<BasicBlockProps>) {
         <>
           {`<${tag} ${getAdapterAttributesString(
             adapterData
-          )} src="/facebook.png">`}
+          )} src=${FACEBOOK_ICON_URL}>`}
 
           {`</${tag}>`}
         </>
