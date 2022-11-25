@@ -5,7 +5,6 @@ import FoldableButton from '../FoldableButton';
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg';
 import { ReactComponent as DeleteIcon } from '@/assets/svg/delete.svg';
 import { ReactComponent as DuplicateIcon } from '@/assets/svg/duplicate.svg';
-import { ReactComponent as PlusIcon } from '@/assets/svg/plus.svg';
 
 interface CardProps {
   previewImage: string;
@@ -23,14 +22,14 @@ const Card = ({ previewImage, onEdit, onDelete }: CardProps) => {
       borderRadius={5}
       overflow="hidden"
       borderWidth={1}
-      borderColor={theme.colors['slate'][50]}
+      borderColor={theme.colors['slate'][100]}
       cursor="pointer"
     >
       <Box
         position="relative"
         height={260}
         width={'100%'}
-        borderBottom="1px solid #f1f1f1"
+        borderBottom="1px solid #e3e3e1"
         onClick={onEdit}
       >
         <Image

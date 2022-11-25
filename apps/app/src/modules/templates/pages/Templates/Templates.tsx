@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { withProtectedRoute } from 'src/hocs/withProtectedRoute';
-import { Box, Button, Flex, Grid, useDisclosure } from '@lego/klik-ui';
+import { Box, Grid, useDisclosure } from '@lego/klik-ui';
 import { useRouter } from 'next/router';
 
 import {
@@ -14,6 +14,7 @@ import { Template } from '@/types/template.types';
 import CreateTemplateModal from '../../components/CreateTemplateModal';
 import Card from '../../components/Card';
 import EmptyCard from '../../components/EmptyCard';
+import NavBar from '../../components/NavBar/NavBar';
 
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,14 +42,10 @@ const Templates: NextPageWithLayout = () => {
 
   return (
     <div>
-      <Flex justifyContent="flex-end" marginBottom="2rem">
-        <Button data-cy="createTemplate" size="sm" onClick={onOpen}>
-          Create Template
-        </Button>
-      </Flex>
+      <NavBar onCreate={onOpen} />
 
       {!isLoading && (
-        <Box paddingRight={100} paddingLeft={100}>
+        <Box paddingRight={100} paddingLeft={100} marginTop={50}>
           <Grid
             templateColumns={[
               'repeat(1, 1fr)',
