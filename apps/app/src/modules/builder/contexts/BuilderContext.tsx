@@ -36,6 +36,8 @@ import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
+import { SocialBanner } from '../customBlocks/Social/Social';
+import { SocialBannerPanel } from '../customBlocks/Social/SocialPanel';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -55,12 +57,14 @@ BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
   [CustomBlocksType.TABLE]: Table,
+  [CustomBlocksType.SOCIALBANNER]: SocialBanner,
 });
 
 BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
   [CustomBlocksType.TABLE]: TablePanel,
+  [CustomBlocksType.SOCIALBANNER]: SocialBannerPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
 
@@ -114,20 +118,21 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   function handleOverwriteColorPicker() {
     const defaultColors = [
-      theme.colors.black,
       theme.colors.white,
+      color.brand.white,
       theme.colors.slate[100],
+      color.brand.black,
+      color.brand.brightYellow,
+      color.brand.brightOrange,
+      color.brand.brightRed,
+      color.brand.lightPink,
+      color.brand.mediumLilac,
+      color.brand.brightBlue,
+      color.brand.darkAzur,
+      color.brand.brightGreen,
     ];
 
-    const colors = Object.values(color.core).reduce<string[]>((acc, cv) => {
-      if (cv[400] != null) {
-        acc.push(cv[400]);
-      }
-
-      return acc;
-    }, defaultColors);
-
-    localStorage.setItem('CURRENT_COLORS_KEY', JSON.stringify(colors));
+    localStorage.setItem('CURRENT_COLORS_KEY', JSON.stringify(defaultColors));
   }
 
   async function handlePageInit() {
