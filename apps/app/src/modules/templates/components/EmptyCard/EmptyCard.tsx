@@ -2,11 +2,11 @@ import { theme } from '@lego/klik-ui';
 import { CardWrapper } from './EmptyCard.styles';
 import { ReactComponent as PlusIcon } from '@/assets/svg/plus.svg';
 
-interface CardProps {
+interface EmptyCardProps {
   onCreate: () => void;
 }
 
-const Card = ({ onCreate }: CardProps) => {
+const EmptyCard = ({ onCreate }: EmptyCardProps) => {
   return (
     <CardWrapper
       justifyContent="center"
@@ -23,4 +23,4 @@ const Card = ({ onCreate }: CardProps) => {
   );
 };
 
-export default Card;
+export default EmptyCard;
