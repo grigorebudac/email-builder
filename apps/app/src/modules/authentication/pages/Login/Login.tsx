@@ -8,7 +8,7 @@ import { withPublicRoute } from '@/hocs/withPublicRoute';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 import { Auth } from '../../types/auth.types';
-import { Button, Divider, theme } from '@lego/klik-ui';
+import Head from 'next/head';
 
 const Login = () => {
   const router = useRouter();
@@ -30,17 +30,22 @@ const Login = () => {
   }, []);
 
   return (
-    <AuthenticationLayout
-      withLogo
-      title="Welcome back"
-      subtitle="Please enter your details"
-    >
-      <LoginForm
-        onSubmit={handleSignIn}
-        error={loginError}
-        onMicrosoftSignIn={handleSignInWithMicrosoft}
-      />
-    </AuthenticationLayout>
+    <>
+      <Head>
+        <title>Log in</title>
+      </Head>
+      <AuthenticationLayout
+        withLogo
+        title="Welcome back"
+        subtitle="Please enter your details"
+      >
+        <LoginForm
+          onSubmit={handleSignIn}
+          error={loginError}
+          onMicrosoftSignIn={handleSignInWithMicrosoft}
+        />
+      </AuthenticationLayout>
+    </>
   );
 };
 
