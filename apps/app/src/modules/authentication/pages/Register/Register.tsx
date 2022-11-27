@@ -1,10 +1,8 @@
-import { withPublicRoute } from '@/hocs/withPublicRoute';
 import React from 'react';
-import { AuthenticationSection } from '../../sections/AuthenticationSection';
-import { InitialAuthSection } from '../../types/auth.types';
+import { withPublicRoute } from '@/hocs/withPublicRoute';
 
 const Register = () => {
-  return <AuthenticationSection initial={InitialAuthSection.Register} />;
+  return <></>;
 };
 
 export default withPublicRoute(Register);

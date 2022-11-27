@@ -1,10 +1,10 @@
 import { withPublicRoute } from '@/hocs/withPublicRoute';
 import React from 'react';
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm';
-import SimpleAuthenticationLayout from '../../components/Layouts/SimpleAuthenticationLayout';
 import { Auth } from '../../types/auth.types';
 import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
+import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -18,9 +18,9 @@ const ForgotPassword = () => {
     }
   }
   return (
-    <SimpleAuthenticationLayout title="Forgot Password">
+    <AuthenticationLayout>
       <ForgotPasswordForm onSubmit={handleSubmit} />
-    </SimpleAuthenticationLayout>
+    </AuthenticationLayout>
   );
 };
 

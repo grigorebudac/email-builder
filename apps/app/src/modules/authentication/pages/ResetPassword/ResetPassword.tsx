@@ -1,10 +1,10 @@
 import { withPublicRoute } from '@/hocs/withPublicRoute';
 import React, { useCallback, useEffect } from 'react';
 import ResetPasswordForm from '../../components/Forms/ResetPasswordForm';
-import SimpleAuthenticationLayout from '../../components/Layouts/SimpleAuthenticationLayout';
 import { Auth } from '../../types/auth.types';
 import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
+import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 
 const ResetPassword = () => {
   const { query, isReady, push } = useRouter();
@@ -51,9 +51,9 @@ const ResetPassword = () => {
   }
 
   return (
-    <SimpleAuthenticationLayout title="Reset Password">
+    <AuthenticationLayout>
       <ResetPasswordForm onSubmit={handleSubmit} />
-    </SimpleAuthenticationLayout>
+    </AuthenticationLayout>
   );
 };
 

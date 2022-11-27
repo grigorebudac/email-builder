@@ -1,52 +1,56 @@
-import React, { useMemo } from 'react';
-import { Box, Button, Container, Divider, Tabs } from '@lego/klik-ui';
-import { InitialAuthSection } from '../../../types/auth.types';
+import React, { PropsWithChildren } from 'react';
+import { Box, Flex, Grid, LEGOLogo, Text } from '@lego/klik-ui';
+import Image from 'next/image';
 
 type AuthenticationLayoutProps = {
-  loginSection: React.ReactNode;
-  registerSection: React.ReactNode;
-  initial: InitialAuthSection;
-  onLoginWithMicrosoft: () => void;
+  title?: string;
+  subtitle?: string;
+  withLogo?: boolean;
 };
 
-const AuthenticationLayout: React.FC<AuthenticationLayoutProps> = ({
-  loginSection,
-  registerSection,
-  initial,
-  onLoginWithMicrosoft,
-}) => {
-  const oauthSection = useMemo(() => {
-    return (
-      <Box mt={5}>
-        <Divider />
-
-        <Button isFullWidth mt={5} onClick={onLoginWithMicrosoft}>
-          Login with Microsoft
-        </Button>
-      </Box>
-    );
-  }, [onLoginWithMicrosoft]);
-
+const AuthenticationLayout = ({
+  title,
+  subtitle,
+  withLogo,
+  children,
+}: PropsWithChildren<AuthenticationLayoutProps>) => {
   return (
-    <Container height="100vh" display="grid" placeItems="center">
-      <Tabs isFitted={true} width="100%" height="400" defaultIndex={initial}>
-        <Tabs.TabList>
-          <Tabs.Tab>Log in</Tabs.Tab>
-          <Tabs.Tab>Register</Tabs.Tab>
-        </Tabs.TabList>
-        <Tabs.TabPanels>
-          <Tabs.TabPanel>
-            {loginSection}
-            {oauthSection}
-          </Tabs.TabPanel>
-          <Tabs.TabPanel>
-            {registerSection}
-            {oauthSection}
-          </Tabs.TabPanel>
-        </Tabs.TabPanels>
-      </Tabs>
-    </Container>
+    <Grid
+      height="100vh"
+      width="100vw"
+      templateColumns={['1fr', 'repeat(2, 1fr)']}
+    >
+      <Box position={'relative'} display={['none', 'block']}>
+        <Image
+          src="/logIn.jpeg"
+          alt="login-image"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="bottom bottom"
+        />
+      </Box>
+
+      <Flex justifyContent="center" alignItems="center" flexDirection="column">
+        {withLogo && <LEGOLogo boxSize={['70px', '100px']} />}
+        {title && (
+          <Text
+            fontWeight="semibold"
+            fontSize={['24px', '36px']}
+            marginTop={['25px', '40px']}
+          >
+            {title}
+          </Text>
+        )}
+        {subtitle && (
+          <Text fontSize={['10px', '14px']} marginTop={['0px', '5px']}>
+            {subtitle}
+          </Text>
+        )}
+
+        {children}
+      </Flex>
+    </Grid>
   );
 };
 
-export { AuthenticationLayout };
+export default AuthenticationLayout;
