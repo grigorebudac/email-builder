@@ -1,16 +1,18 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Box, Button, Flex, Stack, theme } from '@lego/klik-ui';
+import { Box, Button, Divider, Flex, Stack, theme } from '@lego/klik-ui';
 import { Lock } from '@lego/klik-ui/icons';
 import { Auth } from '@/modules/authentication/types/auth.types';
 import { TextFieldController } from '@/components/Controllers/TextFieldController';
 import { Text } from '@lego/klik-ui';
 import Link from 'next/link';
+import { ReactComponent as Microsoft } from '@/assets/svg/microsoft.svg';
 
 type LoginFormProps = {
-  onSubmit: (credentials: Auth.LoginRequestPayload) => void;
   error: string;
+  onSubmit: (credentials: Auth.LoginRequestPayload) => void;
+  onMicrosoftSignIn: () => void;
 };
 
 const schema = yup.object().shape({
@@ -33,8 +35,39 @@ const LoginForm = (props: LoginFormProps) => {
 
   return (
     <Box width={['auto', '500px']}>
+      <Button
+        isFullWidth
+        mt={5}
+        variant="outline"
+        color={theme.colors.slate[900]}
+        borderColor={theme.colors.slate[100]}
+        borderWidth="1px"
+        leftIcon={<Microsoft />}
+        onClick={props.onMicrosoftSignIn}
+      >
+        Login with Microsoft
+      </Button>
+
+      <Box position="relative" padding="0px 40px" margin="30px 0px">
+        <Divider
+          height="1px"
+          backgroundColor={theme.colors.slate[100]}
+          borderWidth="0px"
+        />
+        <Flex
+          backgroundColor={theme.colors.white}
+          position="absolute"
+          left="50%"
+          width="60px"
+          justifyContent="center"
+          style={{ transform: `translate(-30px, -50%)` }}
+        >
+          <Text fontSize="14px">Or</Text>
+        </Flex>
+      </Box>
+
       <form onSubmit={handleSubmit(props.onSubmit)}>
-        <Stack>
+        <Stack margin="0" padding="0">
           <TextFieldController
             data-cy="login-email"
             name="email"
@@ -42,6 +75,7 @@ const LoginForm = (props: LoginFormProps) => {
             isRequired
             error={errors?.email}
             control={control}
+            borderWidth="1px"
           />
 
           <Box paddingTop={['5px', '10px']}>
@@ -54,6 +88,7 @@ const LoginForm = (props: LoginFormProps) => {
               icon={<Lock color="slate.400" fontSize="1.375rem" />}
               error={errors?.password}
               control={control}
+              borderWidth="1px"
             />
           </Box>
 

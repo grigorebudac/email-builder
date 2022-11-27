@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Auth as AmplifyAuth } from '@aws-amplify/auth';
+import {
+  Auth as AmplifyAuth,
+  CognitoHostedUIIdentityProvider,
+} from '@aws-amplify/auth';
 import { withPublicRoute } from '@/hocs/withPublicRoute';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 import { Auth } from '../../types/auth.types';
+import { Button, Divider, theme } from '@lego/klik-ui';
 
 const Login = () => {
   const router = useRouter();
@@ -19,13 +23,23 @@ const Login = () => {
     }
   }
 
+  const handleSignInWithMicrosoft = useCallback(() => {
+    AmplifyAuth.federatedSignIn({
+      provider: 'Microsoft' as CognitoHostedUIIdentityProvider,
+    });
+  }, []);
+
   return (
     <AuthenticationLayout
       withLogo
       title="Welcome back"
       subtitle="Please enter your details"
     >
-      <LoginForm onSubmit={handleSignIn} error={loginError} />
+      <LoginForm
+        onSubmit={handleSignIn}
+        error={loginError}
+        onMicrosoftSignIn={handleSignInWithMicrosoft}
+      />
     </AuthenticationLayout>
   );
 };
