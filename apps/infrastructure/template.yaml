@@ -43,8 +43,6 @@ Resources:
         - email
       AutoVerifiedAttributes:
         - email
-      UserPoolAddOns:
-        AdvancedSecurityMode: ENFORCED
       Policies:
         PasswordPolicy:
           MinimumLength: 8
