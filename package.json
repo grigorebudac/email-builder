@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npx nx run-many --parallel --target=serve --projects=app,api",
     "build": "npx nx build",
+    "build:api": "npx nx build --project api",
     "build:app": "npx nx export --project app",
     "e2e": "npx nx e2e app-e2e --watch",
     "test": "npx nx test",
@@ -16,7 +17,6 @@
   "dependencies": {
     "@arco-themes/react-easy-email-theme": "^0.0.3",
     "@aws-amplify/auth": "^5.0.1",
-    "@aws-sdk/client-ses": "^3.202.0",
     "@aws-sdk/credential-provider-node": "^3.202.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11",
@@ -62,7 +62,8 @@
     "rxjs": "^7.0.0",
     "styled-components": "5.3.5",
     "tslib": "^2.3.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "class-transformer": "^0.5.1"
   },
   "devDependencies": {
     "@babel/core": "7.12.13",
@@ -103,7 +104,6 @@
     "babel-jest": "28.1.1",
     "babel-loader": "8.1.0",
     "babel-plugin-styled-components": "1.10.7",
-    "class-transformer": "^0.5.1",
     "cypress": "^10.7.0",
     "eslint": "~8.15.0",
     "eslint-config-next": "12.2.5",

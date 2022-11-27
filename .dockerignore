@@ -1,0 +1,6 @@
+node_modules
+tmp
+.vscode
+apps/app
+apps/app-e2e
+apps/infrastructure
