@@ -5,9 +5,9 @@ ENV PORT=3333
 EXPOSE ${PORT}
 WORKDIR /app
 
-COPY ./apps/api/prisma ./prisma/
-COPY ./apps/api/.env .
 COPY ../../dist/apps/api .
+COPY ./apps/api/prisma ./prisma/
+COPY ./apps/api/.env.production .env
 
 RUN apt-get update && apt-get install -y openssl libssl-dev
 RUN npm install --production
