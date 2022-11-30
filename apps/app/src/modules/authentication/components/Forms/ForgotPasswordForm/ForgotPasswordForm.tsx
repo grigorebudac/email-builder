@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@lego/klik-ui';
+import { Box, Button, theme } from '@lego/klik-ui';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -27,24 +27,29 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = (props) => {
   });
 
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
-      <TextFieldController
-        name="email"
-        type="email"
-        placeholder="Your Email"
-        error={errors?.email}
-        control={control}
-      />
+    <Box width={['auto', '500px']} mt={5}>
+      <form onSubmit={handleSubmit(props.onSubmit)}>
+        <TextFieldController
+          name="email"
+          type="email"
+          placeholder="Your Email"
+          error={errors?.email}
+          control={control}
+          borderWidth="1px"
+        />
 
-      <Button
-        mt="1.6rem"
-        type="submit"
-        disabled={isSubmitting}
-        isLoading={isSubmitting}
-      >
-        Reset Password
-      </Button>
-    </form>
+        <Button
+          mt={7}
+          type="submit"
+          disabled={isSubmitting}
+          isLoading={isSubmitting}
+          isFullWidth
+          backgroundColor={theme.colors.slate[900]}
+        >
+          Reset Password
+        </Button>
+      </form>
+    </Box>
   );
 };
 

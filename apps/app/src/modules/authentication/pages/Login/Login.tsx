@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import {
   Auth as AmplifyAuth,
   CognitoHostedUIIdentityProvider,
 } from '@aws-amplify/auth';
+import { Auth } from '../../types/auth.types';
 import { withPublicRoute } from '@/hocs/withPublicRoute';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
-import { Auth } from '../../types/auth.types';
-import Head from 'next/head';
 
 const Login = () => {
   const router = useRouter();

@@ -5,6 +5,7 @@ import { Auth } from '../../types/auth.types';
 import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
+import Head from 'next/head';
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -18,9 +19,17 @@ const ForgotPassword = () => {
     }
   }
   return (
-    <AuthenticationLayout>
-      <ForgotPasswordForm onSubmit={handleSubmit} />
-    </AuthenticationLayout>
+    <>
+      <Head>
+        <title>Forgot password</title>
+      </Head>
+      <AuthenticationLayout
+        title="Forgot password?"
+        subtitle="Insert your email to reset the password"
+      >
+        <ForgotPasswordForm onSubmit={handleSubmit} />
+      </AuthenticationLayout>
+    </>
   );
 };
 

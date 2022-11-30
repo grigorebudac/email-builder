@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Box, Button, Divider, Flex, Stack, theme } from '@lego/klik-ui';
-import { Lock } from '@lego/klik-ui/icons';
+import { EmailUnread, Lock } from '@lego/klik-ui/icons';
 import { Auth } from '@/modules/authentication/types/auth.types';
 import { TextFieldController } from '@/components/Controllers/TextFieldController';
 import { Text } from '@lego/klik-ui';
@@ -78,6 +78,7 @@ const LoginForm = (props: LoginFormProps) => {
             error={errors?.email}
             control={control}
             borderWidth="1px"
+            icon={<EmailUnread color="slate.400" fontSize="1.3rem" />}
           />
 
           <Box paddingTop={['5px', '10px']}>
@@ -112,7 +113,7 @@ const LoginForm = (props: LoginFormProps) => {
         <Flex justifyContent="space-between" paddingTop={['5px', '10px']}>
           <Text fontSize={['10px', '14px']}>
             Not registered yet?
-            <Link href="/forgot-password" passHref>
+            <Link href="/register" passHref>
               <a>
                 <Text
                   fontWeight="semibold"
