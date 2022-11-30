@@ -34,11 +34,11 @@ function useAuth() {
     }
   }
 
-  const onLoginWithMicrosoft = useCallback(() => {
+  function onLoginWithMicrosoft() {
     AmplifyAuth.federatedSignIn({
       provider: 'Microsoft' as CognitoHostedUIIdentityProvider,
     });
-  }, []);
+  }
 
   return { error, onLogIn, onSignIn, onLoginWithMicrosoft };
 }
