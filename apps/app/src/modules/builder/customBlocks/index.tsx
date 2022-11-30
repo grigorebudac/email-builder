@@ -222,6 +222,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         description: 'Custom table component',
         component: null,
       },
+      {
+        type: CustomBlocksType.RATING,
+        title: 'Rating',
+        description: 'Custom rating component',
+        component: null,
+      },
     ],
   },
 ];

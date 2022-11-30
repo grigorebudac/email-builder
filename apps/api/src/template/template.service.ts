@@ -136,6 +136,8 @@ export class TemplateService {
   async updateTemplatePreviewImage(id: string, userId: string) {
     const template = await this.getTemplateById(id, userId);
 
+    if (!template.html) return {};
+
     const image = await nodeHtmlToImage({
       html: template.html,
     });

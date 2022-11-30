@@ -36,6 +36,8 @@ import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
+import Rating from '../customBlocks/Rating/Rating';
+import RatingPanel from '../customBlocks/Rating/RatingPanel';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -55,12 +57,14 @@ BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
   [CustomBlocksType.TABLE]: Table,
+  [CustomBlocksType.RATING]: Rating,
 });
 
 BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
   [CustomBlocksType.TABLE]: TablePanel,
+  [CustomBlocksType.RATING]: RatingPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
 
