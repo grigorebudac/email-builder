@@ -12,10 +12,10 @@ import { NextPageWithLayout } from '@/types/next.types';
 import ApplicationLayout from '@/components/Layouts/ApplicationLayout';
 import { Template } from '@/types/template.types';
 import CreateTemplateModal from '../../components/CreateTemplateModal';
-import Card from '../../components/Card';
 import EmptyCard from '../../components/EmptyCard';
 import NavBar from '../../components/NavBar/NavBar';
 import { Auth as AmplifyAuth } from '@aws-amplify/auth';
+import TemplateCard from '../../components/TemplateCard';
 
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,12 +63,14 @@ const Templates: NextPageWithLayout = () => {
           >
             <EmptyCard onCreate={onOpen} />
             {templates?.map((template) => {
+              const templateId = template.id;
               return (
-                <Card
-                  key={template.id}
+                <TemplateCard
+                  key={templateId}
+                  templateId={templateId}
                   previewImage={template.previewImage}
-                  onEdit={() => handleEdit(template.id)}
-                  onDelete={() => handleDelete(template.id)}
+                  onEdit={() => handleEdit(templateId)}
+                  onDelete={() => handleDelete(templateId)}
                 />
               );
             })}

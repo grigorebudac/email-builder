@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Box } from '@lego/klik-ui';
+import { Button, Box, theme } from '@lego/klik-ui';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -36,34 +36,40 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = (props) => {
   });
 
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
-      <TextFieldController
-        name="password"
-        type="password"
-        placeholder="Your New Password"
-        error={errors?.password}
-        control={control}
-      />
-
-      <Box mt="1.6rem">
+    <Box width={['auto', '500px']} mt={5}>
+      <form onSubmit={handleSubmit(props.onSubmit)}>
         <TextFieldController
-          name="confirmPassword"
+          name="password"
           type="password"
-          placeholder="Your New Password Again"
-          error={errors?.confirmPassword}
+          placeholder="Your New Password"
+          error={errors?.password}
           control={control}
+          borderWidth="1px"
         />
-      </Box>
 
-      <Button
-        mt="1.6rem"
-        type="submit"
-        disabled={isSubmitting}
-        isLoading={isSubmitting}
-      >
-        Submit
-      </Button>
-    </form>
+        <Box paddingTop={['5px', '10px']}>
+          <TextFieldController
+            name="confirmPassword"
+            type="password"
+            placeholder="Repeat Your New Password"
+            error={errors?.confirmPassword}
+            control={control}
+            borderWidth="1px"
+          />
+        </Box>
+
+        <Button
+          mt={7}
+          isFullWidth
+          type="submit"
+          disabled={isSubmitting}
+          isLoading={isSubmitting}
+          backgroundColor={theme.colors.slate[900]}
+        >
+          Submit
+        </Button>
+      </form>
+    </Box>
   );
 };
 

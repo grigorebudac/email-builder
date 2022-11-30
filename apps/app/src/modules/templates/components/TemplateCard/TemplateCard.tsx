@@ -6,13 +6,19 @@ import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg';
 import { ReactComponent as DeleteIcon } from '@/assets/svg/delete.svg';
 import { ReactComponent as DuplicateIcon } from '@/assets/svg/duplicate.svg';
 
-interface CardProps {
+interface TemplateCardProps {
+  templateId: string;
   previewImage: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const Card = ({ previewImage, onEdit, onDelete }: CardProps) => {
+const TemplateCard = ({
+  templateId,
+  previewImage,
+  onEdit,
+  onDelete,
+}: TemplateCardProps) => {
   return (
     <Flex
       position="relative"
@@ -48,12 +54,14 @@ const Card = ({ previewImage, onEdit, onDelete }: CardProps) => {
         padding={'5px 10px'}
       >
         <FoldableButton
+          data-cy={`editTemplate-${templateId}`}
           icon={<EditIcon />}
           activeColor={theme.colors.warning[400]}
           label="Edit"
           onClick={onEdit}
         />
         <FoldableButton
+          data-cy={`deleteTemplate-${templateId}`}
           icon={<DeleteIcon />}
           activeColor={theme.colors.error[400]}
           label="Delete"
@@ -70,4 +78,4 @@ const Card = ({ previewImage, onEdit, onDelete }: CardProps) => {
   );
 };
 
-export default Card;
+export default TemplateCard;
