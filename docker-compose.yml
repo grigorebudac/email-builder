@@ -1,6 +1,16 @@
 version: '3.3'
 
 services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - 3333:3333
+    restart: on-failure
+    depends_on:
+      - mongodb
   mongodb:
     image: prismagraphql/mongo-single-replica:4.4.3-bionic
     container_name: mongodb
