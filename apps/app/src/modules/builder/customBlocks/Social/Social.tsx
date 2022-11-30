@@ -4,6 +4,7 @@ import {
   BasicType,
   createCustomBlock,
   AdvancedType,
+  getPreviewClassName,
 } from 'easy-email-core';
 import merge from 'lodash/merge';
 import { BasicBlock } from '../../components/BasicBlock/BasicBlock';
@@ -136,6 +137,7 @@ export const SocialBanner = createCustomBlock<ISocial>({
     return merge(defaultData, payload);
   },
   validParentType: [
+    BasicType.PAGE,
     AdvancedType.WRAPPER,
     BasicType.WRAPPER,
     AdvancedType.COLUMN,
@@ -144,7 +146,7 @@ export const SocialBanner = createCustomBlock<ISocial>({
     BasicType.GROUP,
   ],
   render(params) {
-    const { data } = params;
+    const { data, mode, idx } = params;
     const attributes = data.attributes;
     const elements = data.data.value.elements
       .map((element) => {
@@ -164,7 +166,13 @@ export const SocialBanner = createCustomBlock<ISocial>({
       .join('\n');
 
     return (
-      <BasicBlock params={params} tag="mj-social">
+      <BasicBlock
+        params={params}
+        tag="mj-social"
+        css-class={
+          mode === 'testing' ? getPreviewClassName(idx, data.type) : ''
+        }
+      >
         {elements}
       </BasicBlock>
     );

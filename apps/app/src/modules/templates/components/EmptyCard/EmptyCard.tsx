@@ -9,6 +9,7 @@ interface EmptyCardProps {
 const EmptyCard = ({ onCreate }: EmptyCardProps) => {
   return (
     <CardWrapper
+      data-cy="createTemplate"
       justifyContent="center"
       alignItems="center"
       background={theme.colors.white}

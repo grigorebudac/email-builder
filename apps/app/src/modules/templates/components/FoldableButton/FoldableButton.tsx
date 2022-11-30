@@ -7,6 +7,7 @@ interface FoldableButtonProps {
   label: string;
   activeColor: string;
   onClick: () => void;
+  'data-cy'?: string;
 }
 
 const FoldableButton = ({
@@ -14,9 +15,10 @@ const FoldableButton = ({
   label,
   activeColor,
   onClick,
+  ...props
 }: FoldableButtonProps) => {
   return (
-    <ButtonWrapper activeColor={activeColor} onClick={onClick}>
+    <ButtonWrapper activeColor={activeColor} onClick={onClick} {...props}>
       <div>{icon}</div>
 
       <Text fontSize="14px">{label}</Text>
