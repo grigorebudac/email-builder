@@ -42,9 +42,7 @@ const LoginForm = (props: LoginFormProps) => {
         color={theme.colors.slate[900]}
         borderColor={theme.colors.slate[100]}
         borderWidth="1px"
-        leftIcon={
-          <Microsoft style={{ width: 20, height: 20, marginRight: 10 }} />
-        }
+        leftIcon={<Microsoft className="microsoft" />}
         onClick={props.onMicrosoftSignIn}
       >
         Login with Microsoft
