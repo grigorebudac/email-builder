@@ -6,7 +6,7 @@ import { RegisterForm } from '../../components/Forms/RegisterForm';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 
 const Register = () => {
-  const { error, onSignIn, onLoginWithMicrosoft } = useAuth();
+  const { error, onSignUp, onLoginWithMicrosoft } = useAuth();
 
   return (
     <>
@@ -20,7 +20,7 @@ const Register = () => {
       >
         <RegisterForm
           error={error}
-          onSubmit={onSignIn}
+          onSubmit={onSignUp}
           onMicrosoftSignIn={onLoginWithMicrosoft}
         />
       </AuthenticationLayout>

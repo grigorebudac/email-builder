@@ -10,7 +10,7 @@ function useAuth() {
   const router = useRouter();
   const [error, setError] = useState<string>('');
 
-  async function onSignIn(credentials: Auth.RegisterRequestPayload) {
+  async function handleSignUp(credentials: Auth.RegisterRequestPayload) {
     try {
       await AmplifyAuth.signUp({
         username: credentials.email,
@@ -25,7 +25,7 @@ function useAuth() {
     }
   }
 
-  async function onLogIn(credentials: Auth.LoginRequestPayload) {
+  async function handleLogIn(credentials: Auth.LoginRequestPayload) {
     try {
       await AmplifyAuth.signIn(credentials.email, credentials.password);
       router.push('/');
@@ -34,13 +34,18 @@ function useAuth() {
     }
   }
 
-  function onLoginWithMicrosoft() {
+  function handleLoginWithMicrosoft() {
     AmplifyAuth.federatedSignIn({
       provider: 'Microsoft' as CognitoHostedUIIdentityProvider,
     });
   }
 
-  return { error, onLogIn, onSignIn, onLoginWithMicrosoft };
+  return {
+    error,
+    onLogIn: handleLogIn,
+    onSignUp: handleSignUp,
+    onLoginWithMicrosoft: handleLoginWithMicrosoft,
+  };
 }
 
 export default useAuth;
