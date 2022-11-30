@@ -63,7 +63,7 @@ const RegisterForm = (props: RegisterFormProps) => {
           left="50%"
           width="60px"
           justifyContent="center"
-          style={{ transform: `translate(-30px, -50%)` }}
+          className="interLabel"
         >
           <Text fontSize="14px">Or</Text>
         </Flex>

@@ -39,3 +39,7 @@ a {
   height: 20px;
   margin-right: 10px;
 }
+
+.interLabel {
+  transform: translate(-50%, -50%);
+}
