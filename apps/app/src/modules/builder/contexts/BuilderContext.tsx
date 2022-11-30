@@ -38,6 +38,8 @@ import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
 import Rating from '../customBlocks/Rating/Rating';
 import RatingPanel from '../customBlocks/Rating/RatingPanel';
+import { SocialBanner } from '../customBlocks/Social/Social';
+import { SocialBannerPanel } from '../customBlocks/Social/SocialPanel';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -58,6 +60,7 @@ BlockManager.registerBlocks({
   [CustomBlocksType.CARD]: Card,
   [CustomBlocksType.TABLE]: Table,
   [CustomBlocksType.RATING]: Rating,
+  [CustomBlocksType.SOCIALBANNER]: SocialBanner,
 });
 
 BlockAttributeConfigurationManager.add({
@@ -65,6 +68,7 @@ BlockAttributeConfigurationManager.add({
   [CustomBlocksType.CARD]: CardPanel,
   [CustomBlocksType.TABLE]: TablePanel,
   [CustomBlocksType.RATING]: RatingPanel,
+  [CustomBlocksType.SOCIALBANNER]: SocialBannerPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
 
@@ -118,20 +122,21 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
 
   function handleOverwriteColorPicker() {
     const defaultColors = [
-      theme.colors.black,
       theme.colors.white,
+      color.brand.white,
       theme.colors.slate[100],
+      color.brand.black,
+      color.brand.brightYellow,
+      color.brand.brightOrange,
+      color.brand.brightRed,
+      color.brand.lightPink,
+      color.brand.mediumLilac,
+      color.brand.brightBlue,
+      color.brand.darkAzur,
+      color.brand.brightGreen,
     ];
 
-    const colors = Object.values(color.core).reduce<string[]>((acc, cv) => {
-      if (cv[400] != null) {
-        acc.push(cv[400]);
-      }
-
-      return acc;
-    }, defaultColors);
-
-    localStorage.setItem('CURRENT_COLORS_KEY', JSON.stringify(colors));
+    localStorage.setItem('CURRENT_COLORS_KEY', JSON.stringify(defaultColors));
   }
 
   async function handlePageInit() {

@@ -3,4 +3,5 @@ export enum CustomBlocksType {
   CARD = 'card',
   TABLE = 'table',
   RATING = 'rating',
+  SOCIALBANNER = 'social-banner',
 }

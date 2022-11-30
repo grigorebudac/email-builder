@@ -22,8 +22,3 @@ export declare namespace Auth {
     password: string;
   };
 }
-
-export enum InitialAuthSection {
-  Login = 0,
-  Register = 1,
-}

@@ -24,6 +24,7 @@ import {
 import React from 'react';
 import { useField } from 'react-final-form';
 import { Button as ArcoButton } from '@arco-design/web-react';
+import { Stack } from '@lego/klik-ui';
 
 function ButtonPanel() {
   const { focusIdx } = useFocusIdx();
@@ -37,7 +38,7 @@ function ButtonPanel() {
     <>
       {/* @ts-ignore */}
       <AttributesPanelWrapper>
-        <div>
+        <Stack>
           <div>
             <Space direction="vertical">
               <TextField
@@ -142,7 +143,7 @@ function ButtonPanel() {
               <ClassName />
             </Grid.Col>
           </div>
-        </div>
+        </Stack>
       </AttributesPanelWrapper>
     </>
   );
