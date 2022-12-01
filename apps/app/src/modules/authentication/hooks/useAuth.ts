@@ -1,14 +1,16 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Auth } from '../types/auth.types';
 import {
   Auth as AmplifyAuth,
   CognitoHostedUIIdentityProvider,
 } from '@aws-amplify/auth';
+import useToast from '@/hooks/useToast';
 
 function useAuth() {
   const router = useRouter();
   const [error, setError] = useState<string>('');
+  const { onShowToast } = useToast();
 
   async function handleSignUp(credentials: Auth.RegisterRequestPayload) {
     try {
@@ -20,6 +22,11 @@ function useAuth() {
         },
       });
       router.push('/');
+
+      onShowToast(
+        'A confirmation email was sent! Please confirm your account!',
+        'info'
+      );
     } catch (error) {
       error instanceof Error ? setError(error.message) : setError('');
     }

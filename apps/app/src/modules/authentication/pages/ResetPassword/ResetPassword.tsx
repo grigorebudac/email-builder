@@ -6,9 +6,11 @@ import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 import Head from 'next/head';
+import useToast from '@/hooks/useToast';
 
 const ResetPassword = () => {
   const { query, isReady, push } = useRouter();
+  const { onShowToast } = useToast();
 
   const handleVerifyAccount = useCallback(async () => {
     const { code, username } = query;
@@ -45,6 +47,7 @@ const ResetPassword = () => {
         });
       }
 
+      onShowToast('Your password was updated!', 'success');
       push('/');
     } catch (error) {
       alert('Incorrect code');
