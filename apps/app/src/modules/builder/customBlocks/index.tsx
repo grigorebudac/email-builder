@@ -79,6 +79,7 @@ export const defaultCategories: BlockMarketCategory[] = [
           data: {
             value: {
               content: 'Plain (Default)',
+              variant: 'default',
             },
           },
           attributes: {
@@ -88,7 +89,6 @@ export const defaultCategories: BlockMarketCategory[] = [
             'letter-spacing': '0.25px',
             'inner-padding': '12px 16px 12px 16px',
             'font-size': '1rem',
-            'border-color': 'red',
           },
         },
       },
