@@ -10,7 +10,7 @@ import useToast from '@/hooks/useToast';
 
 const ResetPassword = () => {
   const { query, isReady, push } = useRouter();
-  const { showToast } = useToast();
+  const { onShowToast } = useToast();
 
   const handleVerifyAccount = useCallback(async () => {
     const { code, username } = query;
@@ -47,7 +47,7 @@ const ResetPassword = () => {
         });
       }
 
-      showToast('Your password was updated!', 'success');
+      onShowToast('Your password was updated!', 'success');
       push('/');
     } catch (error) {
       alert('Incorrect code');

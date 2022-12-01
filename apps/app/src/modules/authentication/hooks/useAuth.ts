@@ -5,12 +5,12 @@ import {
   Auth as AmplifyAuth,
   CognitoHostedUIIdentityProvider,
 } from '@aws-amplify/auth';
-import useToast from '../../../hooks/useToast';
+import useToast from '@/hooks/useToast';
 
 function useAuth() {
   const router = useRouter();
   const [error, setError] = useState<string>('');
-  const { showToast } = useToast();
+  const { onShowToast } = useToast();
 
   async function handleSignUp(credentials: Auth.RegisterRequestPayload) {
     try {
@@ -23,7 +23,7 @@ function useAuth() {
       });
       router.push('/');
 
-      showToast(
+      onShowToast(
         'A confirmation email was sent! Please confirm your account!',
         'info'
       );

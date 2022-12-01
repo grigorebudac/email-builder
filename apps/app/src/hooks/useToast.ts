@@ -1,7 +1,7 @@
 import { toast, TypeOptions } from 'react-toastify';
 
 function useToast() {
-  function showToast(content: string, type: TypeOptions) {
+  function handleShowToast(content: string, type: TypeOptions) {
     toast(content, {
       type: type,
       position: 'top-right',
@@ -16,7 +16,7 @@ function useToast() {
   }
 
   return {
-    showToast,
+    onShowToast: handleShowToast,
   };
 }
 
