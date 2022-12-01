@@ -23,8 +23,9 @@ import {
 } from 'easy-email-extensions';
 import React from 'react';
 import { useField } from 'react-final-form';
-import { Button as ArcoButton } from '@arco-design/web-react';
+import { Button as ArcoButton, Collapse } from '@arco-design/web-react';
 import { Stack } from '@lego/klik-ui';
+import CollapseWrapper from '../../components/CollapseWrapper';
 
 function ButtonPanel() {
   const { focusIdx } = useFocusIdx();
@@ -38,8 +39,8 @@ function ButtonPanel() {
     <>
       {/* @ts-ignore */}
       <AttributesPanelWrapper>
-        <Stack>
-          <div>
+        <CollapseWrapper defaultActiveKey={['0', '1', '2']}>
+          <Collapse.Item name="0" header="Data">
             <Space direction="vertical">
               <TextField
                 label={
@@ -66,11 +67,6 @@ function ButtonPanel() {
                 name={`${focusIdx}.data.value.content`}
               />
               <Link />
-            </Space>
-          </div>
-
-          <div>
-            <Space direction="vertical">
               <Grid.Row>
                 <Grid.Col span={11}>
                   <Width />
@@ -79,13 +75,17 @@ function ButtonPanel() {
                   <FontWeight />
                 </Grid.Col>
               </Grid.Row>
+            </Space>
+          </Collapse.Item>
 
+          <Collapse.Item name="1" header="Spacing">
+            <Space direction="vertical">
               <Padding title="Padding" attributeName="padding" />
               <Padding title="Inner padding" attributeName="inner-padding" />
             </Space>
-          </div>
+          </Collapse.Item>
 
-          <div>
+          <Collapse.Item name="2" header="Styling">
             <Space direction="vertical">
               <Grid.Row>
                 <Grid.Col span={11}>
@@ -99,9 +99,7 @@ function ButtonPanel() {
                 </Grid.Col>
               </Grid.Row>
             </Space>
-          </div>
 
-          <div>
             <Space direction="vertical">
               <Grid.Row>
                 <Grid.Col span={11}>
@@ -133,17 +131,14 @@ function ButtonPanel() {
 
               <FontStyle />
             </Space>
-          </div>
 
-          <div>
             <Border />
-          </div>
-          <div>
+
             <Grid.Col span={24}>
               <ClassName />
             </Grid.Col>
-          </div>
-        </Stack>
+          </Collapse.Item>
+        </CollapseWrapper>
       </AttributesPanelWrapper>
     </>
   );
