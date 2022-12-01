@@ -15,7 +15,7 @@ const ForgotPassword = () => {
   async function handleSubmit(credentials: Auth.ForgotPassword) {
     try {
       await AmplifyAuth.forgotPassword(credentials.email);
-      router.push('/');
+      router.push('/login');
       showToast('An email with reset link was sent!', 'info');
     } catch (error) {
       alert('Incorrect email');
