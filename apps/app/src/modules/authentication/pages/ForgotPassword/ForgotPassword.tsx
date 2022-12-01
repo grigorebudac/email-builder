@@ -6,18 +6,22 @@ import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 import Head from 'next/head';
+import useToast from '@/hooks/useToast';
 
 const ForgotPassword = () => {
   const router = useRouter();
+  const { showToast } = useToast();
 
   async function handleSubmit(credentials: Auth.ForgotPassword) {
     try {
       await AmplifyAuth.forgotPassword(credentials.email);
       router.push('/');
+      showToast('An email with reset link was sent!', 'info');
     } catch (error) {
       alert('Incorrect email');
     }
   }
+
   return (
     <>
       <Head>
