@@ -6,3 +6,5 @@ export const INSTAGRAM_ICON_URL = BUCKET_URL + 'instagram.png';
 export const LINKEDIN_ICON_URL = BUCKET_URL + 'linkedin.png';
 export const TWITTER_ICON_URL = BUCKET_URL + 'twitter.png';
 export const WWW_ICON_URL = BUCKET_URL + 'world-wide-web.png';
+export const ARROW_DOWN_URL = BUCKET_URL + 'arrow-down.png';
+export const ARROW_UP_URL = BUCKET_URL + 'arrow-up.png';
