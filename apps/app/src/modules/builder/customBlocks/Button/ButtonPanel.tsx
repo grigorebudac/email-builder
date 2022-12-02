@@ -102,7 +102,7 @@ function ButtonPanel() {
     { inputId: 'outline-color', value: color.brand.brightBlue },
     { inputId: 'outline-background-color', value: color.neutral.white },
     { inputId: 'ghost-color', value: color.brand.brightBlue },
-    { inputId: 'ghost-background-color', value: color.neutral.white },
+    { inputId: 'ghost-background-color', value: 'transparent' },
   ];
 
   function handleInitialStyle() {
