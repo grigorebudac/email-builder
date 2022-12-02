@@ -8,7 +8,7 @@ import {
 } from 'easy-email-core';
 
 import React from 'react';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import { CustomBlocksType } from '../../types/block.types';
 import { Star } from './Star';
 import { color } from '@lego/design-tokens-core';
@@ -78,6 +78,7 @@ const Rating = createCustomBlock<RatingBlockData>({
           {[...Array(5)].map((_, i) => (
             <Star
               color={attributes['star-color']}
+              key={i}
               gap={attributes.gap}
               filled={i < Number(stars)}
             />
