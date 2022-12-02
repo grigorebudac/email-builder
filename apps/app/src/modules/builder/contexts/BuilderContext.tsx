@@ -22,6 +22,7 @@ import { Template } from '@/types/template.types';
 import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
+import isEmpty from 'lodash/isEmpty';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
@@ -96,11 +97,17 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   }, [templateId]);
 
   const initialValues: IEmailTemplate = useMemo(() => {
-    if (data == null) {
+    if (isEmpty(data?.content)) {
+      let content = BlockManager.getBlockByType(BasicType.PAGE).create({
+        attributes: {
+          'background-color': theme.colors['dark-blue'][200],
+        },
+      });
+
       return {
         subject: '',
         subTitle: '',
-        content: BlockManager.getBlockByType(BasicType.PAGE).create({}),
+        content: content,
       };
     }
 
