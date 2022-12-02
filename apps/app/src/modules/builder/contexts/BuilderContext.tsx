@@ -34,7 +34,7 @@ import Table from '../customBlocks/Table/Table';
 import TablePanel from '../customBlocks/Table/TablePanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 import { theme } from '@lego/klik-ui';
-import { color } from '@lego/design-tokens-core';
+import { color, fontFamily } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
 import { SocialBanner } from '../customBlocks/Social/Social';
@@ -100,7 +100,18 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
     if (isEmpty(data?.content)) {
       let content = BlockManager.getBlockByType(BasicType.PAGE).create({
         attributes: {
-          'background-color': theme.colors['dark-blue'][200],
+          'background-color': theme.colors.white,
+        },
+        data: {
+          value: {
+            'font-family': `${fontFamily.sans}, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans','Helvetica Neue', sans-serif`,
+            fonts: [
+              {
+                href: 'https://assets.lego.com/fonts/v3/cera-pro/CeraPro-Regular.woff2',
+                name: 'Cera Pro',
+              },
+            ],
+          },
         },
       });
 
