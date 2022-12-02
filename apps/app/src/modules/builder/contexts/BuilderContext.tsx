@@ -108,7 +108,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
             fonts: [
               {
                 href: 'https://assets.lego.com/fonts/v3/cera-pro/CeraPro-Regular.woff2',
-                name: 'Cera Pro',
+                name: fontFamily.sans,
               },
             ],
           },
