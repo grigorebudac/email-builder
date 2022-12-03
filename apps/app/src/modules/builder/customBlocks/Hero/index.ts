@@ -1,3 +1,6 @@
+import { color } from '@lego/design-tokens-core';
+import { AdvancedType, BlockManager } from 'easy-email-core';
+
 const payload = {
   type: 'advanced_hero',
   data: {
@@ -65,16 +68,19 @@ const payload = {
       },
       children: [],
     },
-    {
-      type: 'button',
+    BlockManager.getBlockByType(AdvancedType.BUTTON).create({
       data: {
         value: {
-          content: 'Play some more!',
+          content: 'Play more!',
+          variant: 'default',
         },
       },
-      attributes: {},
-      children: [],
-    },
+      attributes: {
+        'background-color': color.brand.mediumLilac,
+        'font-size': '1rem',
+        'font-weight': '500',
+      },
+    }),
   ],
 };
 
