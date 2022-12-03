@@ -36,6 +36,7 @@ import {
 import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockMarketCategory } from 'easy-email-extensions';
+import heroPayload from './Hero';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -88,6 +89,7 @@ export const defaultCategories: BlockMarketCategory[] = [
         description: `This block displays a hero image. It behaves like an
           'section' with a single 'column'.`,
         component: HeroBlockItem,
+        payload: heroPayload,
       },
       {
         type: AdvancedType.NAVBAR,
