@@ -12,10 +12,7 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
       query: (body) => ({
         url: `/templates`,
         method: 'POST',
-        body: {
-          title: body.title,
-          subtitle: body.subtitle,
-        },
+        body,
       }),
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
@@ -33,6 +30,7 @@ export const TemplateEndpoints = RootApi.injectEndpoints({
                 html: '',
                 createdAt: date,
                 updatedAt: date,
+                ...body,
               };
 
               draft.push(newTemplate);

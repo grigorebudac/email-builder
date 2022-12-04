@@ -11,10 +11,12 @@ export declare namespace Template {
     createdAt: string;
     updatedAt: string;
   }
-  export interface CreateTemplate {
-    title: string;
-    subtitle: string;
-  }
+  export type CreateTemplate =
+    | {
+        title: string;
+        subtitle: string;
+      }
+    | Record<string, string>;
   export interface MergeTags {
     [key: string]: string | MergeTags;
   }

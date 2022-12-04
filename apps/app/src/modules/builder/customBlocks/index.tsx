@@ -38,6 +38,7 @@ import { CustomBlocksType } from '../types/block.types';
 import { BlockMarketCategory } from 'easy-email-extensions';
 import accordionPayload from './Accordion';
 import heroPayload from './Hero';
+import { color } from '@lego/design-tokens-core';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {

@@ -1,11 +1,24 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { Template } from '@prisma/client';
+import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class CreateTemplateDTO {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title: Template['title'];
 
   @IsString()
   @IsNotEmpty()
-  subtitle: string;
+  subtitle: Template['subtitle'];
+
+  @IsObject()
+  @IsOptional()
+  content?: Template['content'];
+
+  @IsString()
+  @IsOptional()
+  html?: Template['html'];
+
+  @IsString()
+  @IsOptional()
+  previewImage?: Template['previewImage'];
 }
