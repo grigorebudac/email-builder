@@ -23,11 +23,10 @@ export class TemplateService {
   async createTemplate(userId: string, dto: CreateTemplateDTO) {
     const template = await this.prisma.template.create({
       data: {
-        title: dto.title,
-        subtitle: dto.subtitle,
         content: {},
         html: '',
         userId,
+        ...dto,
       },
     });
 

@@ -11,6 +11,7 @@ interface TemplateCardProps {
   previewImage: string;
   onEdit: () => void;
   onDelete: () => void;
+  onDuplicate: () => void;
 }
 
 const TemplateCard = ({
@@ -18,6 +19,7 @@ const TemplateCard = ({
   previewImage,
   onEdit,
   onDelete,
+  onDuplicate,
 }: TemplateCardProps) => {
   return (
     <Flex
@@ -68,10 +70,11 @@ const TemplateCard = ({
           onClick={onDelete}
         />
         <FoldableButton
+          data-cy={`duplicateTemplate-${templateId}`}
           icon={<DuplicateIcon />}
           activeColor={theme.colors.information[400]}
           label="Duplicate"
-          onClick={() => {}}
+          onClick={onDuplicate}
         />
       </Grid>
     </Flex>

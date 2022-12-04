@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { withProtectedRoute } from 'src/hocs/withProtectedRoute';
 import { Box, Grid, useDisclosure } from '@lego/klik-ui';
 import { useRouter } from 'next/router';
+import omit from 'lodash/omit';
 
 import {
   useCreateTemplateMutation,
@@ -41,6 +42,26 @@ const Templates: NextPageWithLayout = () => {
     await deleteTemplateMutation(templateId);
   }
 
+  async function handleDuplicate(templateId: string) {
+    try {
+      const template = templates.find((x) => x.id === templateId);
+
+      if (template == null) {
+        return;
+      }
+
+      const duplicatedTemplate: Template.CreateTemplate = {
+        ...omit(template, ['id', 'title', 'userId', 'createdAt', 'updatedAt']),
+        title: `${template.title} (Duplicated)`,
+        subtitle: template.subtitle,
+      };
+
+      await createTemplateMutation(duplicatedTemplate).unwrap();
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
   async function logOut() {
     await AmplifyAuth.signOut();
     router.push('/login');
@@ -71,6 +92,7 @@ const Templates: NextPageWithLayout = () => {
                   previewImage={template.previewImage}
                   onEdit={() => handleEdit(templateId)}
                   onDelete={() => handleDelete(templateId)}
+                  onDuplicate={() => handleDuplicate(templateId)}
                 />
               );
             })}
