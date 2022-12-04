@@ -32,6 +32,8 @@ import CardPanel from '../customBlocks/Card/CardPanel';
 import Table from '../customBlocks/Table/Table';
 import TablePanel from '../customBlocks/Table/TablePanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
+import Logo from '../customBlocks/Logo/Logo';
+import LogoPanel from '../customBlocks/Logo/LogoPanel';
 import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
@@ -56,6 +58,7 @@ interface BuilderContextValues {
 BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
+  [CustomBlocksType.LOGO]: Logo,
   [CustomBlocksType.TABLE]: Table,
   [CustomBlocksType.SOCIALBANNER]: SocialBanner,
 });
@@ -63,6 +66,7 @@ BlockManager.registerBlocks({
 BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
+  [CustomBlocksType.LOGO]: LogoPanel,
   [CustomBlocksType.TABLE]: TablePanel,
   [CustomBlocksType.SOCIALBANNER]: SocialBannerPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
