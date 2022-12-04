@@ -239,6 +239,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         component: null,
       },
       {
+        type: CustomBlocksType.LOGO,
+        title: 'Logo',
+        description: `Custom logo component.`,
+        component: null,
+      },
+      {
         type: CustomBlocksType.TABLE,
         title: 'Table',
         description: 'Custom table component',
