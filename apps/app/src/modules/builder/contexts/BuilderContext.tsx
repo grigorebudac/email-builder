@@ -22,6 +22,7 @@ import { Template } from '@/types/template.types';
 import { getMergeTagsFromString } from '../utils/getMergeTagsFromString';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
+import isEmpty from 'lodash/isEmpty';
 import { DEFAULT_MERGE_TAGS } from '../constants/defaultMergeTags';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockAttributeConfigurationManager } from 'easy-email-extensions';
@@ -33,9 +34,11 @@ import Table from '../customBlocks/Table/Table';
 import TablePanel from '../customBlocks/Table/TablePanel';
 import ButtonPanel from '../customBlocks/Button/ButtonPanel';
 import { theme } from '@lego/klik-ui';
-import { color } from '@lego/design-tokens-core';
+import { color, fontFamily } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
+import Rating from '../customBlocks/Rating/Rating';
+import RatingPanel from '../customBlocks/Rating/RatingPanel';
 import { SocialBanner } from '../customBlocks/Social/Social';
 import { SocialBannerPanel } from '../customBlocks/Social/SocialPanel';
 
@@ -57,6 +60,7 @@ BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
   [CustomBlocksType.TABLE]: Table,
+  [CustomBlocksType.RATING]: Rating,
   [CustomBlocksType.SOCIALBANNER]: SocialBanner,
 });
 
@@ -64,6 +68,7 @@ BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
   [CustomBlocksType.TABLE]: TablePanel,
+  [CustomBlocksType.RATING]: RatingPanel,
   [CustomBlocksType.SOCIALBANNER]: SocialBannerPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
@@ -96,11 +101,28 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   }, [templateId]);
 
   const initialValues: IEmailTemplate = useMemo(() => {
-    if (data == null) {
+    if (isEmpty(data?.content)) {
+      let content = BlockManager.getBlockByType(BasicType.PAGE).create({
+        attributes: {
+          'background-color': theme.colors.white,
+        },
+        data: {
+          value: {
+            'font-family': `${fontFamily.sans}, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans','Helvetica Neue', sans-serif`,
+            fonts: [
+              {
+                href: 'https://assets.lego.com/fonts/v3/cera-pro/CeraPro-Regular.woff2',
+                name: fontFamily.sans,
+              },
+            ],
+          },
+        },
+      });
+
       return {
         subject: '',
         subTitle: '',
-        content: BlockManager.getBlockByType(BasicType.PAGE).create({}),
+        content: content,
       };
     }
 

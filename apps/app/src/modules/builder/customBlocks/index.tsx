@@ -37,6 +37,7 @@ import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockMarketCategory } from 'easy-email-extensions';
 import accordionPayload from './Accordion';
+import heroPayload from './Hero';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -84,11 +85,36 @@ export const defaultCategories: BlockMarketCategory[] = [
         },
       },
       {
+        type: AdvancedType.BUTTON,
+        title: 'Link',
+        description: `This block displays a link, which is in fact a button of type 'ghost'.`,
+        component: ButtonBlockItem,
+        // @ts-ignore
+        payload: {
+          data: {
+            value: {
+              content: 'Link',
+              variant: 'ghost',
+            },
+          },
+          attributes: {
+            'font-family': 'Cera Pro',
+            'background-color': color.brand.brightBlue,
+            'font-weight': '500',
+            'letter-spacing': '0.25px',
+            'inner-padding': '4px 0px 4px 0px',
+            'font-size': '1rem',
+            padding: '0px',
+          },
+        },
+      },
+      {
         type: AdvancedType.HERO,
         title: 'Hero',
         description: `This block displays a hero image. It behaves like an
           'section' with a single 'column'.`,
         component: HeroBlockItem,
+        payload: heroPayload,
       },
       {
         type: AdvancedType.NAVBAR,
@@ -216,6 +242,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         type: CustomBlocksType.TABLE,
         title: 'Table',
         description: 'Custom table component',
+        component: null,
+      },
+      {
+        type: CustomBlocksType.RATING,
+        title: 'Rating',
+        description: 'Custom rating component',
         component: null,
       },
       {
