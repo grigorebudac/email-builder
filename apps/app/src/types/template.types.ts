@@ -7,6 +7,7 @@ export declare namespace Template {
     subtitle: string;
     content: IEmailTemplate['content'];
     html: string;
+    previewImage?: string;
     createdAt: string;
     updatedAt: string;
   }

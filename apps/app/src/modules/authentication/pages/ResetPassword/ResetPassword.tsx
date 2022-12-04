@@ -1,13 +1,16 @@
 import { withPublicRoute } from '@/hocs/withPublicRoute';
 import React, { useCallback, useEffect } from 'react';
 import ResetPasswordForm from '../../components/Forms/ResetPasswordForm';
-import SimpleAuthenticationLayout from '../../components/Layouts/SimpleAuthenticationLayout';
 import { Auth } from '../../types/auth.types';
 import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
+import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
+import Head from 'next/head';
+import useToast from '@/hooks/useToast';
 
 const ResetPassword = () => {
   const { query, isReady, push } = useRouter();
+  const { onShowToast } = useToast();
 
   const handleVerifyAccount = useCallback(async () => {
     const { code, username } = query;
@@ -44,6 +47,7 @@ const ResetPassword = () => {
         });
       }
 
+      onShowToast('Your password was updated!', 'success');
       push('/');
     } catch (error) {
       alert('Incorrect code');
@@ -51,9 +55,17 @@ const ResetPassword = () => {
   }
 
   return (
-    <SimpleAuthenticationLayout title="Reset Password">
-      <ResetPasswordForm onSubmit={handleSubmit} />
-    </SimpleAuthenticationLayout>
+    <>
+      <Head>
+        <title>Reset password</title>
+      </Head>
+      <AuthenticationLayout
+        title="Reset password"
+        subtitle="Insert your new password"
+      >
+        <ResetPasswordForm onSubmit={handleSubmit} />
+      </AuthenticationLayout>
+    </>
   );
 };
 
