@@ -33,9 +33,10 @@ import {
   Stack,
   TextStyle,
 } from 'easy-email-editor';
+import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockMarketCategory } from 'easy-email-extensions';
-import { color } from '@lego/design-tokens-core';
+import heroPayload from './Hero';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -76,19 +77,9 @@ export const defaultCategories: BlockMarketCategory[] = [
         component: ButtonBlockItem,
         // @ts-ignore
         payload: {
-          data: {
-            value: {
-              content: 'Plain (Default)',
-              variant: 'default',
-            },
-          },
           attributes: {
             'font-family': 'Cera Pro',
-            'background-color': color.brand.brightBlue,
-            'font-weight': '500',
-            'letter-spacing': '0.25px',
-            'inner-padding': '12px 16px 12px 16px',
-            'font-size': '1rem',
+            'background-color': theme.colors.information[400],
           },
         },
       },
@@ -122,6 +113,7 @@ export const defaultCategories: BlockMarketCategory[] = [
         description: `This block displays a hero image. It behaves like an
           'section' with a single 'column'.`,
         component: HeroBlockItem,
+        payload: heroPayload,
       },
       {
         type: AdvancedType.NAVBAR,
