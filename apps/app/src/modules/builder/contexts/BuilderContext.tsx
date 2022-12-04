@@ -36,6 +36,8 @@ import { theme } from '@lego/klik-ui';
 import { color } from '@lego/design-tokens-core';
 import { Email } from '@/types/email.types';
 import { jsonToHtml } from '../utils/jsonToHtml';
+import Rating from '../customBlocks/Rating/Rating';
+import RatingPanel from '../customBlocks/Rating/RatingPanel';
 import { SocialBanner } from '../customBlocks/Social/Social';
 import { SocialBannerPanel } from '../customBlocks/Social/SocialPanel';
 
@@ -57,6 +59,7 @@ BlockManager.registerBlocks({
   [CustomBlocksType.FOOTER]: Footer,
   [CustomBlocksType.CARD]: Card,
   [CustomBlocksType.TABLE]: Table,
+  [CustomBlocksType.RATING]: Rating,
   [CustomBlocksType.SOCIALBANNER]: SocialBanner,
 });
 
@@ -64,6 +67,7 @@ BlockAttributeConfigurationManager.add({
   [CustomBlocksType.FOOTER]: FooterPanel,
   [CustomBlocksType.CARD]: CardPanel,
   [CustomBlocksType.TABLE]: TablePanel,
+  [CustomBlocksType.RATING]: RatingPanel,
   [CustomBlocksType.SOCIALBANNER]: SocialBannerPanel,
   [AdvancedType.BUTTON]: ButtonPanel,
 });
