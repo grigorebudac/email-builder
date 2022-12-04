@@ -1,5 +1,5 @@
 import React from 'react';
-import { AdvancedType, BasicType } from 'easy-email-core';
+import { AdvancedType } from 'easy-email-core';
 
 import {
   // @ts-ignore
@@ -36,6 +36,7 @@ import {
 import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockMarketCategory } from 'easy-email-extensions';
+import accordionPayload from './Accordion';
 import heroPayload from './Hero';
 
 export const defaultCategories: BlockMarketCategory[] = [
@@ -144,6 +145,8 @@ export const defaultCategories: BlockMarketCategory[] = [
           to reveal the content, providing a great experience on
           mobile devices where space is scarce.`,
         component: AccordionBlockItem,
+        // @ts-ignore
+        payload: accordionPayload,
       },
       {
         type: AdvancedType.CAROUSEL,
