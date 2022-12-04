@@ -8,7 +8,7 @@ import {
 } from 'easy-email-core';
 
 import React from 'react';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import { CustomBlocksType } from '../../types/block.types';
 import { LOGO_IMAGE_URL } from '@/constants/defaultImageSources';
 import { BasicBlock } from '../../components/BasicBlock/BasicBlock';
