@@ -30,7 +30,20 @@ function CardPanel() {
               <RadioGroupField
                 label="Align"
                 name={`${focusIdx}.attributes.align`}
-                options={options}
+                options={[
+                  {
+                    value: 'left',
+                    label: 'Left',
+                  },
+                  {
+                    value: 'center',
+                    label: 'Center',
+                  },
+                  {
+                    value: 'right',
+                    label: 'Right',
+                  },
+                ]}
               />
             </Grid.Row>
           </Stack>
@@ -74,18 +87,3 @@ function CardPanel() {
 }
 
 export default CardPanel;
-
-const options = [
-  {
-    value: 'left',
-    label: 'Left',
-  },
-  {
-    value: 'center',
-    label: 'Center',
-  },
-  {
-    value: 'right',
-    label: 'Right',
-  },
-];
