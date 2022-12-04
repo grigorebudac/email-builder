@@ -33,9 +33,9 @@ import {
   Stack,
   TextStyle,
 } from 'easy-email-editor';
-import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
 import { BlockMarketCategory } from 'easy-email-extensions';
+import { color } from '@lego/design-tokens-core';
 
 export const defaultCategories: BlockMarketCategory[] = [
   {
@@ -76,9 +76,43 @@ export const defaultCategories: BlockMarketCategory[] = [
         component: ButtonBlockItem,
         // @ts-ignore
         payload: {
+          data: {
+            value: {
+              content: 'Plain (Default)',
+              variant: 'default',
+            },
+          },
           attributes: {
             'font-family': 'Cera Pro',
-            'background-color': theme.colors.information[400],
+            'background-color': color.brand.brightBlue,
+            'font-weight': '500',
+            'letter-spacing': '0.25px',
+            'inner-padding': '12px 16px 12px 16px',
+            'font-size': '1rem',
+          },
+        },
+      },
+      {
+        type: AdvancedType.BUTTON,
+        title: 'Link',
+        description: `This block displays a link, which is in fact a button of type 'ghost'.`,
+        component: ButtonBlockItem,
+        // @ts-ignore
+        payload: {
+          data: {
+            value: {
+              content: 'Link',
+              variant: 'ghost',
+            },
+          },
+          attributes: {
+            'font-family': 'Cera Pro',
+            'background-color': color.brand.brightBlue,
+            'font-weight': '500',
+            'letter-spacing': '0.25px',
+            'inner-padding': '4px 0px 4px 0px',
+            'font-size': '1rem',
+            padding: '0px',
           },
         },
       },
@@ -213,6 +247,12 @@ export const defaultCategories: BlockMarketCategory[] = [
         type: CustomBlocksType.TABLE,
         title: 'Table',
         description: 'Custom table component',
+        component: null,
+      },
+      {
+        type: CustomBlocksType.RATING,
+        title: 'Rating',
+        description: 'Custom rating component',
         component: null,
       },
       {
