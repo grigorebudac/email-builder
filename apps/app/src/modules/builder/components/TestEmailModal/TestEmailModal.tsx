@@ -8,6 +8,7 @@ import { flatten } from '../../utils/flatten';
 import { TextFieldController } from '@/components/Controllers/TextFieldController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Email } from '@/types/email.types';
+import useToast from '@/hooks/useToast';
 
 interface TestEmailModalProps {
   isOpen: boolean;
@@ -22,6 +23,9 @@ const schema = yup.object().shape({
 });
 
 const TestEmailModal = (props: TestEmailModalProps) => {
+  const { onShowToast } = useToast();
+  const [error, setError] = useState('');
+
   const {
     handleSubmit,
     control,
@@ -36,14 +40,14 @@ const TestEmailModal = (props: TestEmailModalProps) => {
     },
   });
 
-  const [error, setError] = useState('');
-
   async function handleTriggerSubmit(data: Template.MergeTags) {
     try {
       await props.onSubmit(data);
+      onShowToast('The email was successful sent!', 'success');
       props.onClose();
     } catch (error) {
-      setError(error.data.error);
+      onShowToast('Oops, something went wrong!', 'error');
+      setError(error?.data?.error);
     }
   }
 
