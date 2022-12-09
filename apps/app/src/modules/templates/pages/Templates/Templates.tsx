@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import { withProtectedRoute } from 'src/hocs/withProtectedRoute';
 import { Box, Grid, useDisclosure } from '@lego/klik-ui';
 import { useRouter } from 'next/router';
@@ -17,13 +17,20 @@ import EmptyCard from '../../components/EmptyCard';
 import NavBar from '../../components/NavBar/NavBar';
 import { Auth as AmplifyAuth } from '@aws-amplify/auth';
 import TemplateCard from '../../components/TemplateCard';
+import DeleteTemplateModal from '../../components/DeleteTemplateModal';
 
 const Templates: NextPageWithLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onDeleteModalOpen,
+    onClose: onDeleteModalClose,
+  } = useDisclosure();
   const [createTemplateMutation] = useCreateTemplateMutation();
   const [deleteTemplateMutation] = useDeleteTemplateByIdMutation();
   const { data: templates, isLoading } = useGetTemplatesQuery();
   const router = useRouter();
+  const currentTemplateId = useRef<string>('');
 
   async function handleCreateTemplate(data: Template.CreateTemplate) {
     try {
@@ -38,8 +45,14 @@ const Templates: NextPageWithLayout = () => {
     router.push(`/editor/${templateId}`);
   }
 
-  async function handleDelete(templateId: string) {
+  function handleDelete(templateId: string) {
+    currentTemplateId.current = templateId;
+    onDeleteModalOpen();
+  }
+
+  async function deleteTemplate(templateId: string) {
     await deleteTemplateMutation(templateId);
+    onDeleteModalClose();
   }
 
   async function handleDuplicate(templateId: string) {
@@ -104,6 +117,12 @@ const Templates: NextPageWithLayout = () => {
         isOpen={isOpen}
         onClose={onClose}
         onSubmit={handleCreateTemplate}
+      />
+
+      <DeleteTemplateModal
+        isOpen={isDeleteModalOpen}
+        onClose={onDeleteModalClose}
+        onSubmit={() => deleteTemplate(currentTemplateId.current)}
       />
     </div>
   );
