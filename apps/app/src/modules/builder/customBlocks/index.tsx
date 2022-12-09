@@ -79,9 +79,19 @@ export const defaultCategories: BlockMarketCategory[] = [
         component: ButtonBlockItem,
         // @ts-ignore
         payload: {
+          data: {
+            value: {
+              content: 'Plain (Default)',
+              variant: 'default',
+            },
+          },
           attributes: {
             'font-family': 'Cera Pro',
-            'background-color': theme.colors.information[400],
+            'background-color': color.brand.brightBlue,
+            'font-weight': '500',
+            'letter-spacing': '0.25px',
+            'inner-padding': '12px 16px 12px 16px',
+            'font-size': '1rem',
           },
         },
       },
