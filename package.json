@@ -17,7 +17,6 @@
   "dependencies": {
     "@arco-themes/react-easy-email-theme": "^0.0.3",
     "@aws-amplify/auth": "^5.0.1",
-    "@aws-sdk/client-ses": "^3.222.0",
     "@aws-sdk/credential-provider-node": "^3.202.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11",
@@ -49,7 +48,6 @@
     "lodash": "^4.17.21",
     "next": "12.2.5",
     "node-html-to-image": "^3.2.4",
-    "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "react": "18.2.0",
