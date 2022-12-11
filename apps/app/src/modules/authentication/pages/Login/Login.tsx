@@ -1,8 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import Head from 'next/head';
 import useAuth from '../../hooks/useAuth';
-import { withPublicRoute } from '@/hocs/withPublicRoute';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
 
@@ -29,4 +27,4 @@ const Login = () => {
   );
 };
 
-export default withPublicRoute(Login);
+export default Login;

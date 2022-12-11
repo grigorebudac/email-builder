@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Auth } from '@aws-amplify/auth';
+import LoadingLayout from '@/components/Layouts/LoadingLayout';
 
 type WithPublicRouteProps = {};
 
@@ -24,11 +25,11 @@ function withPublicRoute<P>(
       checkAuthenticated();
     }, [checkAuthenticated]);
 
-    if (isLoading) {
-      return <h1>Loading</h1>;
+    if (!isLoading) {
+      return <WrappedComponent {...props} />;
     }
 
-    return <WrappedComponent {...props} />;
+    return <LoadingLayout />;
   };
 
   return ComponentWithExtraInfo;

@@ -21,7 +21,7 @@ function useAuth() {
           enabled: true,
         },
       });
-      router.push('/');
+      router.push('/login');
 
       onShowToast(
         'A confirmation email was sent! Please confirm your account!',
@@ -47,10 +47,48 @@ function useAuth() {
     });
   }
 
+  async function handleResetPassword(
+    credentials: Pick<Auth.ResetPassword, 'password'>
+  ) {
+    try {
+      const { code, username, email } = router?.query;
+
+      await AmplifyAuth.forgotPasswordSubmit(
+        username as string,
+        code as string,
+        credentials.password
+      );
+
+      if (email != null) {
+        await AmplifyAuth.signIn({
+          username: username as string,
+          password: credentials.password,
+        });
+      }
+
+      onShowToast('Your password was updated!', 'success');
+      router.push('/');
+    } catch (error) {
+      alert('Incorrect code');
+    }
+  }
+
+  async function handleForgetPassword(credentials: Auth.ForgotPassword) {
+    try {
+      await AmplifyAuth.forgotPassword(credentials.email);
+      router.push('/login');
+      onShowToast('An email with reset link was sent!', 'info');
+    } catch (error) {
+      alert('Incorrect email');
+    }
+  }
+
   return {
     error,
     onLogIn: handleLogIn,
     onSignUp: handleSignUp,
+    onResetPassword: handleResetPassword,
+    onForgetPassword: handleForgetPassword,
     onLoginWithMicrosoft: handleLoginWithMicrosoft,
   };
 }

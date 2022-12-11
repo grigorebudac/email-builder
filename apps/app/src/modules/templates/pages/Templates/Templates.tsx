@@ -85,34 +85,32 @@ const Templates: NextPageWithLayout = () => {
     <div>
       <NavBar onLogOut={logOut} />
 
-      {!isLoading && (
-        <Box paddingRight={100} paddingLeft={100} marginTop={50}>
-          <Grid
-            templateColumns={[
-              'repeat(1, 1fr)',
-              'repeat(1, 1fr)',
-              'repeat(3, 1fr)',
-              'repeat(5, 1fr)',
-            ]}
-            gap={10}
-          >
-            <EmptyCard onCreate={onOpen} />
-            {templates?.map((template) => {
-              const templateId = template.id;
-              return (
-                <TemplateCard
-                  key={templateId}
-                  templateId={templateId}
-                  previewImage={template.previewImage}
-                  onEdit={() => handleEdit(templateId)}
-                  onDelete={() => handleDelete(templateId)}
-                  onDuplicate={() => handleDuplicate(templateId)}
-                />
-              );
-            })}
-          </Grid>
-        </Box>
-      )}
+      <Box paddingRight={100} paddingLeft={100} marginTop={50}>
+        <Grid
+          templateColumns={[
+            'repeat(1, 1fr)',
+            'repeat(1, 1fr)',
+            'repeat(3, 1fr)',
+            'repeat(5, 1fr)',
+          ]}
+          gap={10}
+        >
+          <EmptyCard onCreate={onOpen} />
+          {templates?.map((template) => {
+            const templateId = template.id;
+            return (
+              <TemplateCard
+                key={templateId}
+                templateId={templateId}
+                previewImage={template.previewImage}
+                onEdit={() => handleEdit(templateId)}
+                onDelete={() => handleDelete(templateId)}
+                onDuplicate={() => handleDuplicate(templateId)}
+              />
+            );
+          })}
+        </Grid>
+      </Box>
 
       <CreateTemplateModal
         isOpen={isOpen}
