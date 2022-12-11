@@ -6,6 +6,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Patch,
   Post,
@@ -18,17 +19,18 @@ import { UpdateTemplateDTO } from './dto/updateTemplate.dto';
 import { TemplateService } from './template.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@UseGuards(JwtGuard)
 @Controller('templates')
 export class TemplateController {
   constructor(private templateService: TemplateService) {}
 
   @Post('')
+  @UseGuards(JwtGuard)
   createTemplate(@GetUserId() userId: string, @Body() dto: CreateTemplateDTO) {
     return this.templateService.createTemplate(userId, dto);
   }
 
   @Patch('/:id')
+  @UseGuards(JwtGuard)
   updateTemplate(
     @Param('id') id: string,
     @GetUserId() userId: string,
@@ -38,26 +40,33 @@ export class TemplateController {
   }
 
   @Get('')
+  @UseGuards(JwtGuard)
   getTemplates(@GetUserId() userId: string) {
     return this.templateService.getTemplates(userId);
   }
 
   @Get('/:id')
+  @UseGuards(JwtGuard)
   getTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
     return this.templateService.getTemplateById(id, userId);
   }
 
-  @Get('/:id/html')
-  getTemplateHTMLById(@Param('id') id: string, @GetUserId() userId: string) {
-    return this.templateService.getTemplateHTMLById(id, userId);
+  @Post('/:id/html')
+  getTemplateHTMLById(
+    @Param('id') id: string,
+    @Body() mergeTags: Record<string, string>
+  ) {
+    return this.templateService.getTemplateHTMLById(id, mergeTags);
   }
 
   @Delete('/:id')
+  @UseGuards(JwtGuard)
   deleteTemplateById(@Param('id') id: string, @GetUserId() userId: string) {
     return this.templateService.deleteTemplateById(id, userId);
   }
 
   @Post('/:id/upload-image')
+  @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(
     @Param('id') templateId: string,
@@ -67,6 +76,7 @@ export class TemplateController {
   }
 
   @Patch('/:id/preview-image')
+  @UseGuards(JwtGuard)
   updateTemplatePreviewImage(
     @Param('id') templateId: string,
     @GetUserId() userId: string
