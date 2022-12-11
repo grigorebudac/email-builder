@@ -30,7 +30,7 @@ const Templates: NextPageWithLayout = () => {
   const [deleteTemplateMutation] = useDeleteTemplateByIdMutation();
   const { data: templates, isLoading } = useGetTemplatesQuery();
   const router = useRouter();
-  const currentTemplateId = useRef<string>('');
+  const currentTemplateId = useRef<string>(null);
 
   async function handleCreateTemplate(data: Template.CreateTemplate) {
     try {
@@ -50,9 +50,10 @@ const Templates: NextPageWithLayout = () => {
     onDeleteModalOpen();
   }
 
-  async function deleteTemplate() {
+  async function handleDeleteTemplate() {
     await deleteTemplateMutation(currentTemplateId.current);
     onDeleteModalClose();
+    currentTemplateId.current = null;
   }
 
   async function handleDuplicate(templateId: string) {
@@ -122,7 +123,7 @@ const Templates: NextPageWithLayout = () => {
       <DeleteTemplateModal
         isOpen={isDeleteModalOpen}
         onClose={onDeleteModalClose}
-        onSubmit={() => deleteTemplate()}
+        onSubmit={handleDeleteTemplate}
       />
     </div>
   );
