@@ -50,8 +50,8 @@ const Templates: NextPageWithLayout = () => {
     onDeleteModalOpen();
   }
 
-  async function deleteTemplate(templateId: string) {
-    await deleteTemplateMutation(templateId);
+  async function deleteTemplate() {
+    await deleteTemplateMutation(currentTemplateId.current);
     onDeleteModalClose();
   }
 
@@ -122,7 +122,7 @@ const Templates: NextPageWithLayout = () => {
       <DeleteTemplateModal
         isOpen={isDeleteModalOpen}
         onClose={onDeleteModalClose}
-        onSubmit={() => deleteTemplate(currentTemplateId.current)}
+        onSubmit={() => deleteTemplate()}
       />
     </div>
   );
