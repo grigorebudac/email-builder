@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { randomUUID } from 'crypto';
+import { Liquid } from 'liquidjs';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateTemplateDTO } from './dto';
@@ -81,21 +82,21 @@ export class TemplateService {
     return template;
   }
 
-  async getTemplateHTMLById(id: string, userId: string) {
+  async getTemplateHTMLById(
+    id: string,
+    mergeTags: Record<string, string> = {}
+  ) {
     const template = await this.prisma.template.findFirst({
       where: {
-        AND: [
-          {
-            id,
-          },
-          {
-            userId,
-          },
-        ],
+        id,
       },
     });
 
-    return template.html;
+    const html = template.html ?? '';
+
+    const engine = new Liquid();
+    const tpl = engine.parse(html);
+    return engine.renderSync(tpl, mergeTags);
   }
 
   async deleteTemplateById(id: string, userId: string) {
