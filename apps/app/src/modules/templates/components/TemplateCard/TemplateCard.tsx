@@ -44,7 +44,7 @@ const TemplateCard = ({
           src={previewImage || '/placeholder.png'}
           layout="fill"
           objectFit="cover"
-          objectPosition="0px 0px"
+          objectPosition="center 0px"
           alt="image"
         />
       </Box>

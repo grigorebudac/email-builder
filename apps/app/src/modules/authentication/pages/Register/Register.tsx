@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { withPublicRoute } from '@/hocs/withPublicRoute';
 import useAuth from '../../hooks/useAuth';
 import { RegisterForm } from '../../components/Forms/RegisterForm';
 import AuthenticationLayout from '../../components/Layouts/AuthenticationLayout/AuthenticationLayout';
@@ -28,4 +27,4 @@ const Register = () => {
   );
 };
 
-export default withPublicRoute(Register);
+export default Register;

@@ -43,6 +43,7 @@ import Rating from '../customBlocks/Rating/Rating';
 import RatingPanel from '../customBlocks/Rating/RatingPanel';
 import { SocialBanner } from '../customBlocks/Social/Social';
 import { SocialBannerPanel } from '../customBlocks/Social/SocialPanel';
+import LoadingLayout from '@/components/Layouts/LoadingLayout';
 
 interface BuilderContextValues {
   initialValues: Builder.InitialValues;
@@ -241,7 +242,7 @@ export const BuilderContextProvider = (props: React.PropsWithChildren) => {
   }
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <LoadingLayout />;
   }
 
   return (

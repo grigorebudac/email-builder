@@ -5,6 +5,7 @@ import { Auth } from '@aws-amplify/auth';
 
 import { UserSlice } from '@/redux/slices';
 import { UserSelectors } from '@/redux/selectors';
+import LoadingLayout from '@/components/Layouts/LoadingLayout';
 
 type WithProtectedRouteProps = {};
 
@@ -43,11 +44,11 @@ function withProtectedRoute<P>(
       checkAuthenticated();
     }, [checkAuthenticated]);
 
-    if (isLoading) {
-      return <h1>Loading auth</h1>;
+    if (!isLoading && user != null) {
+      return <WrappedComponent {...props} />;
     }
 
-    return <WrappedComponent {...props} />;
+    return <LoadingLayout />;
   };
 
   return ComponentWithExtraInfo;
