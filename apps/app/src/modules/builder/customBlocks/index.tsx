@@ -32,6 +32,7 @@ import {
   ColumnBlockItem,
   Stack,
   TextStyle,
+  BlockAvatarWrapper,
 } from 'easy-email-editor';
 import { theme } from '@lego/klik-ui';
 import { CustomBlocksType } from '../types/block.types';
@@ -167,6 +168,42 @@ export const defaultCategories: BlockMarketCategory[] = [
           thumbnails depending on the email client they use.`,
         component: CarouselBlockItem,
       },
+      {
+        type: CustomBlocksType.FOOTER,
+        title: 'Footer',
+        description: `Custom footer component.`,
+        component: null,
+      },
+      {
+        type: CustomBlocksType.CARD,
+        title: 'Card',
+        description: `Custom card component.`,
+        component: null,
+      },
+      {
+        type: CustomBlocksType.LOGO,
+        title: 'Logo',
+        description: `Custom logo component.`,
+        component: null,
+      },
+      {
+        type: CustomBlocksType.TABLE,
+        title: 'Table',
+        description: 'Custom table component',
+        component: null,
+      },
+      {
+        type: CustomBlocksType.RATING,
+        title: 'Rating',
+        description: 'Custom rating component',
+        component: null,
+      },
+      {
+        type: CustomBlocksType.SOCIALBANNER,
+        title: 'SocialBanner',
+        description: 'Social media links',
+        component: null,
+      },
     ],
   },
   {
@@ -233,46 +270,43 @@ export const defaultCategories: BlockMarketCategory[] = [
       },
     ],
   },
-  {
-    title: 'Core',
-    name: 'CORE',
-    blocks: [
-      {
-        type: CustomBlocksType.FOOTER,
-        title: 'Footer',
-        description: `Custom footer component.`,
-        component: null,
-      },
-      {
-        type: CustomBlocksType.CARD,
-        title: 'Card',
-        description: `Custom card component.`,
-        component: null,
-      },
-      {
-        type: CustomBlocksType.LOGO,
-        title: 'Logo',
-        description: `Custom logo component.`,
-        component: null,
-      },
-      {
-        type: CustomBlocksType.TABLE,
-        title: 'Table',
-        description: 'Custom table component',
-        component: null,
-      },
-      {
-        type: CustomBlocksType.RATING,
-        title: 'Rating',
-        description: 'Custom rating component',
-        component: null,
-      },
-      {
-        type: CustomBlocksType.SOCIALBANNER,
-        title: 'SocialBanner',
-        description: 'Social media links',
-        component: null,
-      },
-    ],
-  },
+  // {
+  //   label: 'Custom',
+  //   active: true,
+  //   displayType: 'custom',
+  //   blocks: [
+  //     // @ts-ignore
+  //     <BlockAvatarWrapper type={CustomBlocksType.SOCIALBANNER}>
+  //       <div
+  //         style={{
+  //           position: 'relative',
+  //           border: '1px solid #ccc',
+  //           marginBottom: 20,
+  //           width: '80%',
+  //           marginLeft: 'auto',
+  //           marginRight: 'auto',
+  //         }}
+  //       >
+  //         <img
+  //           src={
+  //             'http://res.cloudinary.com/dwkp0e1yo/image/upload/v1665841389/ctbjtig27parugrztdhk.png'
+  //           }
+  //           style={{
+  //             maxWidth: '100%',
+  //           }}
+  //         />
+  //         <div
+  //           style={{
+  //             position: 'absolute',
+  //             top: 0,
+  //             left: 0,
+  //             width: '100%',
+  //             height: '100%',
+  //             zIndex: 2,
+  //           }}
+  //         />
+  //       </div>
+  //     </BlockAvatarWrapper>,
+  //   ],
+  // },
 ];
