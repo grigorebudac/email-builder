@@ -34,7 +34,11 @@ const CreateTemplateModal = ({
 
         <Modal.Footer>
           <ButtonGroup>
-            <Button colorScheme="error" onClick={onSubmit}>
+            <Button
+              data-cy={`deleteTemplate-btn`}
+              colorScheme="error"
+              onClick={onSubmit}
+            >
               Delete entry
             </Button>
             <Button onClick={onClose} variant="outline">

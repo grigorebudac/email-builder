@@ -12,6 +12,8 @@ describe('Delete Template', () => {
 
     cy.get('[data-cy^="deleteTemplate-"]').first().click();
 
+    cy.get('[data-cy^="deleteTemplate-btn"]').first().click();
+
     cy.wait('@deleteTemplateRequest')
       .its('response.statusCode')
       .should('eq', 200);
